@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* Claude Design CSS is loaded via <link> tags in layout.tsx */
 
 :root {
   --background: #ffffff;

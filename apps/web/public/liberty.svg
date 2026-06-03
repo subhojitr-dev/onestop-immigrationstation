@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="440" viewBox="0 0 200 440" role="img" aria-label="Statue of Liberty">
+  <polygon points="48,440 152,440 142,398 58,398" fill="#C9B99C"></polygon>
+  <polygon points="64,398 136,398 130,360 70,360" fill="#D6C8AF"></polygon>
+  <polygon points="64,398 136,398 134,386 66,386" fill="#9B855F" opacity=".5"></polygon>
+  <path d="M88,156 L112,156 C120,210 126,250 134,300 C138,330 142,360 142,360 L58,360 C58,360 62,330 66,300 C74,250 80,210 88,156 Z" fill="#84C3AE"></path>
+  <path d="M112,156 C120,210 126,250 134,300 C138,330 142,360 142,360 L118,360 C116,320 114,250 108,200 Z" fill="#4F8C79" opacity=".5"></path>
+  <path d="M100,170 C100,240 100,300 100,360 L92,360 C92,300 92,240 94,180 Z" fill="#3F7A68" opacity=".3"></path>
+  <path d="M88,156 C86,210 84,250 78,300 C74,330 70,360 70,360 L58,360 C58,360 62,330 66,300 C74,250 80,210 88,156 Z" fill="#A6D6C6" opacity=".45"></path>
+  <rect x="95" y="142" width="13" height="18" fill="#79B9A4"></rect>
+  <circle cx="101" cy="130" r="15" fill="#A2D3C2"></circle>
+  <path d="M101,116 a15,15 0 0,1 0,28 Z" fill="#6FB09A" opacity=".5"></path>
+  <g fill="#9ED0BE">
+    <polygon points="101,128 72,116 86,120"></polygon>
+    <polygon points="101,128 80,99 92,112"></polygon>
+    <polygon points="101,128 95,92 106,100"></polygon>
+    <polygon points="101,128 103,88 110,99"></polygon>
+    <polygon points="101,128 118,95 110,108"></polygon>
+    <polygon points="101,128 128,104 116,112"></polygon>
+    <polygon points="101,128 134,120 118,118"></polygon>
+  </g>
+  <polygon points="112,162 126,158 162,70 148,60" fill="#8AC6B2"></polygon>
+  <polygon points="119,160 126,158 162,70 156,66" fill="#5E9F8B" opacity=".5"></polygon>
+  <rect x="146" y="50" width="16" height="22" rx="2" transform="rotate(14 154 61)" fill="#B89243"></rect>
+  <path d="M154,54 C147,40 150,27 157,16 C162,28 168,38 163,52 C160,60 156,58 154,54 Z" fill="#EAC766"></path>
+  <path d="M155,50 C151,41 153,32 157,24 C160,33 163,40 160,49 C158,55 156,53 155,50 Z" fill="#F8E7A8"></path>
+  <circle cx="156" cy="34" r="10" fill="#FCEFAE" opacity=".4"></circle>
+  <polygon points="58,250 92,230 100,248 66,268" fill="#5E9F8B"></polygon>
+  <polygon points="62,252 90,236 95,247 68,263" fill="#4C8975"></polygon>
+</svg>
