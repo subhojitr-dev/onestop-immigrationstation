@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@onestop/types": ["packages/types/src/index.ts"],
+      "@onestop/api": ["packages/api/src/index.ts"],
+      "@onestop/utils": ["packages/utils/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "**/node_modules", "**/.next", "**/dist"]
+}
