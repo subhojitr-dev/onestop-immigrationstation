@@ -308,6 +308,24 @@
   gap: 10px;
   text-align: center;
 }
+.map-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.video-thumb .v-tag,
+.video-thumb .play,
+.video-thumb .v-dur { z-index: 1; }
 .map-ph .map-pin .pin {
   width: 56px; height: 56px;
   border-radius: 50% 50% 50% 0;

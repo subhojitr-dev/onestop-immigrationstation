@@ -1,29 +1,236 @@
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import Link from 'next/link'
+import type { Metadata } from "next";
+import Link from "next/link";
 
-export const metadata = {
-  title: 'Blog & News — One Stop Immigration Station',
-  description: 'Immigration insights, USCIS updates, and practical guidance for families and employers.',
-}
+export const metadata: Metadata = {
+  title: "Blog & News — One Stop Immigration Station",
+  description: "Immigration insights, USCIS updates, and practical guidance for families and employers.",
+};
 
-const calIcon = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-const arrowIcon = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-const chevron = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+const NavBar = ({ active }: { active: string }) => (
+  <>
+    <div className="topbar">
+      <div className="container">
+        <div className="topbar-contact">
+          <a href="tel:18007824769">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>(800) SUB-HROY</span>
+          </a>
+          <a href="mailto:admin@mylegalimigrationservices.com" className="email-text">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+            <span>admin@mylegalimigrationservices.com</span>
+          </a>
+        </div>
+        <div className="topbar-right">
+          <div className="topbar-social" aria-label="Social media">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99C18.34 21.13 22 16.99 22 12z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.2 8h4.6v13H.2V8zm7.4 0h4.4v1.78h.06c.61-1.16 2.11-2.38 4.34-2.38 4.64 0 5.5 3.05 5.5 7.02V21h-4.6v-6.18c0-1.47-.03-3.37-2.05-3.37-2.06 0-2.37 1.6-2.37 3.26V21H7.6V8z"/></svg></a>
+            <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2H21.5l-7.13 8.15L22.75 22h-6.56l-5.14-6.72L5.16 22H1.9l7.62-8.71L1.25 2h6.72l4.64 6.14L18.24 2zm-1.15 18h1.81L7.01 3.9H5.06L17.09 20z"/></svg></a>
+            <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
+          </div>
+          <div className="lang-toggle" role="group" aria-label="Language">
+            <button data-lang="en" className="active" type="button">EN</button>
+            <button data-lang="es" type="button">ES</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header className="header" id="header">
+      <div className="container">
+        <Link href="/" className="brand" aria-label="One Stop Immigration Station home">
+          <span className="brand-mark"><img className="brand-bird" src="/logo-bird.png" alt="One Stop Immigration Station" /></span>
+          <span className="brand-text">
+            <span className="bl-top">One Stop</span><span className="bl-mid">Immigration</span>
+            <span className="bl-bot">Station <span className="bl-stars">★★★★★</span></span>
+          </span>
+        </Link>
+        <nav className="nav" aria-label="Primary">
+          <div className="nav-item"><Link className={`nav-link${active==='home'?' is-active':''}`} href="/">Home</Link></div>
+          <div className="nav-item"><Link className={`nav-link${active==='success'?' is-active':''}`} href="/success-stories">Success Stories</Link></div>
+          <div className="nav-item">
+            <a className="nav-link" href="/#services" id="servicesToggle" aria-haspopup="true" aria-expanded="false">Services
+              <svg className="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+            <div className="mega" role="menu" aria-label="Services">
+              <div className="mega-grid">
+                <div className="mega-col">
+                  <h4>Work Visas</h4>
+                  <a href="/#services"><b>H-1B</b><span>Specialty workers</span></a>
+                  <a href="/#services"><b>L-1</b><span>Intra-company transfer</span></a>
+                  <a href="/#services"><b>O-1</b><span>Extraordinary ability</span></a>
+                  <a href="/#services"><b>TN</b><span>NAFTA professionals</span></a>
+                  <a href="/#services"><b>E-2</b><span>Treaty investors</span></a>
+                </div>
+                <div className="mega-col">
+                  <h4>Student &amp; Exchange</h4>
+                  <a href="/#services"><b>F-1</b><span>Academic students</span></a>
+                  <a href="/#services"><b>M-1</b><span>Vocational students</span></a>
+                  <a href="/#services"><b>J-1</b><span>Exchange visitors</span></a>
+                  <h4 style={{marginTop:"16px"}}>Family &amp; Fiancé</h4>
+                  <a href="/#services"><b>K-1</b><span>Fiancé visa</span></a>
+                  <a href="/#services"><b>K-3</b><span>Spousal visa</span></a>
+                </div>
+                <div className="mega-col">
+                  <h4>Humanitarian</h4>
+                  <a href="/#services"><b>U</b><span>Crime victims</span></a>
+                  <a href="/#services"><b>SIJ</b><span>Special juvenile</span></a>
+                  <a href="/#services"><b>DACA</b><span>Childhood arrivals</span></a>
+                  <a href="/#services"><b>—</b><span>Asylum &amp; Refugee</span></a>
+                  <a href="/#services"><b>F2–F4</b><span>Family preference</span></a>
+                </div>
+              </div>
+              <div className="mega-foot">
+                <p><strong>Not sure which visa fits your situation?</strong></p>
+                <Link href="/contact" className="btn btn--navy btn--sm">Book a Free Consultation</Link>
+              </div>
+            </div>
+          </div>
+          <div className="nav-item"><Link className={`nav-link${active==='press'?' is-active':''}`} href="/press-media">Press &amp; Media</Link></div>
+          <div className="nav-item"><Link className={`nav-link${active==='videos'?' is-active':''}`} href="/videos">Videos</Link></div>
+          <div className="nav-item"><Link className={`nav-link${active==='blog'?' is-active':''}`} href="/blog">Blog</Link></div>
+          <div className="nav-item"><Link className={`nav-link${active==='contact'?' is-active':''}`} href="/contact">Contact Us</Link></div>
+        </nav>
+        <div className="header-cta">
+          <Link href="/contact" className="btn btn--gold btn--sm">Free Consultation</Link>
+          <button className="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div className="mobile-overlay" id="mobileOverlay"></div>
+    <aside className="mobile-panel" id="mobilePanel" aria-label="Mobile menu">
+      <div className="mobile-head">
+        <span className="brand-text">
+          <span className="bl-top">One Stop</span><span className="bl-mid">Immigration</span>
+          <span className="bl-bot">Station <span className="bl-stars">★★★★★</span></span>
+        </span>
+        <button className="mobile-close" id="mobileClose" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <nav className="mobile-nav" aria-label="Mobile primary">
+        <Link href="/">Home</Link>
+        <Link href="/success-stories">Success Stories</Link>
+        <div className="m-acc">
+          <button className="m-acc-trigger" type="button">
+            <span>Services</span>
+            <svg className="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div className="m-acc-body">
+            <a href="/#services"><strong>Work Visas</strong> — H-1B, L-1, O-1, TN, E-2</a>
+            <a href="/#services"><strong>Student &amp; Exchange</strong> — F-1, M-1, J-1</a>
+            <a href="/#services"><strong>Family &amp; Fiancé</strong> — K-1, K-3, F2–F4</a>
+            <a href="/#services"><strong>Humanitarian</strong> — U, SIJ, DACA, Asylum</a>
+          </div>
+        </div>
+        <Link href="/press-media">Press &amp; Media</Link>
+        <Link href="/videos">Videos</Link>
+        <Link href="/blog">Blog</Link>
+        <Link href="/contact">Contact Us</Link>
+      </nav>
+      <div className="mobile-foot">
+        <Link href="/contact" className="btn btn--gold">Free Consultation</Link>
+        <div className="topbar-contact">
+          <a href="tel:18007824769"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> (800) SUB-HROY</a>
+          <a href="mailto:admin@mylegalimigrationservices.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> admin@mylegalimigrationservices.com</a>
+        </div>
+      </div>
+    </aside>
+  </>
+);
+
+const SiteFooter = () => (
+  <>
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div className="footer-about">
+            <Link href="/" className="brand">
+              <span className="brand-mark"><img className="brand-bird" src="/logo-bird.png" alt="One Stop Immigration Station" /></span>
+              <span className="brand-text"><span className="bl-top">One Stop</span><span className="bl-mid">Immigration</span><span className="bl-bot">Station <span className="bl-stars">★★★★★</span></span></span>
+            </Link>
+            <p>Centralizing U.S. immigration for businesses, families, and individuals — with legal expertise, attention to detail, and technology that keeps your case moving.</p>
+            <div className="footer-social">
+              <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99C18.34 21.13 22 16.99 22 12z"/></svg></a>
+              <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.2 8h4.6v13H.2V8zm7.4 0h4.4v1.78h.06c.61-1.16 2.11-2.38 4.34-2.38 4.64 0 5.5 3.05 5.5 7.02V21h-4.6v-6.18c0-1.47-.03-3.37-2.05-3.37-2.06 0-2.37 1.6-2.37 3.26V21H7.6V8z"/></svg></a>
+              <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
+            </div>
+          </div>
+          <div className="footer-col">
+            <h4>Navigate</h4>
+            <div className="footer-links">
+              <Link href="/">Home</Link>
+              <Link href="/success-stories">Success Stories</Link>
+              <Link href="/press-media">Press &amp; Media</Link>
+              <Link href="/videos">Videos</Link>
+              <Link href="/blog">Blog</Link>
+              <Link href="/#testimonials">Testimonials</Link>
+              <Link href="/contact">Contact Us</Link>
+            </div>
+          </div>
+          <div className="footer-col">
+            <h4>Services</h4>
+            <div className="footer-links">
+              <a href="/#services">Work Visas</a>
+              <a href="/#services">Student Visas</a>
+              <a href="/#services">Fiancé &amp; Spousal</a>
+              <a href="/#services">Humanitarian</a>
+              <a href="/#services">Family Visas</a>
+              <a href="/#services">I-9 Audits</a>
+            </div>
+          </div>
+          <div className="footer-news">
+            <h4>Join our E-Newsletter</h4>
+            <p>Stay current on important immigration law reform and news.</p>
+            <form className="news-form" id="newsForm">
+              <input type="email" required placeholder="you@email.com" aria-label="Email address" />
+              <button type="submit" className="btn btn--gold">Join</button>
+            </form>
+            <address className="footer-addr">
+              69 Station Avenue, Suite 2445<br />
+              New York, NY 10001, USA<br />
+              <a href="tel:18007824769">(800) SUB-HROY</a><br />
+              <a href="mailto:admin@mylegalimigrationservices.com">admin@mylegalimigrationservices.com</a>
+            </address>
+          </div>
+        </div>
+        <div className="footer-bar">
+          <span>© 2026 One Stop Immigration Station. All rights reserved.</span>
+          <nav aria-label="Legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Disclaimer</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+    <nav className="mobile-bar" aria-label="Quick contact">
+      <a className="mb-call" href="tel:18007824769">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Call Us</span>
+      </a>
+      <Link className="mb-consult" href="/contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Free Consult</span>
+      </Link>
+    </nav>
+  </>
+);
 
 export default function BlogPage() {
   return (
     <>
       <a href="#main" className="skip-link">Skip to content</a>
-      <Header activePage="blog" />
+      <NavBar active="blog" />
 
       <main id="main">
-        {/* PAGE HERO */}
         <section className="page-hero">
           <div className="container">
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
-              {chevron}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               <span className="current">Blog</span>
             </nav>
             <h1>Blog &amp; News</h1>
@@ -31,110 +238,89 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* BLOG LAYOUT */}
         <section className="section">
           <div className="container blog-layout">
             <div className="post-list">
-
               <article className="post-item reveal">
-                <div className="post-thumb ph" data-label="IPH7">
-                  <span className="iph-badge">IPH7</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=700&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                <div className="post-thumb ph has-img">
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">25</div><div className="m">Feb</div></div>
                 </div>
                 <div className="post-body">
                   <div className="post-meta">
                     <span className="cat-badge">Workplace</span>
-                    <span className="meta-date">{calIcon}Feb 25, 2022</span>
+                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Feb 25, 2022</span>
                   </div>
                   <h2><a href="#">Maintaining Employee Well-Being During Times of Uncertainty</a></h2>
                   <p>A mindful approach can help organizations maintain a positive employee experience in uncertain business conditions as economic conditions continue to shift across industries.</p>
-                  <a href="#" className="link-arrow">Read More {arrowIcon}</a>
+                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
               </article>
-
               <article className="post-item reveal">
-                <div className="post-thumb ph" data-label="IPH8">
-                  <span className="iph-badge">IPH8</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                <div className="post-thumb ph has-img">
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
                 </div>
                 <div className="post-body">
                   <div className="post-meta">
                     <span className="cat-badge">USCIS Updates</span>
-                    <span className="meta-date">{calIcon}Jun 2, 2020</span>
+                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
                   </div>
                   <h2><a href="#">USCIS Releases Timetable to Resume Premium Processing for I-129 and I-140</a></h2>
                   <p>USCIS announced that premium processing will resume for all I-129 and I-140 petitions in phases throughout the month — note these dates remain subject to change.</p>
-                  <a href="#" className="link-arrow">Read More {arrowIcon}</a>
+                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
               </article>
-
               <article className="post-item reveal">
-                <div className="post-thumb ph" data-label="IPH9">
-                  <span className="iph-badge">IPH9</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=700&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                <div className="post-thumb ph has-img">
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
                 </div>
                 <div className="post-body">
                   <div className="post-meta">
                     <span className="cat-badge">Court Decisions</span>
-                    <span className="meta-date">{calIcon}Jun 2, 2020</span>
+                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
                   </div>
                   <h2><a href="#">Court Decision Overturns Employer-Employee Relationship Scrutiny in H-1B Cases</a></h2>
                   <p>USCIS settled a lawsuit to overturn restrictive H-1B policies, following a District Court opinion ruling that key practices limiting the employer-employee relationship were unlawful.</p>
-                  <a href="#" className="link-arrow">Read More {arrowIcon}</a>
+                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
               </article>
-
               <article className="post-item reveal">
-                <div className="post-thumb ph" data-label="IPH10">
-                  <span className="iph-badge">IPH10</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                <div className="post-thumb ph has-img">
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
                 </div>
                 <div className="post-body">
                   <div className="post-meta">
                     <span className="cat-badge">Workplace</span>
-                    <span className="meta-date">{calIcon}Jun 2, 2020</span>
+                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
                   </div>
                   <h2><a href="#">Maintaining Employee Well-Being During Times of Uncertainty</a></h2>
                   <p>Practical guidance for HR leaders and sponsoring employers on supporting foreign-national staff through processing delays and policy changes.</p>
-                  <a href="#" className="link-arrow">Read More {arrowIcon}</a>
+                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
               </article>
-
               <article className="post-item reveal">
-                <div className="post-thumb ph" data-label="IPH11">
-                  <span className="iph-badge">IPH11</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=700&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                <div className="post-thumb ph has-img">
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">20</div><div className="m">Jul</div></div>
                 </div>
                 <div className="post-body">
                   <div className="post-meta">
                     <span className="cat-badge">Policy</span>
-                    <span className="meta-date">{calIcon}Jul 20, 2018</span>
+                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jul 20, 2018</span>
                   </div>
                   <h2><a href="#">COVID-19&apos;s Impact on Immigrants, the Labor Market and the Economy</a></h2>
                   <p>An overview of how pandemic-era restrictions reshaped visa processing, the labor market, and the broader economic outlook for immigrant communities.</p>
-                  <a href="#" className="link-arrow">Read More {arrowIcon}</a>
+                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
               </article>
-
             </div>
 
-            {/* SIDEBAR */}
             <aside className="sidebar">
               <div className="widget reveal">
-                <h3>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
-                  <span>Categories</span>
-                </h3>
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg><span>Categories</span></h3>
                 <div className="cat-list">
                   <a href="#"><span>Workplace</span><span className="count">8</span></a>
                   <a href="#"><span>USCIS Updates</span><span className="count">12</span></a>
@@ -145,19 +331,17 @@ export default function BlogPage() {
                 </div>
               </div>
               <div className="widget reveal">
-                <h3>{calIcon}<span>Archives</span></h3>
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Archives</span></h3>
                 <div className="archive-list">
-                  <a href="#"><span>February 2022</span>{chevron}</a>
-                  <a href="#"><span>June 2020</span>{chevron}</a>
-                  <a href="#"><span>July 2018</span>{chevron}</a>
-                  <a href="#"><span>March 2018</span>{chevron}</a>
-                  <a href="#"><span>November 2017</span>{chevron}</a>
+                  <a href="#"><span>February 2022</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                  <a href="#"><span>June 2020</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                  <a href="#"><span>July 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                  <a href="#"><span>March 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                  <a href="#"><span>November 2017</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
                 </div>
               </div>
               <div className="help-card reveal">
-                <div className="hc-ico">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
-                </div>
+                <div className="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
                 <h3>Need Help?</h3>
                 <p>Have a question about your case? Our bilingual team is one click away.</p>
                 <Link href="/contact" className="btn btn--gold">Free Consultation</Link>
@@ -166,15 +350,14 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="cta-strip">
           <div className="container cta-inner">
             <div className="reveal">
               <h2>Never Miss an Update</h2>
               <p>Subscribe to our e-newsletter for important immigration law reform and news, delivered to your inbox.</p>
             </div>
-            <div className="cta-actions reveal" style={{flex:1, maxWidth:'440px'}}>
-              <form className="news-form" style={{width:'100%'}}>
+            <div className="cta-actions reveal" style={{flex:"1",maxWidth:"440px"}}>
+              <form className="news-form" style={{width:"100%"}}>
                 <input type="email" required placeholder="you@email.com" aria-label="Email address" />
                 <button type="submit" className="btn btn--gold">Subscribe</button>
               </form>
@@ -183,7 +366,7 @@ export default function BlogPage() {
         </section>
       </main>
 
-      <Footer />
+      <SiteFooter />
     </>
-  )
+  );
 }
