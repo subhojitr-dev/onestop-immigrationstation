@@ -7,17 +7,21 @@ Last updated: 2026-06-04
 ## 🔴 HIGH PRIORITY — Complete Before Launch
 
 ### 1. Forgot Password Page
-- [ ] Build `/forgot-password` page
-- [ ] Build `/reset-password` page (handles the reset link from email)
-- [ ] Wire up Supabase `resetPasswordForEmail()`
-- [ ] Test the full reset flow
+- [x] Build `/forgot-password` page
+- [x] Build `/reset-password` page
+- [x] Wire up Supabase `resetPasswordForEmail()`
+- [ ] Test the full reset flow (blocked by email delivery)
 
 ### 2. Email Delivery (Resend.com)
-- [ ] Sign up at resend.com and get API key
-- [ ] Verify domain `onestopimmigrationstation.com` in Resend
-- [ ] Configure SMTP settings in Supabase → Authentication → Emails
-- [ ] Re-enable "Confirm email" toggle in Supabase
-- [ ] Test confirmation email delivery
+- [x] Sign up at resend.com and get API key
+- [x] Configure SMTP settings in Supabase (smtp.resend.com, port 465)
+- [ ] Find domain registrar — check whois.domaintools.com for onestopimmigrationstation.com
+- [ ] Add domain in Resend → Domains → Add Domain
+- [ ] Add DNS records from Resend to domain registrar
+- [ ] Verify domain in Resend
+- [ ] Update Supabase sender email to noreply@onestopimmigrationstation.com
+- [ ] Re-enable "Confirm email" toggle in Supabase → Authentication → Sign In/Providers
+- [ ] Test confirmation email delivery with subhojitr+test1@gmail.com
 - [ ] Test password reset email delivery
 
 ### 3. Dashboard — Cases Page
