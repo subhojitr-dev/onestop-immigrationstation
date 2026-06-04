@@ -326,7 +326,7 @@
     if (host) {
       var img = document.createElement("img");
       img.className = "liberty-motif";
-      img.src = "liberty.png";
+      img.src = "/liberty.png";
       img.alt = "";
       img.setAttribute("aria-hidden", "true");
       host.insertBefore(img, host.firstChild);

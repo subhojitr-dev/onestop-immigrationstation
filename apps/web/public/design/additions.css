@@ -366,3 +366,6 @@
 .hvC h1 .accent { color: var(--gold-600); font-style: italic; }
 .hvC .rule { width: 60px; height: 3px; background: var(--gold); margin: 0 auto 26px; }
 .hvC .hero-cta { justify-content: center; }
+
+/* Next.js: show reveal elements immediately so content is never hidden if JS loads late */
+.reveal { opacity: 1 !important; transform: none !important; }

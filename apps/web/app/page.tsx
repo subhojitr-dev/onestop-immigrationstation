@@ -96,15 +96,13 @@ export default function HomePage() {
         <section className="section" id="about">
           <div className="container about-grid">
             <div className="about-media reveal">
-              <div className="about-img ph" data-label="IPH1">
-                <span className="iph-badge">IPH1</span>
+              <div className="about-img ph has-img">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="ph-img" src="https://onestopimmigrationstation.com/wp-content/uploads/2021/09/figure-02.jpg" alt="Immigration consultation" loading="lazy" referrerPolicy="no-referrer" />
+                <img className="ph-img" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=720&h=792&q=80" alt="Immigration consultation" loading="lazy" referrerPolicy="no-referrer" />
               </div>
-              <div className="about-img-2 ph" data-label="IPH2">
-                <span className="iph-badge">IPH2</span>
+              <div className="about-img-2 ph has-img">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="ph-img" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80&auto=format&fit=crop" alt="Handshake" loading="lazy" referrerPolicy="no-referrer" />
+                <img className="ph-img" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&h=600&q=80" alt="Handshake" loading="lazy" referrerPolicy="no-referrer" />
               </div>
             </div>
             <div className="about-body reveal">
@@ -189,10 +187,9 @@ export default function HomePage() {
             </div>
             <div className="blog-grid">
               <article className="blog-card reveal">
-                <div className="blog-media ph" data-label="IPH3">
-                  <span className="iph-badge">IPH3</span>
+                <div className="blog-media ph has-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&h=500&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">25</div><div className="m">Feb</div></div>
                 </div>
                 <div className="blog-body">
@@ -203,10 +200,9 @@ export default function HomePage() {
                 </div>
               </article>
               <article className="blog-card reveal">
-                <div className="blog-media ph" data-label="IPH4">
-                  <span className="iph-badge">IPH4</span>
+                <div className="blog-media ph has-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&h=500&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
                 </div>
                 <div className="blog-body">
@@ -217,10 +213,9 @@ export default function HomePage() {
                 </div>
               </article>
               <article className="blog-card reveal">
-                <div className="blog-media ph" data-label="IPH5">
-                  <span className="iph-badge">IPH5</span>
+                <div className="blog-media ph has-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy" referrerPolicy="no-referrer" />
+                  <img className="ph-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=500&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
                 </div>
                 <div className="blog-body">
