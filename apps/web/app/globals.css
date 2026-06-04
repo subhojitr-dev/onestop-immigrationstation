@@ -28,3 +28,212 @@ body {
 
 /* Show reveal elements immediately — JS will still add .in for the animation when it loads */
 .reveal { opacity: 1 !important; transform: none !important; }
+
+/* ============================================================
+   AUTH PAGES (login / signup)
+   ============================================================ */
+.auth-page {
+  min-height: 100vh;
+  background: #f8f7f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  font-family: 'Libre Franklin', Arial, sans-serif;
+}
+.auth-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,.10);
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+}
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #1a2744;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+.auth-brand img { width: 36px; height: 36px; object-fit: contain; }
+.auth-card h1 { font-family: 'Lora', serif; font-size: 26px; color: #1a2744; margin: 0 0 6px; }
+.auth-sub { color: #6b7280; font-size: 15px; margin: 0 0 24px; }
+.auth-error {
+  background: #fef2f2; border: 1px solid #fecaca; color: #dc2626;
+  padding: 12px 16px; border-radius: 8px; font-size: 14px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+}
+.auth-error svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn-google {
+  width: 100%; padding: 11px 16px; border: 1.5px solid #e5e7eb;
+  border-radius: 8px; background: #fff; cursor: pointer;
+  font-size: 15px; font-weight: 500; color: #374151;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.btn-google:hover { border-color: #9ca3af; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.auth-divider {
+  text-align: center; position: relative; margin: 20px 0;
+  color: #9ca3af; font-size: 13px;
+}
+.auth-divider::before {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: #e5e7eb;
+}
+.auth-divider span { background: #fff; padding: 0 12px; position: relative; }
+.auth-field { margin-bottom: 16px; }
+.auth-field label {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;
+}
+.auth-forgot { font-size: 13px; color: #b8952a; text-decoration: none; font-weight: 400; }
+.auth-forgot:hover { text-decoration: underline; }
+.auth-field input, .auth-field select {
+  width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb;
+  border-radius: 8px; font-size: 15px; outline: none;
+  transition: border-color .2s;  box-sizing: border-box;
+}
+.auth-field input:focus { border-color: #1a2744; }
+.auth-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.auth-hint { font-size: 12px; color: #9ca3af; font-weight: 400; }
+.auth-submit {
+  width: 100%; padding: 12px; font-size: 16px; margin-top: 8px;
+  border-radius: 8px; cursor: pointer;
+}
+.auth-submit:disabled { opacity: .6; cursor: not-allowed; }
+.auth-switch { text-align: center; font-size: 14px; color: #6b7280; margin-top: 20px; }
+.auth-switch a { color: #1a2744; font-weight: 600; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+.auth-back {
+  background: none; border: none; color: #6b7280; cursor: pointer;
+  font-size: 14px; padding: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 4px;
+}
+.auth-back:hover { color: #1a2744; }
+.auth-role-label { font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 12px; }
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.role-card {
+  border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px 16px;
+  cursor: pointer; background: #fff; text-align: center;
+  transition: border-color .2s, background .2s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.role-card svg { width: 32px; height: 32px; stroke: #6b7280; }
+.role-card strong { display: block; font-size: 14px; color: #1a2744; }
+.role-card span { font-size: 12px; color: #9ca3af; line-height: 1.4; }
+.role-card.active { border-color: #1a2744; background: #f0f4ff; }
+.role-card.active svg { stroke: #1a2744; }
+.auth-success-icon {
+  width: 64px; height: 64px; border-radius: 50%; background: #d1fae5;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.auth-success-icon svg { width: 32px; height: 32px; stroke: #10b981; }
+
+/* ============================================================
+   CLIENT PORTAL (dashboard)
+   ============================================================ */
+.portal {
+  display: flex; min-height: 100vh;
+  font-family: 'Libre Franklin', Arial, sans-serif;
+  background: #f8f7f4;
+}
+.portal-sidebar {
+  width: 240px; background: #1a2744; color: #fff;
+  display: flex; flex-direction: column; padding: 24px 0;
+  position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+}
+.portal-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px 24px; text-decoration: none;
+  color: #fff; font-family: 'Lora', serif; font-size: 13px; line-height: 1.4;
+  border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px;
+}
+.portal-logo img { width: 32px; height: 32px; object-fit: contain; }
+.portal-nav { flex: 1; padding: 0 12px; }
+.portal-nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px; color: rgba(255,255,255,.7);
+  text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: background .15s, color .15s; margin-bottom: 2px;
+}
+.portal-nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.portal-nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+.portal-nav-link.active { background: rgba(255,255,255,.12); color: #fff; }
+.portal-signout-form { padding: 12px; border-top: 1px solid rgba(255,255,255,.1); }
+.portal-signout {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px; color: rgba(255,255,255,.6);
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; width: 100%; transition: color .15s;
+}
+.portal-signout svg { width: 18px; height: 18px; }
+.portal-signout:hover { color: #fff; }
+.portal-main {
+  flex: 1; margin-left: 240px; padding: 32px;
+  max-width: calc(100vw - 240px);
+}
+.portal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.portal-header h1 { font-family: 'Lora', serif; font-size: 26px; color: #1a2744; margin: 0 0 6px; }
+.portal-role-badge {
+  display: inline-block; padding: 3px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+  background: #dbeafe; color: #1d4ed8;
+}
+.portal-role-badge[data-role="sponsor"] { background: #fef3c7; color: #92400e; }
+.portal-role-badge[data-role="lawyer"] { background: #ede9fe; color: #5b21b6; }
+.portal-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;
+}
+.portal-stat {
+  background: #fff; border-radius: 12px; padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); display: flex; flex-direction: column; gap: 4px;
+}
+.ps-num { font-size: 32px; font-weight: 700; color: #1a2744; font-family: 'Lora', serif; }
+.ps-lbl { font-size: 13px; color: #6b7280; }
+.portal-section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.portal-section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.portal-section-head h2 { font-family: 'Lora', serif; font-size: 18px; color: #1a2744; margin: 0; }
+.portal-table { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; font-size: 14px; }
+.pt-head {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  background: #f9fafb; padding: 10px 16px;
+  font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: .05em;
+}
+.pt-row {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  padding: 12px 16px; border-top: 1px solid #e5e7eb; align-items: center;
+}
+.pt-case-num { font-weight: 600; color: #1a2744; font-family: monospace; }
+.pt-date { color: #6b7280; font-size: 13px; }
+.pt-status {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; text-transform: capitalize;
+}
+.portal-empty {
+  text-align: center; padding: 40px 20px; color: #9ca3af;
+}
+.portal-empty svg { width: 40px; height: 40px; stroke: #d1d5db; margin-bottom: 12px; }
+.portal-empty p { font-size: 14px; }
+.portal-empty a { color: #1a2744; font-weight: 600; }
+.portal-appts { display: flex; flex-direction: column; gap: 12px; }
+.portal-appt {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px;
+}
+.pa-date {
+  width: 48px; height: 48px; background: #f0f4ff; border-radius: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.pa-day { font-size: 20px; font-weight: 700; color: #1a2744; line-height: 1; }
+.pa-mon { font-size: 11px; color: #6b7280; text-transform: uppercase; }
+.pa-info { flex: 1; }
+.pa-time { display: block; font-size: 14px; font-weight: 500; color: #1a2744; }
+.pa-free { display: inline-block; font-size: 11px; color: #10b981; background: #d1fae5; padding: 2px 8px; border-radius: 10px; margin-top: 2px; }
