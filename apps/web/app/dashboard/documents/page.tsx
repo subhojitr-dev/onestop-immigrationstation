@@ -1,25 +1,53 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
+interface StorageFile {
+  name: string
+  id: string
+  updated_at: string
+  metadata: { size: number; mimetype: string }
+}
+
 export default function DocumentsPage() {
+  const [userId, setUserId] = useState<string | null>(null)
+  const [files, setFiles] = useState<StorageFile[]>([])
   const [uploading, setUploading] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
+  const loadFiles = useCallback(async (uid: string) => {
+    const supabase = createClient()
+    const { data, error } = await supabase.storage
+      .from('documents')
+      .list(uid, { sortBy: { column: 'updated_at', order: 'desc' } })
+    if (!error && data) {
+      setFiles(data.filter(f => f.name !== '.emptyFolderPlaceholder') as StorageFile[])
+    }
+  }, [])
+
+  useEffect(() => {
+    async function init() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      setUserId(user.id)
+      loadFiles(user.id)
+    }
+    init()
+  }, [loadFiles])
+
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file || !userId) return
 
     setUploading(true)
     setMessage('')
 
     const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    const fileName = `${user.id}/${Date.now()}-${file.name}`
+    const fileName = `${userId}/${Date.now()}-${file.name}`
     const { error } = await supabase.storage
       .from('documents')
       .upload(fileName, file)
@@ -29,9 +57,55 @@ export default function DocumentsPage() {
     } else {
       setMessage('File uploaded successfully!')
       setTimeout(() => setMessage(''), 3000)
+      loadFiles(userId)
     }
     setUploading(false)
     if (fileRef.current) fileRef.current.value = ''
+  }
+
+  async function handleDelete(fileName: string) {
+    if (!userId) return
+    setDeleting(fileName)
+    const supabase = createClient()
+    const { error } = await supabase.storage
+      .from('documents')
+      .remove([`${userId}/${fileName}`])
+    if (!error) {
+      setFiles(prev => prev.filter(f => f.name !== fileName))
+    }
+    setDeleting(null)
+  }
+
+  async function handleDownload(fileName: string) {
+    if (!userId) return
+    const supabase = createClient()
+    const { data } = await supabase.storage
+      .from('documents')
+      .createSignedUrl(`${userId}/${fileName}`, 60)
+    if (data?.signedUrl) window.open(data.signedUrl, '_blank')
+  }
+
+  function formatSize(bytes: number) {
+    if (!bytes) return '—'
+    if (bytes < 1024) return bytes + ' B'
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB'
+    return (bytes / 1048576).toFixed(1) + ' MB'
+  }
+
+  function formatDate(iso: string) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  function displayName(rawName: string) {
+    // Strip the timestamp prefix: "1234567890-filename.pdf" → "filename.pdf"
+    return rawName.replace(/^\d+-/, '')
+  }
+
+  function fileIcon(mimetype: string = '') {
+    if (mimetype.includes('pdf')) return '📄'
+    if (mimetype.includes('image')) return '🖼️'
+    if (mimetype.includes('word') || mimetype.includes('document')) return '📝'
+    return '📎'
   }
 
   return (
@@ -111,12 +185,57 @@ export default function DocumentsPage() {
         {/* Document list */}
         <section className="portal-section">
           <div className="portal-section-head">
-            <h2>Your Documents</h2>
+            <h2>Your Documents ({files.length})</h2>
           </div>
-          <div className="portal-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            <p>No documents uploaded yet. Use the upload area above to add your first document.</p>
-          </div>
+
+          {files.length > 0 ? (
+            <div style={{display:'flex', flexDirection:'column', gap:'8px'}}>
+              {files.map(file => (
+                <div key={file.id || file.name} style={{
+                  display:'flex', alignItems:'center', gap:'16px',
+                  background:'#fff', border:'1px solid #e5e7eb',
+                  borderRadius:'10px', padding:'14px 18px'
+                }}>
+                  <span style={{fontSize:'24px', flexShrink:0}}>
+                    {fileIcon(file.metadata?.mimetype)}
+                  </span>
+                  <div style={{flex:1, minWidth:0}}>
+                    <div style={{fontSize:'14px', fontWeight:600, color:'#1a2744', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                      {displayName(file.name)}
+                    </div>
+                    <div style={{fontSize:'12px', color:'#9ca3af', marginTop:'2px'}}>
+                      {formatSize(file.metadata?.size)} · Uploaded {formatDate(file.updated_at)}
+                    </div>
+                  </div>
+                  <div style={{display:'flex', gap:'8px', flexShrink:0}}>
+                    <button
+                      onClick={() => handleDownload(file.name)}
+                      className="btn btn--outline-navy"
+                      style={{fontSize:'12px', padding:'5px 12px'}}
+                    >
+                      Download
+                    </button>
+                    <button
+                      onClick={() => handleDelete(file.name)}
+                      disabled={deleting === file.name}
+                      style={{
+                        fontSize:'12px', padding:'5px 12px', borderRadius:'6px',
+                        border:'1px solid #fca5a5', background:'#fff',
+                        color:'#dc2626', cursor:'pointer'
+                      }}
+                    >
+                      {deleting === file.name ? '…' : 'Delete'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="portal-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <p>No documents uploaded yet. Use the upload area above to add your first document.</p>
+            </div>
+          )}
         </section>
 
         {/* What to upload guide */}
