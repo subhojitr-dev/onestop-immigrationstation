@@ -13,6 +13,7 @@ const svgs: Record<string, string> = {
   cases:          '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
   appointments:   '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   documents:      '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  apply:          '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6M9 15h6"/>',
   tickets:        '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   beneficiaries:  '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   contacts:       '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 11c0 4-2 6-6 8"/>',
@@ -49,6 +50,7 @@ export default function PortalSidebar({ userName, userRole }: Props) {
     { id: 'cases',        href: '/dashboard/cases',         label: 'My Cases' },
     { id: 'appointments', href: '/dashboard/appointments',  label: 'Appointments' },
     { id: 'documents',    href: '/dashboard/documents',     label: 'Documents' },
+    { id: 'apply',        href: '/dashboard/apply',          label: 'Apply / Forms' },
     { id: 'tickets',      href: '/dashboard/tickets',       label: 'Support' },
     ...(userRole === 'sponsor' || userRole === 'admin' ? [
       { id: 'beneficiaries', href: '/dashboard/beneficiaries', label: 'Beneficiaries' },
