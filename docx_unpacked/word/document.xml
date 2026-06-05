@@ -1,0 +1,2054 @@
+<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:oel="http://schemas.microsoft.com/office/2019/extlst" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16du="http://schemas.microsoft.com/office/word/2023/wordml/word16du" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14">
+  <w:body>
+    <w:p w14:paraId="2EA48AA2" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRDefault="00B32B25"/>
+    <w:p w14:paraId="720A14F9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRDefault="00B32B25"/>
+    <w:p w14:paraId="59237E59" w14:textId="67B66162" w:rsidR="00B32B25" w:rsidRDefault="00B32B25">
+      <w:r>
+        <w:t>This was the last conversation before we encountered usage issue limits with the previous session</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="74196627" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      
+      <w:r>
+        <w:t>YEs please continue with /dashboard/appointments /dashboard/documents /dashboard/profile - but please give the url for login and sign up and from the Home Page - there should be a link to Login/Register isn't it ?</w:t>
+      </w:r>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="0D70C9AD" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Great points! Let me fix the homepage nav links first, then build the dashboard pages.</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3AF5B941" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Read a file, edited a file</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7FD0D06C" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now let me also add Login/Register links to the mobile menu footer:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="08D8A8F6" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Read a file, edited a file</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7AD6A43B" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now build all 3 dashboard pages in parallel:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1767547C" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Ran a command, created 3 files</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7220E5FF" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now add the remaining CSS and commit everything:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="73245661" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Read a file, edited a file, ran a command</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5412B30F" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t xml:space="preserve">All pushed! </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Here's everything that's now live:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6C6C2EF9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:pict w14:anchorId="7BA49AB6">
+          <v:rect id="_x0000_i1049" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0D52EF36" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>URLs to test:</w:t>
+      </w:r>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:w="15885" w:type="dxa"/>
+        <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        <w:tblCellMar>
+          <w:left w:w="0" w:type="dxa"/>
+          <w:right w:w="0" w:type="dxa"/>
+        </w:tblCellMar>
+        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="6141"/>
+        <w:gridCol w:w="9744"/>
+      </w:tblGrid>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="338A2938" w14:textId="77777777">
+        <w:trPr>
+          <w:tblHeader/>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:noWrap/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="41AF9BB2" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Page</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:noWrap/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="08F4D488" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>URL</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="24929438" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="565C0B94" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Home (with Login button)</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="24351C7C" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="3D9CB7FD" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="264CF3A6" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Login</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="712BEFD5" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/login</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="5BFB348E" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="404B3742" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Sign Up</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="2093AA5B" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/signup</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="43A7EA1C" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="4F1C2113" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Forgot Password</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="052DA88D" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/forgot-password</w:t>
+            </w:r>
+            
+            
+            
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="66C57764" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="1BCD198D" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Dashboard</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="265A06D9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/dashboard</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="070A6161" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="408218E3" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Cases</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="5A0182F9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/dashboard/cases</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="51C0592D" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="34466E53" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Appointments</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="0D0346D0" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/dashboard/appointments</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="38A74DA5" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="5B29F55A" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Documents</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="73B66E03" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/dashboard/documents</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00B32B25" w:rsidRPr="00B32B25" w14:paraId="24131B07" w14:textId="77777777">
+        <w:trPr>
+          <w:tblCellSpacing w:w="15" w:type="dxa"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="055A83CB" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>Profile</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="0" w:type="auto"/>
+            <w:tcMar>
+              <w:top w:w="90" w:type="dxa"/>
+              <w:left w:w="90" w:type="dxa"/>
+              <w:bottom w:w="90" w:type="dxa"/>
+              <w:right w:w="90" w:type="dxa"/>
+            </w:tcMar>
+            <w:hideMark/>
+          </w:tcPr>
+          <w:p w14:paraId="7C7EB5D8" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+            <w:r>
+              <w:t>localhost:3000/dashboard/profile</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p w14:paraId="0C00A341" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:pict w14:anchorId="74D040DC">
+          <v:rect id="_x0000_i1050" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0F83A193" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>What was built:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="47DA3747" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="1"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Header — Login button + mobile Sign Up button on homepage</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="19878573" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="1"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Appointments — upcoming/past list, free consultation counter (2 free per user)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7F173A68" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="1"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Documents — drag &amp; drop upload to Supabase Storage, common docs guide</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="39289960" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="1"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Profile — edit name/phone, account type badge, change password link</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6590B96F" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t xml:space="preserve">Go test them and tell me what you see! Also check if the Resend domain turned green </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🟢</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7C26D50D" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Domain verified</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="78C84BFB" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🎉</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Domain Verified! "Your domain is ready to send emails."</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3717CA8E" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now do these 3 quick steps to complete the email setup:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="26C2727E" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Step 1 — Update Supabase sender email:</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="0CAF1B80" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="2"/>
+        </w:numPr>
+      </w:pPr>
+      
+      <w:r>
+        <w:t>Supabase → Authentication → Emails → SMTP Settings</w:t>
+      </w:r>
+      
+      
+    </w:p>
+    <w:p w14:paraId="34BEBB2B" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="2"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Change Sender email from onboarding@resend.dev → noreply@onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="141F26E8" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="2"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click Save changes</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0A24544C" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Step 2 — Re-enable email confirmation:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2EC29C10" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="3"/>
+        </w:numPr>
+      </w:pPr>
+      
+      <w:r>
+        <w:t>Supabase → Authentication → Sign In / Providers</w:t>
+      </w:r>
+      
+      
+    </w:p>
+    <w:p w14:paraId="7AE9CAFB" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="3"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Confirm email → toggle ON</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="761CEFB9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="3"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click Save changes</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4F2585D1" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Step 3 — Test it:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6D8B7545" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="4"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to localhost:3000/signup</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1A1EC9CF" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="4"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Sign up with subhojitr+test1@gmail.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2A30D9DA" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="4"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Check your Gmail — confirmation email should arrive from noreply@onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2F2236E5" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Do all 3 steps and tell me if the email arrives!</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4EA0B998" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>OK I checked forgot password it worked. I see Login button but not Sign Up or Registration. Once some one is logged in these buttons should be disabled or hidden. One question were these html pages: for appointments, documents, profile etc handed over by code design oe you just did it - Book appointment in Appointments page does nothing</w:t>
+      </w:r>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="06FCE439" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Great questions! Let me answer all of them:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2ECC16AE" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="5"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Sign Up button — I added it to mobile menu only, not desktop. Let me fix the desktop header too</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="668EDEFC" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="5"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Hide Login/Signup when logged in — need to make the header a server component that checks auth</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="120D5838" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="5"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Claude Design pages — No, the dashboard pages (appointments, documents, profile) were not from Claude Design. I built them from scratch based on the existing PHP/Angular code. Claude Design only provided the public-facing pages (homepage, blog, contact, etc.)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="24FE1AB0" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="5"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Book Appointment — correct, it just links to /contact for now. We need a proper booking form that checks available slots from Supabase</w:t>
+      </w:r>
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="43528A35" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Let me fix the header first:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="508CFCE7" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Read a file, edited a file</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4BCF081A" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now update the CTA buttons to show/hide based on auth state:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6076B3A5" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>EditedHeader.tsx+10-1</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="44D6B7DA" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now update the mobile footer too:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7C580A25" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>EditedHeader.tsx+10-4</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="588A397B" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now build the proper appointment booking form:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="49CC1041" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Ran a command, created a file</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="34986F05" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now update the appointments page to link to the book page:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="56E7F1C0" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Read a file, edited a file</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1B3231E9" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Also fix the free consultation button:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6FB18558" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Editedpage.tsx+1-1</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="085568AC" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Now commit everything:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4F9D50F2" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Committed0dd1ce8</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6137322C" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>All pushed! Here's a summary of everything fixed and built:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1D8CAF28" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:pict w14:anchorId="745524CA">
+          <v:rect id="_x0000_i1051" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="39285DF5" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Fixed:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5CA96455" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="6"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Header — now shows Login + Sign Up when logged out, My Portal when logged in (both desktop and mobile)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="697AF308" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="6"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> Book Appointment — now goes to a real booking form, not just the contact page</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2CCA7829" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Built:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6E709934" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t> /dashboard/appointments/book — full booking form with:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="70B257B3" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="1"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Date picker (tomorrow → 3 months out)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="04DB58F4" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="1"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>12 time slots to click</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6DF043E8" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="1"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Notes field</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="356A0F1F" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="1"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Free consultation counter (automatically tracks your 2 free sessions)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="40D2EB35" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="1"/>
+          <w:numId w:val="7"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Success confirmation screen</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="76962D03" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:pict w14:anchorId="017156BE">
+          <v:rect id="_x0000_i1052" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7A49C758" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>To answer your question about Claude Design:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7B717386" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="8"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Claude Design provided: homepage, blog, success stories, videos, press media, contact pages</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4A69E5EC" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="8"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>I built from scratch: all dashboard pages (login, signup, dashboard, cases, appointments, documents, profile) — based on the existing PHP/Angular code logic</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="5BA66D84" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Test now at localhost:3000 — you should see Login + Sign Up buttons in the header when logged out, and My Portal when logged in!</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1AC4588B" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Do you thing you can create a bundle for the dashboard pages and ask Claude design to refine it some to have the same look and feel I like a lot of it which we can keep</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="79857C13" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Great idea! Here's my plan — I'll create a single HTML file that shows all the dashboard pages/components using the existing design CSS, then you paste it into Claude Design with a prompt asking it to refine the look.</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="10F5CBDB" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Readstyles.css</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="409A5A37" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Good — now I have the exact design tokens. Let me build the bundle HTML:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7C83B8A8" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRPr="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      
+      <w:r>
+        <w:t>Createddashboard-design-bundle.html+1044-0</w:t>
+      </w:r>
+      
+      
+    </w:p>
+    <w:p w14:paraId="64500C93" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRDefault="00B32B25" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Server is temporarily limiting requestsToo many requests right now — try again in a moment.</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="29D270A1" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00B32B25"/>
+    <w:p w14:paraId="37184F7E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00B32B25"/>
+    <w:p w14:paraId="4D5856ED" w14:textId="038F19FA" w:rsidR="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00B32B25">
+      <w:r>
+        <w:t>Prior to that we had this conversation</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4B4CEBC2" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Exactly as expected. Two options:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="60FD4BEA" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Option A — Quick fix for now (5 minutes)</w:t>
+      <w:br/><w:t>Just use your main email subhojitr@gmail.com for all testing. Turn off email confirmation, sign up, test everything. Add domain later before going live.</w:t></w:r>
+      
+    </w:p>
+    <w:p w14:paraId="7056330F" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Option B — Proper fix (15 minutes)</w:t>
+      <w:br/><w:t>Verify onestopimmigrationstation.com in Resend so you can send to anyone.</w:t></w:r>
+      
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="35F1CB99" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="4C2AEF70">
+          <v:rect id="_x0000_i1117" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="181C7DE2" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>I recommend Option B since you have DNS access. Here's how:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1815FDA7" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>In Resend:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1EB0AC23" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="9"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to Domains in left sidebar</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7AC88497" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="9"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click Add Domain</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="799398CD" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="9"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Enter onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2E59EBBB" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="9"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click Add</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4AB53721" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="9"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Resend will show you 3 DNS records to add (TXT and MX records)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2510D0CB" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>In your domain registrar (GoDaddy/Namecheap/etc):</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="1126D37E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="10"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Log in and go to DNS settings for onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="198C30CA" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="10"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Add the 3 records Resend gives you</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="323868B6" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="10"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Come back to Resend and click Verify DNS</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3915D1DA" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Once verified:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="152079D4" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="11"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go back to Supabase SMTP settings</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="19EE877E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="11"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Change Sender email from onboarding@resend.dev to noreply@onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6ED0BF91" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="11"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Save</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="595212DD" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Then you can send to any email address including plus addresses for testing.</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3CAA856C" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Who is your domain registrar? (GoDaddy, Namecheap, Google Domains, etc.)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="74CD519B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>OK I will try this out tomorrow. I am not sure who is my domain register ? how can I find out ?</w:t>
+      </w:r>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="03C08B31" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Easy way to find out — go to whois.domaintools.com and type in onestopimmigrationstation.com. It will show you the registrar name.</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="0CA88F3A" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Or just Google: "onestopimmigrationstation.com whois"</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="398B4EEE" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Common ones are GoDaddy, Namecheap, Network Solutions, Google Domains, Cloudflare.</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="305FD668" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="26308A5C">
+          <v:rect id="_x0000_i1118" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="67B1145E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>For today let's wrap up cleanly. Let me update the memory and TODO files:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0F674A05" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Recalled a memory, saved 2 memories</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="088F5C90" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Now update TODO.md:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7EDEC35F" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Edited a file, ran a command</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="42FA0328" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>All updated! Here's a summary of what to do tomorrow when you start:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0C57E1E3" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="2F38A9C3">
+          <v:rect id="_x0000_i1119" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="22817877" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Tomorrow's first task — Domain verification (15 min):</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5BF72D25" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="12"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to whois.domaintools.com → search onestopimmigrationstation.com → find your registrar</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="348BBBF5" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="12"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to resend.com → Domains → Add Domain → enter onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6FB685D6" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="12"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Copy the DNS records Resend gives you → add them to your registrar</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="483948CB" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="12"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Verify in Resend → update Supabase sender email</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="58AA7CDF" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="12"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Re-enable email confirmation in Supabase</w:t>
+      </w:r>
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="1F854AC9" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Then we build the dashboard sub-pages — Cases, Appointments, Documents, Profile.</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5792B757" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t xml:space="preserve">Good work today! </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🎉</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="329078E5" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>It is GoDaddy</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6B7ABF6E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Perfect! GoDaddy is very straightforward. Here's exactly what to do tomorrow:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5F0EE1C9" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="2BD57C7A">
+          <v:rect id="_x0000_i1120" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="58F8BB8D" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Step 1 — Add domain in Resend</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="594000C4" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="13"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to resend.com → Domains → Add Domain</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="076A324D" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="13"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Type onestopimmigrationstation.com → click Add</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1018784F" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="13"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Resend will show you DNS records to add (usually 3 records)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="15CC3B5B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="3815179B">
+          <v:rect id="_x0000_i1121" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="570DBE91" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Step 2 — Add DNS records in GoDaddy</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="45549678" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="14"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to godaddy.com → sign in</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="591D529B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="14"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click your account → My Products</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="54F6FC6B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="14"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Find onestopimmigrationstation.com → click DNS</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="223E753B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="14"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Add each record Resend gives you (TXT and MX records)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="51242289" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="14"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Save</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="724DD442" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="1C37737F">
+          <v:rect id="_x0000_i1122" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2ED4D6CC" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Step 3 — Verify in Resend</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="36411C76" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="15"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go back to Resend → Domains</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7AEDB839" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="15"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Click Verify DNS — usually takes 5-10 minutes</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0CC16F5A" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="15"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Status will turn green </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="73D980EC" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="16568EFA">
+          <v:rect id="_x0000_i1123" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7A33C488" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Step 4 — Update Supabase</w:t>
+      </w:r>
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="2F079DB4" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="16"/>
+        </w:numPr>
+      </w:pPr>
+      
+      <w:r>
+        <w:t>Supabase → Authentication → Emails → SMTP Settings</w:t>
+      </w:r>
+      
+      
+    </w:p>
+    <w:p w14:paraId="5239C573" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="16"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Change sender email from onboarding@resend.dev → noreply@onestopimmigrationstation.com</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0D58BC6D" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="16"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Save</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="20414770" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="16"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Go to Sign In/Providers → turn Confirm email back ON</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="035E631E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="11B7DD5F">
+          <v:rect id="_x0000_i1124" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="570D17B1" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t xml:space="preserve">Save this conversation link so we can pick up exactly where we left off. See you tomorrow! </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🚀</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2C52B812" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>OK have everything in context in Memory.MD and keep handy the list of tasks in TASKA.MD for the To do tasks</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="7C6C4B0D" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Both files are already up to date and pushed to GitHub. Let me do a final check to confirm everything is saved:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="61881A9F" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Recalled a memory</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3D722AFE" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Both files are current. Here's a quick summary of what's saved:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5FE814F5" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="55B4431A">
+          <v:rect id="_x0000_i1125" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="6578EE2B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>MEMORY.md (at C:\Users\subho\.claude\projects\C--Users-subho\memory\) contains:</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="6B55C86D" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>All URLs (Vercel, Supabase, GitHub)</w:t>
+      </w:r>
+      
+      
+      
+      
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="54F6F183" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>All credentials (Supabase keys, Google OAuth, Resend API key)</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="209C086E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Full build progress checklist</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1CFC35A3" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Email setup status + blocker</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="12A2613E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Next steps in order</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="7A7955BF" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="17"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Existing PHP codebase reference</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1BDB7281" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>TODO.md (at C:\Users\subho\onestop-immigrationstation\TODO.md) contains:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="4CC48AEA" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🔴</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> High priority tasks (domain, email, dashboard pages)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2B121ADC" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🟡</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Medium priority (sponsor features, tickets)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="709D3A51" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🟢</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Lower priority (admin, blog CMS)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="5AD331CE" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>📱</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Mobile app tasks</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="732A99C1" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🌐</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Infrastructure (custom domain, analytics)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="44596CDC" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="18"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>✅</w:t>
+      </w:r>
+      <w:r>
+        <w:t xml:space="preserve"> Completed tasks</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="35B2158E" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>SETUP.md (at C:\Users\subho\onestop-immigrationstation\SETUP.md) contains:</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0BF1B611" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="19"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Step by step guide of everything done</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="52E2569C" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="19"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>All config values</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="50216D7F" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="19"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Common commands</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2D727E46" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="19"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Known gotchas</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="1C6314CE" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:pict w14:anchorId="7F7F221F">
+          <v:rect id="_x0000_i1126" style="width:0;height:0" o:hralign="center" o:hrstd="t" o:hr="t" fillcolor="#a0a0a0" stroked="f"/>
+        </w:pict>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="2021E05B" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t>Tomorrow start here:</w:t>
+      </w:r>
+      
+      
+      
+      
+    </w:p>
+    <w:p w14:paraId="4EA8BB67" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="20"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Resend domain verification (GoDaddy DNS)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="3A2A4F09" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:pPr>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="20"/>
+        </w:numPr>
+      </w:pPr>
+      <w:r>
+        <w:t>Dashboard sub-pages</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0426E656" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00A17F90" w:rsidRDefault="00A17F90" w:rsidP="00A17F90">
+      <w:r>
+        <w:t xml:space="preserve">See you tomorrow! </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Segoe UI Emoji" w:hAnsi="Segoe UI Emoji" w:cs="Segoe UI Emoji"/>
+        </w:rPr>
+        <w:t>🚀</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="054EE471" w14:textId="77777777" w:rsidR="00A17F90" w:rsidRPr="00B32B25" w:rsidRDefault="00A17F90" w:rsidP="00B32B25"/>
+    <w:p w14:paraId="4FF49904" w14:textId="77777777" w:rsidR="00B32B25" w:rsidRDefault="00B32B25"/>
+    <w:sectPr w:rsidR="00B32B25">
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
+      <w:cols w:space="720"/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

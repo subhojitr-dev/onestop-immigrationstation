@@ -60,26 +60,8 @@ export default function NewTicketPage() {
   }
 
   return (
-    <div className="portal">
-      <aside className="portal-sidebar">
-        <Link href="/" className="portal-logo">
-          <img src="/logo-bird.png" alt="OSIS" />
-          <span>One Stop<br />Immigration</span>
-        </Link>
-        <nav className="portal-nav">
-          <Link href="/dashboard" className="portal-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Dashboard
-          </Link>
-          <Link href="/dashboard/tickets" className="portal-nav-link active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Support
-          </Link>
-        </nav>
-      </aside>
-
-      <main className="portal-main">
-        <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
+    <>
+      <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
           <Link href="/dashboard/tickets" style={{color:'#6b7280', textDecoration:'none'}}>Support Tickets</Link>
           <span>→</span>
           <span style={{color:'#1a2744', fontWeight:500}}>New Ticket</span>
@@ -213,7 +195,6 @@ export default function NewTicketPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

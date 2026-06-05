@@ -81,15 +81,8 @@ export default function BookAppointmentPage() {
 
   if (success) {
     return (
-      <div className="portal">
-        <aside className="portal-sidebar">
-          <Link href="/" className="portal-logo">
-            <img src="/logo-bird.png" alt="OSIS" />
-            <span>One Stop<br />Immigration</span>
-          </Link>
-        </aside>
-        <main className="portal-main" style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-          <div style={{textAlign:'center', maxWidth:'400px'}}>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+        <div style={{textAlign:'center', maxWidth:'400px'}}>
             <div className="auth-success-icon" style={{margin:'0 auto 20px'}}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
             </div>
@@ -109,36 +102,13 @@ export default function BookAppointmentPage() {
               View My Appointments
             </Link>
           </div>
-        </main>
       </div>
     )
   }
 
   return (
-    <div className="portal">
-      <aside className="portal-sidebar">
-        <Link href="/" className="portal-logo">
-          <img src="/logo-bird.png" alt="OSIS" />
-          <span>One Stop<br />Immigration</span>
-        </Link>
-        <nav className="portal-nav">
-          <Link href="/dashboard" className="portal-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Dashboard
-          </Link>
-          <Link href="/dashboard/appointments" className="portal-nav-link active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            Appointments
-          </Link>
-          <Link href="/dashboard/cases" className="portal-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-            My Cases
-          </Link>
-        </nav>
-      </aside>
-
-      <main className="portal-main">
-        <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
+    <>
+      <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
           <Link href="/dashboard/appointments" style={{color:'#6b7280', textDecoration:'none'}}>Appointments</Link>
           <span>→</span>
           <span style={{color:'#1a2744', fontWeight:500}}>Book Appointment</span>
@@ -257,7 +227,6 @@ export default function BookAppointmentPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

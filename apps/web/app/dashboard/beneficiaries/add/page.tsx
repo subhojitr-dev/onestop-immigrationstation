@@ -50,26 +50,8 @@ export default function AddBeneficiaryPage() {
   }
 
   return (
-    <div className="portal">
-      <aside className="portal-sidebar">
-        <Link href="/" className="portal-logo">
-          <img src="/logo-bird.png" alt="OSIS" />
-          <span>One Stop<br />Immigration</span>
-        </Link>
-        <nav className="portal-nav">
-          <Link href="/dashboard" className="portal-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Dashboard
-          </Link>
-          <Link href="/dashboard/beneficiaries" className="portal-nav-link active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Beneficiaries
-          </Link>
-        </nav>
-      </aside>
-
-      <main className="portal-main">
-        <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
+    <>
+      <div style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'20px', fontSize:'14px', color:'#6b7280'}}>
           <Link href="/dashboard/beneficiaries" style={{color:'#6b7280', textDecoration:'none'}}>Beneficiaries</Link>
           <span>→</span>
           <span style={{color:'#1a2744', fontWeight:500}}>Add Beneficiary</span>
@@ -198,7 +180,6 @@ export default function AddBeneficiaryPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </>
   )
 }

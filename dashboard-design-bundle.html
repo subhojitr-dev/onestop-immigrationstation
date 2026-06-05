@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Design Bundle — One Stop Immigration Station</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — matching public site
+   ============================================================ */
+:root {
+  --navy:      #1a2744;
+  --gold:      #b8952a;
+  --ink:       #1a2230;
+  --slate:     #515b6b;
+  --slate-300: #8b94a3;
+  --line:      #e4e6ec;
+  --paper:     #ffffff;
+  --paper-2:   #f6f7fa;
+  --paper-3:   #eef1f6;
+  --serif:     "Lora", Georgia, serif;
+  --sans:      "Libre Franklin", system-ui, sans-serif;
+  --green:     #10b981;
+  --amber:     #f59e0b;
+  --red:       #ef4444;
+  --blue:      #3b82f6;
+  --purple:    #8b5cf6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--paper-2); color: var(--ink); }
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em; color: var(--slate-300);
+  padding: 32px 0 12px; border-top: 2px dashed var(--line); margin-top: 40px;
+}
+.section-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+.wrapper { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+/* ── SIDEBAR ── */
+.portal { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 240px; background: var(--navy); display: flex;
+  flex-direction: column; padding: 24px 0; flex-shrink: 0;
+}
+.sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,.1);
+  margin-bottom: 16px; text-decoration: none; color: #fff;
+  font-family: var(--serif); font-size: 13px; line-height: 1.4;
+}
+.sidebar-logo img { width: 32px; height: 32px; object-fit: contain; }
+.sidebar-nav { flex: 1; padding: 0 12px; }
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px; color: rgba(255,255,255,.65);
+  text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 2px;
+}
+.nav-link:hover, .nav-link.active {
+  background: rgba(255,255,255,.12); color: #fff;
+}
+.nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.sidebar-footer {
+  padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.1);
+  font-size: 13px; color: rgba(255,255,255,.5);
+}
+.signout-btn {
+  display: flex; align-items: center; gap: 8px; padding: 8px 0;
+  background: none; border: none; color: rgba(255,255,255,.5);
+  cursor: pointer; font-size: 13px; width: 100%;
+}
+
+/* ── MAIN CONTENT ── */
+.main { flex: 1; padding: 32px; overflow-x: hidden; }
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.page-title { font-family: var(--serif); font-size: 28px; color: var(--navy); margin-bottom: 4px; }
+.page-sub { font-size: 15px; color: var(--slate); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; text-decoration: none; border: none; transition: all .15s;
+}
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-navy { background: var(--navy); color: #fff; }
+.btn-navy:hover { background: #0f2044; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { background: #a07b20; }
+.btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+.btn-outline:hover { background: var(--paper-3); }
+.btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--line); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--paper); border-radius: 12px; padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  border: 1px solid var(--line);
+}
+.card-title {
+  font-family: var(--serif); font-size: 18px; color: var(--navy);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.card-title svg { width: 20px; height: 20px; stroke: var(--gold); }
+
+/* ── STATS GRID ── */
+.stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card {
+  background: var(--paper); border-radius: 12px; padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06); border: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-num { font-family: var(--serif); font-size: 36px; font-weight: 700; color: var(--navy); }
+.stat-lbl { font-size: 13px; color: var(--slate); }
+.stat-card.highlight { background: var(--navy); }
+.stat-card.highlight .stat-num { color: var(--gold); }
+.stat-card.highlight .stat-lbl { color: rgba(255,255,255,.65); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize;
+}
+.badge-open     { background: #dbeafe; color: #1d4ed8; }
+.badge-progress { background: #fef3c7; color: #92400e; }
+.badge-pending  { background: #fef3c7; color: #92400e; }
+.badge-docs     { background: #fee2e2; color: #991b1b; }
+.badge-submitted{ background: #ede9fe; color: #5b21b6; }
+.badge-approved { background: #d1fae5; color: #065f46; }
+.badge-denied   { background: #fee2e2; color: #991b1b; }
+.badge-closed   { background: #f3f4f6; color: #4b5563; }
+.badge-free     { background: #d1fae5; color: #065f46; font-size: 11px; }
+.role-badge     { background: #dbeafe; color: #1d4ed8; }
+.role-badge.sponsor { background: #fef3c7; color: #92400e; }
+.role-badge.lawyer  { background: #ede9fe; color: #5b21b6; }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table thead th {
+  text-align: left; padding: 10px 16px; background: var(--paper-2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--slate-300); border-bottom: 1px solid var(--line);
+}
+.data-table tbody td { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.data-table tbody tr:hover { background: var(--paper-2); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.case-num { font-family: monospace; font-weight: 700; color: var(--navy); }
+.visa-pill {
+  background: var(--navy); color: #fff; border-radius: 6px;
+  padding: 3px 8px; font-size: 12px; font-weight: 700; font-family: monospace;
+}
+
+/* ── CASE CARD ── */
+.case-card {
+  background: var(--paper); border-radius: 12px; padding: 20px 24px;
+  border: 1px solid var(--line); display: flex; gap: 20px;
+  align-items: flex-start; margin-bottom: 12px; transition: border-color .15s;
+}
+.case-card:hover { border-color: var(--navy); }
+.case-card-body { flex: 1; }
+.case-card-title { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.case-card-meta { font-size: 13px; color: var(--slate); }
+.case-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; flex-direction: column; }
+.tl-item { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--navy); flex-shrink: 0; margin-top: 3px; z-index: 1; position: relative; }
+.tl-dot.gold { background: var(--gold); }
+.tl-line { position: absolute; left: 5px; top: 15px; bottom: 0; width: 2px; background: var(--line); }
+.tl-item:last-child .tl-line { display: none; }
+.tl-event { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+.tl-desc { font-size: 13px; color: var(--slate); margin-bottom: 2px; }
+.tl-date { font-size: 12px; color: var(--slate-300); }
+
+/* ── APPOINTMENT CARD ── */
+.appt-card {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 16px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--paper); margin-bottom: 10px;
+}
+.appt-date-box {
+  width: 54px; background: var(--paper-3); border-radius: 8px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 8px 4px; flex-shrink: 0; border: 1px solid var(--line);
+}
+.appt-day { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1; }
+.appt-mon { font-size: 11px; color: var(--slate); text-transform: uppercase; font-weight: 600; }
+.appt-yr  { font-size: 10px; color: var(--slate-300); }
+.appt-info { flex: 1; }
+.appt-time { font-size: 15px; font-weight: 600; color: var(--navy); }
+.appt-type { font-size: 12px; color: var(--slate); margin-top: 2px; }
+
+/* ── FREE CONSULT BANNER ── */
+.free-banner {
+  background: linear-gradient(135deg, var(--paper-3), #e8f0fe);
+  border: 1px solid #c7d7ff; border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center;
+  gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.free-banner-icon { width: 40px; height: 40px; background: var(--navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.free-banner-icon svg { width: 20px; height: 20px; stroke: var(--gold); }
+.free-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+.free-sub { font-size: 13px; color: var(--slate); }
+.free-counter { display: flex; align-items: baseline; gap: 4px; margin-left: auto; }
+.free-num { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--navy); }
+.free-den { font-size: 14px; color: var(--slate); }
+
+/* ── BOOKING FORM ── */
+.time-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 6px; }
+.time-slot {
+  padding: 10px; border-radius: 8px; border: 1.5px solid var(--line);
+  background: var(--paper); color: var(--ink); font-size: 13px;
+  font-weight: 500; cursor: pointer; text-align: center;
+  transition: all .15s; font-family: var(--sans);
+}
+.time-slot:hover { border-color: var(--navy); background: var(--paper-3); }
+.time-slot.selected { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 600; }
+
+/* ── DOCUMENT UPLOAD ── */
+.upload-zone {
+  border: 2px dashed var(--line); border-radius: 12px; padding: 40px;
+  text-align: center; transition: all .2s; cursor: pointer;
+  background: var(--paper);
+}
+.upload-zone:hover { border-color: var(--navy); background: var(--paper-3); }
+.upload-icon { width: 56px; height: 56px; background: var(--paper-3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+.upload-icon svg { width: 28px; height: 28px; stroke: var(--navy); }
+.doc-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--paper-2); border-radius: 8px;
+  border: 1px solid var(--line); margin-bottom: 8px;
+}
+.doc-icon { width: 36px; height: 36px; background: var(--navy); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.doc-icon svg { width: 18px; height: 18px; stroke: #fff; }
+.doc-name { font-size: 14px; font-weight: 500; color: var(--navy); }
+.doc-meta { font-size: 12px; color: var(--slate-300); }
+
+/* ── FORM FIELDS ── */
+.form-field { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.form-input {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-size: 14px; outline: none; font-family: var(--sans);
+}
+.form-input:focus { border-color: var(--navy); }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── PROFILE ── */
+.avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--navy); display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 28px; color: var(--gold); font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── HELP CARD ── */
+.help-card {
+  background: var(--navy); color: #fff; border-radius: 12px; padding: 24px;
+}
+.help-card h3 { font-family: var(--serif); font-size: 16px; margin-bottom: 8px; color: #fff; }
+.help-card p { font-size: 13px; color: rgba(255,255,255,.7); margin-bottom: 16px; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 48px 20px; }
+.empty-icon { width: 56px; height: 56px; margin: 0 auto 16px; background: var(--paper-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.empty-icon svg { width: 28px; height: 28px; stroke: var(--slate-300); }
+.empty-title { font-family: var(--serif); font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+.empty-desc { font-size: 14px; color: var(--slate); margin-bottom: 20px; }
+
+/* ── GRID HELPERS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 11px; color: var(--slate-300); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.meta-value { font-size: 14px; color: var(--navy); font-weight: 500; }
+
+/* ── DANGER ZONE ── */
+.danger-card { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 20px 24px; }
+.danger-card h3 { font-size: 15px; color: #991b1b; margin-bottom: 6px; }
+
+/* ── WHAT TO EXPECT ── */
+.expect-item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.expect-item:last-child { border-bottom: none; }
+.expect-icon { font-size: 20px; flex-shrink: 0; width: 28px; }
+.expect-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+.expect-desc { font-size: 13px; color: var(--slate); }
+
+/* ── BREADCRUMB ── */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--slate); margin-bottom: 20px; }
+.breadcrumb a { color: var(--slate); text-decoration: none; }
+.breadcrumb a:hover { color: var(--navy); }
+
+hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- ============================================================
+     PAGE 1: DASHBOARD HOME
+     ============================================================ -->
+<div class="section-label">Page 1 — Dashboard Home</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:560px;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        My Cases
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Appointments
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Documents
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Beneficiaries
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="signout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <h1 class="page-title">Welcome back, Subhojit 👋</h1>
+        </div>
+        <span class="badge role-badge">Beneficiary</span>
+      </div>
+      <a href="#" class="btn btn-gold btn-sm">Book Consultation</a>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-lbl">Active Cases</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1</div>
+        <div class="stat-lbl">Upcoming Appointments</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-num">1 / 2</div>
+        <div class="stat-lbl">Free Consultations Used</div>
+      </div>
+    </div>
+
+    <!-- Recent Cases -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        Recent Cases
+        <a href="#" style="margin-left:auto;font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">View all →</a>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Case #</th><th>Visa Type</th><th>Status</th><th>Opened</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="case-num">OSIS-2026-001</span></td>
+            <td><span class="visa-pill">H-1B</span></td>
+            <td><span class="badge badge-progress">In Progress</span></td>
+            <td style="color:var(--slate);font-size:13px;">Jan 15, 2026</td>
+          </tr>
+          <tr>
+            <td><span class="case-num">OSIS-2026-002</span></td>
+            <td><span class="visa-pill">K-1</span></td>
+            <td><span class="badge badge-docs">Pending Docs</span></td>
+            <td style="color:var(--slate);font-size:13px;">Mar 2, 2026</td>
+          </tr>
+          <tr>
+            <td><span class="case-num">OSIS-2025-087</span></td>
+            <td><span class="visa-pill">I-485</span></td>
+            <td><span class="badge badge-approved">Approved ✓</span></td>
+            <td style="color:var(--slate);font-size:13px;">Nov 10, 2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Upcoming Appointments
+        <a href="#" style="margin-left:auto;font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">View all →</a>
+      </div>
+      <div class="appt-card">
+        <div class="appt-date-box">
+          <div class="appt-day">18</div>
+          <div class="appt-mon">Jun</div>
+          <div class="appt-yr">2026</div>
+        </div>
+        <div class="appt-info">
+          <div class="appt-time">10:00 AM</div>
+          <span class="badge badge-free">Free Consultation #2</span>
+        </div>
+        <span class="badge badge-open">Confirmed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 2: CASES LIST
+     ============================================================ -->
+<div class="section-label">Page 2 — My Cases</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:480px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        My Cases
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Appointments
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Documents
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">My Cases</h1>
+        <p class="page-sub">Track the status of all your immigration cases</p>
+      </div>
+      <a href="#" class="btn btn-gold btn-sm">+ New Consultation</a>
+    </div>
+
+    <!-- Status filter chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+      <span style="background:#dbeafe;color:#1d4ed8;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;">Open <span style="background:rgba(0,0,0,.1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;">1</span></span>
+      <span style="background:#fef3c7;color:#92400e;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;">In Progress <span style="background:rgba(0,0,0,.1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;">1</span></span>
+      <span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;">Pending Docs <span style="background:rgba(0,0,0,.1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;">1</span></span>
+      <span style="background:#d1fae5;color:#065f46;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;">Approved <span style="background:rgba(0,0,0,.1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;">1</span></span>
+    </div>
+
+    <div class="case-card">
+      <span class="visa-pill">H-1B</span>
+      <div class="case-card-body">
+        <div class="case-card-title">H-1B Specialty Occupation</div>
+        <div class="case-card-meta">Case #OSIS-2026-001 · Attorney: Sarah Martinez</div>
+      </div>
+      <div class="case-card-right">
+        <span class="badge badge-progress">In Progress</span>
+        <div style="font-size:12px;color:var(--slate-300);text-align:right;">Opened Jan 15, 2026<br>Updated Jun 1, 2026</div>
+        <a href="#" class="btn btn-outline btn-sm">View Details →</a>
+      </div>
+    </div>
+    <div class="case-card">
+      <span class="visa-pill">K-1</span>
+      <div class="case-card-body">
+        <div class="case-card-title">K-1 Fiancé Visa Petition</div>
+        <div class="case-card-meta">Case #OSIS-2026-002 · Attorney: James Chen</div>
+      </div>
+      <div class="case-card-right">
+        <span class="badge badge-docs">Pending Docs</span>
+        <div style="font-size:12px;color:var(--slate-300);text-align:right;">Opened Mar 2, 2026<br>Updated Jun 3, 2026</div>
+        <a href="#" class="btn btn-outline btn-sm">View Details →</a>
+      </div>
+    </div>
+    <div class="case-card">
+      <span class="visa-pill">I-485</span>
+      <div class="case-card-body">
+        <div class="case-card-title">Adjustment of Status</div>
+        <div class="case-card-meta">Case #OSIS-2025-087</div>
+      </div>
+      <div class="case-card-right">
+        <span class="badge badge-approved">Approved ✓</span>
+        <div style="font-size:12px;color:var(--slate-300);text-align:right;">Opened Nov 10, 2025<br>Closed Feb 28, 2026</div>
+        <a href="#" class="btn btn-outline btn-sm">View Details →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 3: CASE DETAIL
+     ============================================================ -->
+<div class="section-label">Page 3 — Case Detail</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:600px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        My Cases
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="breadcrumb">
+      <a href="#">Dashboard</a> → <a href="#">Cases</a> → <span style="color:var(--navy);font-weight:500;">OSIS-2026-001</span>
+    </div>
+    <div class="page-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+          <h1 class="page-title">H-1B Case</h1>
+          <span class="badge badge-progress">In Progress</span>
+        </div>
+        <p class="page-sub">Case #OSIS-2026-001</p>
+      </div>
+      <a href="#" class="btn btn-gold btn-sm">Need Help?</a>
+    </div>
+
+    <div class="detail-grid">
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Case Information
+          </div>
+          <div class="meta-grid">
+            <div class="meta-item"><div class="meta-label">Visa Type</div><div class="meta-value">H-1B Specialty Occupation</div></div>
+            <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value"><span class="badge badge-progress">In Progress</span></div></div>
+            <div class="meta-item"><div class="meta-label">Opened</div><div class="meta-value">January 15, 2026</div></div>
+            <div class="meta-item"><div class="meta-label">Last Updated</div><div class="meta-value">June 1, 2026</div></div>
+            <div class="meta-item"><div class="meta-label">Assigned Attorney</div><div class="meta-value">Sarah Martinez</div></div>
+          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line);">
+            <div class="meta-label">Description</div>
+            <p style="font-size:14px;color:var(--slate);margin-top:6px;">H-1B petition for specialty occupation role in software engineering. Currently preparing LCA and petition documents.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Case Timeline
+          </div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div style="position:relative;flex-shrink:0;">
+                <div class="tl-dot gold"></div>
+                <div class="tl-line"></div>
+              </div>
+              <div>
+                <div class="tl-event">LCA Filed with DOL</div>
+                <div class="tl-desc">Labor Condition Application submitted for review</div>
+                <div class="tl-date">Jun 1, 2026 at 9:30 AM</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div style="position:relative;flex-shrink:0;">
+                <div class="tl-dot"></div>
+                <div class="tl-line"></div>
+              </div>
+              <div>
+                <div class="tl-event">Documents Collected</div>
+                <div class="tl-desc">All required client documents received and verified</div>
+                <div class="tl-date">May 20, 2026 at 2:15 PM</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div style="position:relative;flex-shrink:0;">
+                <div class="tl-dot"></div>
+              </div>
+              <div>
+                <div class="tl-event">Case Opened</div>
+                <div class="tl-desc">Initial consultation completed, case opened</div>
+                <div class="tl-date">Jan 15, 2026 at 10:00 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Documents
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-name">Passport_scan.pdf</div>
+              <div class="doc-meta">Uploaded May 18 · 2.4 MB</div>
+            </div>
+            <a href="#" style="font-size:12px;color:var(--navy);font-weight:600;">Download</a>
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-name">Employment_offer.pdf</div>
+              <div class="doc-meta">Uploaded May 19 · 1.1 MB</div>
+            </div>
+            <a href="#" style="font-size:12px;color:var(--navy);font-weight:600;">Download</a>
+          </div>
+        </div>
+
+        <div class="help-card">
+          <h3>Need assistance?</h3>
+          <p>Have questions about your case? Our bilingual team is ready to help.</p>
+          <a href="#" class="btn btn-gold" style="display:block;text-align:center;font-size:14px;">Contact Us</a>
+          <div style="text-align:center;margin-top:10px;font-size:13px;color:rgba(255,255,255,.6);">📞 (800) SUB-HROY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 4: APPOINTMENTS
+     ============================================================ -->
+<div class="section-label">Page 4 — Appointments</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:420px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        My Cases
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Appointments
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Appointments</h1>
+        <p class="page-sub">Manage your consultations and meetings</p>
+      </div>
+      <a href="#" class="btn btn-gold btn-sm">+ Book Appointment</a>
+    </div>
+
+    <div class="free-banner">
+      <div class="free-banner-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div>
+        <div class="free-title">Free Consultations</div>
+        <div class="free-sub">Every account includes 2 free consultations with our team</div>
+      </div>
+      <div class="free-counter">
+        <div class="free-num">1</div>
+        <div class="free-den">/ 2 used</div>
+      </div>
+      <a href="#" class="btn btn-gold btn-sm">Book Free Consultation</a>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">Upcoming (1)</div>
+      <div class="appt-card">
+        <div class="appt-date-box">
+          <div class="appt-day">18</div>
+          <div class="appt-mon">Jun</div>
+          <div class="appt-yr">2026</div>
+        </div>
+        <div class="appt-info">
+          <div class="appt-time">10:00 AM</div>
+          <div class="appt-type">30-min phone consultation</div>
+          <span class="badge badge-free" style="margin-top:4px;">Free Consultation #2</span>
+        </div>
+        <span class="badge badge-open">Confirmed</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Past Appointments (1)</div>
+      <div class="appt-card" style="opacity:.65;">
+        <div class="appt-date-box" style="background:var(--paper-2);">
+          <div class="appt-day" style="color:var(--slate);">15</div>
+          <div class="appt-mon">Jan</div>
+          <div class="appt-yr">2026</div>
+        </div>
+        <div class="appt-info">
+          <div class="appt-time">2:00 PM</div>
+          <span class="badge badge-free" style="margin-top:4px;">Free Consultation #1</span>
+        </div>
+        <span class="badge badge-closed">Completed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 5: BOOK APPOINTMENT
+     ============================================================ -->
+<div class="section-label">Page 5 — Book Appointment</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:500px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Appointments
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="breadcrumb"><a href="#">Appointments</a> → <span style="color:var(--navy);font-weight:500;">Book Appointment</span></div>
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Book an Appointment</h1>
+        <p class="page-sub">Choose a date and time that works for you</p>
+      </div>
+    </div>
+
+    <div class="free-banner" style="margin-bottom:24px;">
+      <div class="free-banner-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div>
+        <div class="free-title">This will be a FREE consultation</div>
+        <div class="free-sub">You have 1 free consultation remaining</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
+      <div class="card">
+        <div class="form-field">
+          <label class="form-label">Select Date *</label>
+          <input type="date" class="form-input" value="2026-06-18" style="max-width:240px;">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Select Time Slot *</label>
+          <div class="time-grid">
+            <div class="time-slot">9:00 AM</div>
+            <div class="time-slot">9:30 AM</div>
+            <div class="time-slot selected">10:00 AM</div>
+            <div class="time-slot">10:30 AM</div>
+            <div class="time-slot">11:00 AM</div>
+            <div class="time-slot">11:30 AM</div>
+            <div class="time-slot">2:00 PM</div>
+            <div class="time-slot">2:30 PM</div>
+            <div class="time-slot">3:00 PM</div>
+            <div class="time-slot">3:30 PM</div>
+            <div class="time-slot">4:00 PM</div>
+            <div class="time-slot">4:30 PM</div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Notes (optional)</label>
+          <textarea class="form-input" rows="3" placeholder="Tell us briefly what you'd like to discuss…" style="resize:vertical;"></textarea>
+        </div>
+        <button class="btn btn-navy" style="width:100%;padding:13px;font-size:15px;justify-content:center;">Confirm Appointment</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">What to expect</div>
+        <div class="expect-item">
+          <div class="expect-icon">🕐</div>
+          <div><div class="expect-title">30-minute session</div><div class="expect-desc">Each consultation is 30 min with a bilingual attorney</div></div>
+        </div>
+        <div class="expect-item">
+          <div class="expect-icon">📞</div>
+          <div><div class="expect-title">Phone or video</div><div class="expect-desc">We'll confirm your preferred format via email</div></div>
+        </div>
+        <div class="expect-item">
+          <div class="expect-icon">🌐</div>
+          <div><div class="expect-title">English or Español</div><div class="expect-desc">Our team speaks both fluently</div></div>
+        </div>
+        <div class="expect-item">
+          <div class="expect-icon">✅</div>
+          <div><div class="expect-title">No obligation</div><div class="expect-desc">Free consultations come with no commitment required</div></div>
+        </div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--line);">
+          <div style="font-size:13px;color:var(--slate);margin-bottom:6px;">Need immediate help?</div>
+          <a href="tel:18007824769" style="font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;">📞 Call (800) SUB-HROY</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 6: DOCUMENTS
+     ============================================================ -->
+<div class="section-label">Page 6 — Documents</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:400px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Documents
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Documents</h1>
+        <p class="page-sub">Upload and manage your immigration documents</p>
+      </div>
+    </div>
+
+    <div class="upload-zone" style="margin-bottom:24px;">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3 style="font-family:var(--serif);color:var(--navy);margin-bottom:6px;">Upload a Document</h3>
+      <p style="color:var(--slate);font-size:14px;margin-bottom:16px;">Passport, visa, I-94, employment letter, or any other immigration document</p>
+      <button class="btn btn-navy">Choose File</button>
+      <p style="font-size:12px;color:var(--slate-300);margin-top:8px;">PDF, JPG, PNG, DOC up to 10MB</p>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">Uploaded Documents (2)</div>
+      <div class="doc-row">
+        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <div style="flex:1;">
+          <div class="doc-name">Passport_scan.pdf</div>
+          <div class="doc-meta">Case: H-1B · Uploaded May 18 · 2.4 MB</div>
+        </div>
+        <a href="#" style="font-size:13px;color:var(--navy);font-weight:600;margin-right:12px;">Download</a>
+        <a href="#" style="font-size:13px;color:var(--red);">Delete</a>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <div style="flex:1;">
+          <div class="doc-name">Employment_offer.pdf</div>
+          <div class="doc-meta">Case: H-1B · Uploaded May 19 · 1.1 MB</div>
+        </div>
+        <a href="#" style="font-size:13px;color:var(--navy);font-weight:600;margin-right:12px;">Download</a>
+        <a href="#" style="font-size:13px;color:var(--red);">Delete</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Common Documents Needed</div>
+      <div class="grid-3" style="gap:12px;">
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">🛂</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">Passport</div>
+          <div style="font-size:12px;color:var(--slate);">Current + all previous</div>
+        </div>
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">📋</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">I-94 Record</div>
+          <div style="font-size:12px;color:var(--slate);">Arrival/departure record</div>
+        </div>
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">💼</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">Employment Letter</div>
+          <div style="font-size:12px;color:var(--slate);">From current employer</div>
+        </div>
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">🎓</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">Degree/Diploma</div>
+          <div style="font-size:12px;color:var(--slate);">Educational credentials</div>
+        </div>
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">💰</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">Tax Returns</div>
+          <div style="font-size:12px;color:var(--slate);">Last 3 years W-2s</div>
+        </div>
+        <div style="background:var(--paper-2);border-radius:8px;padding:14px;">
+          <div style="font-size:22px;margin-bottom:6px;">📸</div>
+          <div style="font-size:14px;font-weight:600;color:var(--navy);">Photos</div>
+          <div style="font-size:12px;color:var(--slate);">Passport-style photos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 7: PROFILE
+     ============================================================ -->
+<div class="section-label">Page 7 — Profile</div>
+
+<div class="portal" style="min-height:auto; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,.12); border:1px solid var(--line);">
+  <div class="sidebar" style="min-height:400px; width:240px; flex-shrink:0;">
+    <a href="#" class="sidebar-logo">
+      <img src="https://onestop-immigrationstation-web.vercel.app/logo-bird.png" alt="OSIS" />
+      <span>One Stop<br>Immigration</span>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">My Profile</h1>
+        <p class="page-sub">Manage your account information</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line);">
+          <div class="avatar">S</div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;color:var(--navy);font-weight:600;">Subhojit Roy</div>
+            <div style="font-size:13px;color:var(--slate);">subhojitr@gmail.com</div>
+            <span class="badge role-badge" style="margin-top:6px;display:inline-flex;">Beneficiary</span>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" value="Subhojit">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" value="Roy">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" value="subhojitr@gmail.com" disabled style="background:var(--paper-2);color:var(--slate);cursor:not-allowed;">
+          <div style="font-size:12px;color:var(--slate-300);margin-top:4px;">Email cannot be changed here</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" value="(555) 123-4567">
+        </div>
+        <button class="btn btn-navy">Save Changes</button>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title">Account Details</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <div class="meta-label">Account Type</div>
+              <span class="badge role-badge" style="margin-top:4px;display:inline-flex;">Individual / Beneficiary</span>
+            </div>
+            <div>
+              <div class="meta-label">Member Since</div>
+              <div class="meta-value">June 2026</div>
+            </div>
+            <div style="padding-top:10px;border-top:1px solid var(--line);">
+              <a href="#" style="font-size:14px;color:var(--navy);font-weight:600;text-decoration:none;">Change Password →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="danger-card">
+          <h3>Danger Zone</h3>
+          <p style="font-size:13px;color:var(--slate);margin-bottom:12px;">Need to delete your account? Contact our support team.</p>
+          <a href="#" style="font-size:13px;color:var(--red);font-weight:600;">Request account deletion →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:40px 0; text-align:center; color:var(--slate-300); font-size:13px;">
+  One Stop Immigration Station — Dashboard Design Bundle v1.0 — For Claude Design Review
+</div>
+
+</div><!-- /wrapper -->
+</body>
+</html>
