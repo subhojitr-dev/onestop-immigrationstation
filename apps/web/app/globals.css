@@ -237,3 +237,70 @@ body {
 .pa-info { flex: 1; }
 .pa-time { display: block; font-size: 14px; font-weight: 500; color: #1a2744; }
 .pa-free { display: inline-block; font-size: 11px; color: #10b981; background: #d1fae5; padding: 2px 8px; border-radius: 10px; margin-top: 2px; }
+
+/* ============================================================
+   CASES PAGE
+   ============================================================ */
+.cases-filters {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+}
+.case-filter-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.chip-count {
+  background: rgba(0,0,0,.1); border-radius: 10px;
+  padding: 1px 7px; font-size: 11px; font-weight: 700;
+}
+.cases-list { display: flex; flex-direction: column; gap: 12px; }
+.case-card {
+  background: #fff; border-radius: 12px; padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid #e5e7eb;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+}
+.case-card:hover { border-color: #1a2744; box-shadow: 0 2px 8px rgba(0,0,0,.1); transition: all .2s; }
+.case-card-left { display: flex; align-items: flex-start; gap: 16px; flex: 1; }
+.case-visa-badge {
+  background: #1a2744; color: #fff; border-radius: 8px;
+  padding: 6px 12px; font-size: 13px; font-weight: 700;
+  font-family: monospace; white-space: nowrap; flex-shrink: 0;
+}
+.case-number { font-size: 13px; color: #6b7280; font-family: monospace; margin-bottom: 4px; }
+.case-desc { font-size: 14px; color: #374151; margin-bottom: 6px; }
+.case-attorney { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #9ca3af; }
+.case-card-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0;
+}
+.case-dates { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 12px; color: #9ca3af; }
+
+/* ============================================================
+   CASE DETAIL PAGE
+   ============================================================ */
+.case-detail-grid {
+  display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+}
+.case-info-card {
+  background: #fff; border-radius: 12px; padding: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 20px;
+}
+.case-info-card h2 { font-family: 'Lora', serif; font-size: 18px; color: #1a2744; margin: 0 0 16px; }
+.case-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.case-meta-item { display: flex; flex-direction: column; gap: 3px; }
+.cmi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.cmi-value { font-size: 14px; color: #1a2744; font-weight: 500; }
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: #1a2744;
+  flex-shrink: 0; margin-top: 3px; position: relative; z-index: 1;
+}
+.timeline-line {
+  position: absolute; left: 5px; top: 15px; bottom: 0;
+  width: 2px; background: #e5e7eb;
+}
+.timeline-item:last-child .timeline-line { display: none; }
+.timeline-content { flex: 1; }
+.timeline-event { font-size: 14px; font-weight: 600; color: #1a2744; margin-bottom: 2px; }
+.timeline-desc { font-size: 13px; color: #6b7280; margin-bottom: 2px; }
+.timeline-date { font-size: 12px; color: #9ca3af; }
