@@ -61,7 +61,18 @@ export default async function ApplyPage() {
       {/* Visa type cards */}
       <div style={{display:'flex', flexDirection:'column', gap:'14px'}}>
         {visaTypeOptions.map(visa => {
-          const draft = draftMap[visa.id]
+          const app = draftMap[visa.id]
+          const appStatus = app?.status
+
+          const statusBadge: Record<string, {bg:string;color:string;label:string}> = {
+            draft:          { bg:'#fdf3e3', color:'#b45309', label:'Draft in progress' },
+            submitted:      { bg:'#e6f6ef', color:'#047857', label:'✓ Submitted — under review' },
+            under_review:   { bg:'#e8effe', color:'#1d4ed8', label:'🔍 Under Review' },
+            info_requested: { bg:'#fdeceb', color:'#b42318', label:'⚠ Info Requested' },
+            approved:       { bg:'#e6f6ef', color:'#047857', label:'✅ Approved' },
+            rejected:       { bg:'#fdeceb', color:'#b42318', label:'✗ Not Approved' },
+          }
+
           return (
             <div key={visa.id} style={{
               background:'#fff', border:'1px solid #e7e9f0', borderRadius:'16px',
@@ -94,9 +105,9 @@ export default async function ApplyPage() {
                       Coming Soon
                     </span>
                   )}
-                  {draft && (
-                    <span style={{background:'#fdf3e3', color:'#b45309', borderRadius:'20px', padding:'2px 10px', fontSize:'11px', fontWeight:600}}>
-                      Draft in progress
+                  {appStatus && statusBadge[appStatus] && (
+                    <span style={{background:statusBadge[appStatus].bg, color:statusBadge[appStatus].color, borderRadius:'20px', padding:'2px 10px', fontSize:'11px', fontWeight:600}}>
+                      {statusBadge[appStatus].label}
                     </span>
                   )}
                 </div>
@@ -114,20 +125,25 @@ export default async function ApplyPage() {
               {/* Action */}
               <div style={{flexShrink:0}}>
                 {visa.available ? (
-                  draft ? (
-                    <Link
-                      href={`/dashboard/apply/${visa.id}`}
-                      className="btn btn--navy btn--sm"
-                      style={{textDecoration:'none'}}
-                    >
+                  appStatus === 'draft' ? (
+                    <Link href={`/dashboard/apply/${visa.id}`} className="btn btn--navy btn--sm" style={{textDecoration:'none'}}>
                       Resume →
                     </Link>
+                  ) : appStatus === 'submitted' || appStatus === 'under_review' || appStatus === 'info_requested' ? (
+                    <div style={{display:'flex', flexDirection:'column', gap:'6px', alignItems:'flex-end'}}>
+                      <span style={{fontSize:'12px', color:'#586176', textAlign:'right'}}>Awaiting lawyer review</span>
+                      <Link href={`/dashboard/tickets/new`} className="btn btn--outline-navy btn--sm" style={{textDecoration:'none'}}>
+                        Ask a Question
+                      </Link>
+                    </div>
+                  ) : appStatus === 'approved' ? (
+                    <span style={{fontSize:'13px', fontWeight:600, color:'#047857'}}>✅ Approved</span>
+                  ) : appStatus === 'rejected' ? (
+                    <Link href={`/dashboard/tickets/new`} className="btn btn--outline-navy btn--sm" style={{textDecoration:'none'}}>
+                      Contact Us
+                    </Link>
                   ) : (
-                    <Link
-                      href={`/dashboard/apply/${visa.id}`}
-                      className="btn btn--gold btn--sm"
-                      style={{textDecoration:'none'}}
-                    >
+                    <Link href={`/dashboard/apply/${visa.id}`} className="btn btn--gold btn--sm" style={{textDecoration:'none'}}>
                       Start Application
                     </Link>
                   )
