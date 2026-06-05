@@ -5,8 +5,21 @@
 // ============================================================
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Header({ activePage = 'home' }: { activePage?: string }) {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
     <>
       {/* TOP CONTACT BAR */}
@@ -114,7 +127,16 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
           </nav>
 
           <div className="header-cta">
-            <Link href="/login" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>Login</Link>
+            {user ? (
+              <Link href="/dashboard" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>
+                My Portal
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>Login</Link>
+                <Link href="/signup" className="btn btn--navy btn--sm" style={{marginRight:'6px'}}>Sign Up</Link>
+              </>
+            )}
             <Link href="/contact" className="btn btn--gold btn--sm" data-en="Free Consultation" data-es="Consulta Gratis">Free Consultation</Link>
             <button className="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
               <span></span><span></span><span></span>
@@ -157,10 +179,16 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
           <Link href="/contact" data-en="Contact Us" data-es="Contáctenos">Contact Us</Link>
         </nav>
         <div className="mobile-foot">
-          <div style={{display:'flex', gap:'8px', marginBottom:'8px'}}>
-            <Link href="/login" className="btn btn--outline-navy" style={{flex:1, textAlign:'center'}}>Login</Link>
-            <Link href="/signup" className="btn btn--navy" style={{flex:1, textAlign:'center'}}>Sign Up</Link>
-          </div>
+          {user ? (
+            <Link href="/dashboard" className="btn btn--navy" style={{display:'block', textAlign:'center', marginBottom:'8px'}}>
+              My Portal
+            </Link>
+          ) : (
+            <div style={{display:'flex', gap:'8px', marginBottom:'8px'}}>
+              <Link href="/login" className="btn btn--outline-navy" style={{flex:1, textAlign:'center'}}>Login</Link>
+              <Link href="/signup" className="btn btn--navy" style={{flex:1, textAlign:'center'}}>Sign Up</Link>
+            </div>
+          )}
           <Link href="/contact" className="btn btn--gold" data-en="Free Consultation" data-es="Consulta Gratis">Free Consultation</Link>
           <div className="topbar-contact">
             <a href="tel:18007824769">

@@ -67,7 +67,7 @@ export default async function AppointmentsPage() {
               Manage your consultations and meetings
             </p>
           </div>
-          <Link href="/contact" className="btn btn--gold btn--sm">+ Book Appointment</Link>
+          <Link href="/dashboard/appointments/book" className="btn btn--gold btn--sm">+ Book Appointment</Link>
         </div>
 
         {/* Free consultations counter */}
@@ -84,7 +84,7 @@ export default async function AppointmentsPage() {
             <span className="afb-den">/ 2 used</span>
           </div>
           {freeUsed < 2 && (
-            <Link href="/contact" className="btn btn--gold btn--sm">
+            <Link href="/dashboard/appointments/book" className="btn btn--gold btn--sm">
               Book Free Consultation
             </Link>
           )}
