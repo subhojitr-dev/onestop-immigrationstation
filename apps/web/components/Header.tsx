@@ -81,33 +81,34 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
                 <div className="mega-grid">
                   <div className="mega-col">
                     <h4 data-en="Work Visas" data-es="Visas de Trabajo">Work Visas</h4>
-                    <a href="#"><b>H-1B</b><span data-en="Specialty workers" data-es="Trabajadores especializados">Specialty workers</span></a>
-                    <a href="#"><b>L-1</b><span data-en="Intra-company transfer" data-es="Transferencia intra-empresa">Intra-company transfer</span></a>
-                    <a href="#"><b>O-1</b><span data-en="Extraordinary ability" data-es="Habilidad extraordinaria">Extraordinary ability</span></a>
-                    <a href="#"><b>TN</b><span data-en="NAFTA professionals" data-es="Profesionales TLCAN">NAFTA professionals</span></a>
-                    <a href="#"><b>E-2</b><span data-en="Treaty investors" data-es="Inversionistas de tratado">Treaty investors</span></a>
+                    <Link href="/signup?service=h1b"><b>H-1B</b><span data-en="Specialty workers" data-es="Trabajadores especializados">Specialty workers</span></Link>
+                    <Link href="/signup?service=l1"><b>L-1</b><span data-en="Intra-company transfer" data-es="Transferencia intra-empresa">Intra-company transfer</span></Link>
+                    <Link href="/signup"><b>O-1</b><span data-en="Extraordinary ability" data-es="Habilidad extraordinaria">Extraordinary ability</span></Link>
+                    <Link href="/signup"><b>TN</b><span data-en="NAFTA professionals" data-es="Profesionales TLCAN">NAFTA professionals</span></Link>
+                    <Link href="/signup"><b>E-2</b><span data-en="Treaty investors" data-es="Inversionistas de tratado">Treaty investors</span></Link>
                   </div>
                   <div className="mega-col">
                     <h4 data-en="Student & Exchange" data-es="Estudiante e Intercambio">Student &amp; Exchange</h4>
-                    <a href="#"><b>F-1</b><span data-en="Academic students" data-es="Estudiantes académicos">Academic students</span></a>
-                    <a href="#"><b>M-1</b><span data-en="Vocational students" data-es="Estudiantes vocacionales">Vocational students</span></a>
-                    <a href="#"><b>J-1</b><span data-en="Exchange visitors" data-es="Visitantes de intercambio">Exchange visitors</span></a>
+                    <Link href="/signup"><b>F-1</b><span data-en="Academic students" data-es="Estudiantes académicos">Academic students</span></Link>
+                    <Link href="/signup"><b>M-1</b><span data-en="Vocational students" data-es="Estudiantes vocacionales">Vocational students</span></Link>
+                    <Link href="/signup"><b>J-1</b><span data-en="Exchange visitors" data-es="Visitantes de intercambio">Exchange visitors</span></Link>
                     <h4 style={{marginTop:'16px'}} data-en="Family & Fiancé" data-es="Familia y Prometido(a)">Family &amp; Fiancé</h4>
-                    <a href="#"><b>K-1</b><span data-en="Fiancé visa" data-es="Visa de prometido(a)">Fiancé visa</span></a>
-                    <a href="#"><b>K-3</b><span data-en="Spousal visa" data-es="Visa de cónyuge">Spousal visa</span></a>
+                    <Link href="/signup?service=k1"><b>K-1</b><span data-en="Fiancé visa" data-es="Visa de prometido(a)">Fiancé visa</span></Link>
+                    <Link href="/signup?service=family_petition"><b>K-3</b><span data-en="Spousal visa" data-es="Visa de cónyuge">Spousal visa</span></Link>
                   </div>
                   <div className="mega-col">
                     <h4 data-en="Humanitarian" data-es="Humanitaria">Humanitarian</h4>
-                    <a href="#"><b>U</b><span data-en="Crime victims" data-es="Víctimas de delitos">Crime victims</span></a>
-                    <a href="#"><b>SIJ</b><span data-en="Special juvenile" data-es="Juvenil especial">Special juvenile</span></a>
-                    <a href="#"><b>DACA</b><span data-en="Childhood arrivals" data-es="Llegados en la infancia">Childhood arrivals</span></a>
-                    <a href="#"><b>—</b><span data-en="Asylum & Refugee" data-es="Asilo y Refugiado">Asylum &amp; Refugee</span></a>
-                    <a href="#"><b>F2–F4</b><span data-en="Family preference" data-es="Preferencia familiar">Family preference</span></a>
+                    <Link href="/signup"><b>U</b><span data-en="Crime victims" data-es="Víctimas de delitos">Crime victims</span></Link>
+                    <Link href="/signup"><b>SIJ</b><span data-en="Special juvenile" data-es="Juvenil especial">Special juvenile</span></Link>
+                    <Link href="/signup"><b>DACA</b><span data-en="Childhood arrivals" data-es="Llegados en la infancia">Childhood arrivals</span></Link>
+                    <Link href="/signup"><b>—</b><span data-en="Asylum & Refugee" data-es="Asilo y Refugiado">Asylum &amp; Refugee</span></Link>
+                    <Link href="/signup?service=family_petition"><b>F2–F4</b><span data-en="Family preference" data-es="Preferencia familiar">Family preference</span></Link>
                   </div>
                 </div>
                 <div className="mega-foot">
                   <p><strong data-en="Not sure which visa fits your situation?" data-es="¿No sabe qué visa se ajusta a su situación?">Not sure which visa fits your situation?</strong></p>
-                  <Link href="/contact" className="btn btn--navy btn--sm" data-en="Book a Free Consultation" data-es="Reserve una Consulta Gratis">Book a Free Consultation</Link>
+                  <Link href="/signup" className="btn btn--navy btn--sm" data-en="Create Free Account" data-es="Crear Cuenta Gratis">Create Free Account</Link>
+                  <Link href="/dashboard" className="btn btn--outline-navy btn--sm" style={{marginLeft:'8px'}} data-en="Check Status" data-es="Ver Estado">Check Status</Link>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import ServiceRedirect from '@/components/ServiceRedirect'
 
 
 export default async function DashboardPage() {
@@ -50,15 +51,47 @@ export default async function DashboardPage() {
     closed: '#6b7280',
   }
 
+  const isNewUser = (cases?.length ?? 0) === 0 && (appointments?.length ?? 0) === 0
+
   return (
     <>
+      {/* Handles redirect to questionnaire if user came from public site service link */}
+      <ServiceRedirect />
+
       <div className="portal-header">
-          <div>
-            <h1>Welcome back, {name.split(' ')[0]} 👋</h1>
-            <p className="portal-role-badge" data-role={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</p>
-          </div>
-          <Link href="/contact" className="btn btn--gold btn--sm">Book Consultation</Link>
+        <div>
+          <h1>Welcome{cases && cases.length > 0 ? ' back' : ''}, {name.split(' ')[0]} 👋</h1>
+          <p className="portal-role-badge" data-role={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</p>
         </div>
+        <Link href="/dashboard/appointments/book" className="btn btn--gold btn--sm">Book Free Consultation</Link>
+      </div>
+
+      {/* Welcome banner for new users with no cases yet */}
+      {isNewUser && (
+        <div style={{
+          background:'linear-gradient(150deg,#243355,#16223d)', borderRadius:'16px',
+          padding:'28px 32px', marginBottom:'28px', position:'relative', overflow:'hidden',
+          boxShadow:'0 16px 36px rgba(13,22,44,.25)'
+        }}>
+          <div style={{position:'absolute', top:'-40px', right:'-20px', width:'200px', height:'200px', borderRadius:'50%', background:'radial-gradient(circle,rgba(184,149,42,.2),transparent 65%)'}} />
+          <div style={{position:'relative'}}>
+            <div style={{fontFamily:'Lora, serif', fontSize:'20px', color:'#fff', fontWeight:600, marginBottom:'8px'}}>
+              Welcome to your Immigration Portal 🎉
+            </div>
+            <p style={{fontSize:'14px', color:'rgba(255,255,255,.75)', lineHeight:1.6, marginBottom:'20px', maxWidth:'560px'}}>
+              You&apos;re all set! Here&apos;s how to get started — book a free consultation to speak with an attorney, or go straight to starting your visa application.
+            </p>
+            <div style={{display:'flex', gap:'12px', flexWrap:'wrap'}}>
+              <Link href="/dashboard/appointments/book" className="btn btn--gold btn--sm" style={{textDecoration:'none'}}>
+                📅 Book Free Consultation
+              </Link>
+              <Link href="/dashboard/apply" className="btn btn--sm" style={{background:'rgba(255,255,255,.12)', color:'#fff', border:'1px solid rgba(255,255,255,.2)', textDecoration:'none'}}>
+                📋 Start an Application
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
         {/* Stats */}
         <div className="portal-stats">

@@ -25,7 +25,7 @@ export default function HomePage() {
                 From work and family visas to humanitarian relief, we centralize every step of your immigration journey — combining legal expertise with technology to make the process clear and hassle-free.
               </p>
               <div className="hero-cta hero-cta--single">
-                <Link href="/contact" className="btn btn--gold" data-en="Book a Free Consultation" data-es="Reserve una Consulta Gratis">
+                <Link href="/signup" className="btn btn--gold" data-en="Book a Free Consultation" data-es="Reserve una Consulta Gratis">
                   Book a Free Consultation
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </Link>
@@ -64,7 +64,7 @@ export default function HomePage() {
                   </button>
                 </div>
                 <div className="sit-result" id="sitResult"></div>
-                <Link href="/contact" className="btn btn--gold" id="sitCta" data-en="Get my free consultation" data-es="Obtener mi consulta gratis">Get my free consultation</Link>
+                <Link href="/signup" className="btn btn--gold" id="sitCta" data-en="Get my free consultation" data-es="Obtener mi consulta gratis">Get my free consultation</Link>
               </div>
             </div>
           </div>
@@ -135,19 +135,19 @@ export default function HomePage() {
                 <span className="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg></span>
                 <h3 data-en="Employers & Businesses" data-es="Empleadores y Empresas">Employers &amp; Businesses</h3>
                 <p>Discussing immigration for your business or employees? Register as a sponsor. We work cost-effectively through the needs of your company, employees, and the families who are beneficiaries of your sponsorship.</p>
-                <a href="#" className="link-arrow" data-en="Register as sponsor" data-es="Registrarse como patrocinador">Register as sponsor <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <Link href="/signup?role=sponsor" className="link-arrow" data-en="Register as sponsor" data-es="Registrarse como patrocinador">Register as sponsor <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></Link>
               </article>
               <article className="svc-card reveal">
                 <span className="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
                 <h3 data-en="Families & Individuals" data-es="Familias e Individuos">Families &amp; Individuals</h3>
                 <p>Individuals and families applying through company sponsorship or on their own should register as a beneficiary and continue through the guided application process with our support at every step.</p>
-                <a href="#" className="link-arrow" data-en="Register as beneficiary" data-es="Registrarse como beneficiario">Register as beneficiary <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <Link href="/signup?role=beneficiary" className="link-arrow" data-en="Register as beneficiary" data-es="Registrarse como beneficiario">Register as beneficiary <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></Link>
               </article>
               <article className="svc-card reveal">
                 <span className="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg></span>
                 <h3 data-en="I-9 Audits & Investigations" data-es="Auditorías e Investigaciones I-9">I-9 Audits &amp; Investigations</h3>
                 <p>If you are a company that needs assistance with I-9 audits and compliance, we are here to help. We prepare your documentation, identify risks, and keep your workforce records audit-ready.</p>
-                <a href="#" className="link-arrow" data-en="Get compliance help" data-es="Obtener ayuda de cumplimiento">Get compliance help <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <Link href="/signup?role=sponsor" className="link-arrow" data-en="Get compliance help" data-es="Obtener ayuda de cumplimiento">Get compliance help <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></Link>
               </article>
             </div>
           </div>
@@ -256,6 +256,50 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* REQUEST SERVICES */}
+        <section className="section" id="request-services" style={{background:'#f6f7fa'}}>
+          <div className="container">
+            <div className="section-head section-head--center reveal">
+              <span className="eyebrow eyebrow--center" data-en="Get Started Today" data-es="Comience Hoy">Get Started Today</span>
+              <h2 className="section-title" data-en="Request Immigration Services" data-es="Solicitar Servicios de Inmigración">Request Immigration Services</h2>
+              <p className="section-sub" data-en="Create your free account in minutes. Tell us what you need and our attorneys will guide you through every step — from initial consultation to approval." data-es="Cree su cuenta gratuita en minutos. Nuestros abogados le guiarán en cada paso.">
+                Create your free account in minutes. Tell us what you need and our attorneys will guide you through every step — from initial consultation to approval.
+              </p>
+            </div>
+
+            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:'20px', marginBottom:'40px'}}>
+              {[
+                { icon:'💼', title:'Work Visa (H-1B, L-1, O-1)', desc:'Employer sponsorship and specialty occupation petitions', role:'sponsor', service:'h1b' },
+                { icon:'🟢', title:'Green Card', desc:'Employment-based or family-based permanent residence', role:'beneficiary', service:'green_card' },
+                { icon:'👨‍👩‍👧', title:'Family Petition', desc:'Reunite with your spouse, children, or parents in the US', role:'beneficiary', service:'family_petition' },
+                { icon:'💍', title:'Fiancé Visa (K-1)', desc:'Bring your foreign fiancé to the US to get married', role:'beneficiary', service:'k1' },
+              ].map((item, i) => (
+                <div key={i} className="reveal" style={{background:'#fff', borderRadius:'16px', padding:'24px', border:'1px solid #e7e9f0', boxShadow:'0 1px 3px rgba(17,27,49,.06)', display:'flex', flexDirection:'column', gap:'12px'}}>
+                  <div style={{fontSize:'32px'}}>{item.icon}</div>
+                  <div style={{fontFamily:'Lora, serif', fontSize:'16px', fontWeight:600, color:'#1a2744'}}>{item.title}</div>
+                  <div style={{fontSize:'13px', color:'#586176', lineHeight:1.6, flex:1}}>{item.desc}</div>
+                  <Link href={`/signup?role=${item.role}&service=${item.service}`} className="btn btn--navy btn--sm" style={{textDecoration:'none', textAlign:'center', justifyContent:'center'}}>
+                    Initiate Service →
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            <div style={{textAlign:'center', display:'flex', gap:'16px', justifyContent:'center', flexWrap:'wrap'}} className="reveal">
+              <Link href="/signup" className="btn btn--gold">
+                Create Free Account
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </Link>
+              <Link href="/dashboard" className="btn btn--outline-navy">
+                Check Application Status →
+              </Link>
+            </div>
+            <p style={{textAlign:'center', fontSize:'13px', color:'#98a0b0', marginTop:'16px'}}>
+              Already have an account? <Link href="/login" style={{color:'#b8952a', fontWeight:600}}>Log in here</Link>
+            </p>
+          </div>
+        </section>
+
         {/* CTA STRIP */}
         <section className="cta-strip" id="contact">
           <div className="container cta-inner">
@@ -266,6 +310,7 @@ export default function HomePage() {
             <div className="cta-actions reveal">
               <a href="tel:18007824769" className="btn btn--gold">Call (800) SUB-HROY</a>
               <a href="mailto:admin@mylegalimigrationservices.com" className="btn btn--outline-light">Email Us</a>
+              <Link href="/signup" className="btn btn--outline-light">Create Account</Link>
             </div>
           </div>
         </section>

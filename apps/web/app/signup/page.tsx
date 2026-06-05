@@ -1,15 +1,25 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 type Role = 'sponsor' | 'beneficiary'
 
 export default function SignupPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [step, setStep] = useState<1 | 2>(1)
   const [role, setRole] = useState<Role>('beneficiary')
+
+  // Pre-select role and capture service from URL params
+  useEffect(() => {
+    const roleParam = searchParams.get('role') as Role
+    if (roleParam === 'sponsor' || roleParam === 'beneficiary') {
+      setRole(roleParam)
+      setStep(2) // skip role selection, go straight to details
+    }
+  }, [searchParams])
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [businessName, setBusinessName] = useState('')
@@ -62,6 +72,12 @@ export default function SignupPage() {
 
     setSuccess(true)
     setLoading(false)
+
+    // Store service param so we can redirect after email confirmation + login
+    const service = searchParams.get('service')
+    if (service) {
+      sessionStorage.setItem('pendingService', service)
+    }
   }
 
   if (success) {
@@ -72,7 +88,12 @@ export default function SignupPage() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
           <h1>Check your email</h1>
-          <p className="auth-sub">We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.</p>
+          <p className="auth-sub">We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account, then log in to access your portal.</p>
+          {searchParams.get('service') && (
+            <p style={{fontSize:'13px', color:'#b8952a', background:'#f7efd9', padding:'10px 14px', borderRadius:'8px', marginBottom:'16px'}}>
+              ✓ Once logged in, you&apos;ll be taken directly to your {searchParams.get('service')?.replace('_',' ').toUpperCase()} application
+            </p>
+          )}
           <Link href="/login" className="btn btn--navy auth-submit" style={{display:'block',textAlign:'center',textDecoration:'none'}}>
             Go to Login
           </Link>
