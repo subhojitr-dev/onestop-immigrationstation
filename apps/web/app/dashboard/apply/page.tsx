@@ -15,7 +15,7 @@ export default async function ApplyPage() {
     .eq('user_id', user.id)
     .order('updated_at', { ascending: false })
 
-  const draftMap: Record<string, typeof existing[0]> = {}
+  const draftMap: Record<string, any> = {}
   existing?.forEach(app => { draftMap[app.visa_type] = app })
 
   return (
