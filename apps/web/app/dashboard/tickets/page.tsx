@@ -103,10 +103,7 @@ export default async function TicketsPage() {
                     background:'#fff', border:'1px solid #e5e7eb', borderRadius:'12px',
                     padding:'18px 22px', display:'flex', gap:'16px', alignItems:'flex-start',
                     transition:'border-color .15s', cursor:'pointer'
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = '#1a2744')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#e5e7eb')}
-                  >
+                  }}>
                     {/* Icon */}
                     <div style={{
                       width:40, height:40, borderRadius:'8px', background:'#f3f4f6',
