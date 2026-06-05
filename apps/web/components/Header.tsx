@@ -114,6 +114,7 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
           </nav>
 
           <div className="header-cta">
+            <Link href="/login" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>Login</Link>
             <Link href="/contact" className="btn btn--gold btn--sm" data-en="Free Consultation" data-es="Consulta Gratis">Free Consultation</Link>
             <button className="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
               <span></span><span></span><span></span>
@@ -156,6 +157,10 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
           <Link href="/contact" data-en="Contact Us" data-es="Contáctenos">Contact Us</Link>
         </nav>
         <div className="mobile-foot">
+          <div style={{display:'flex', gap:'8px', marginBottom:'8px'}}>
+            <Link href="/login" className="btn btn--outline-navy" style={{flex:1, textAlign:'center'}}>Login</Link>
+            <Link href="/signup" className="btn btn--navy" style={{flex:1, textAlign:'center'}}>Sign Up</Link>
+          </div>
           <Link href="/contact" className="btn btn--gold" data-en="Free Consultation" data-es="Consulta Gratis">Free Consultation</Link>
           <div className="topbar-contact">
             <a href="tel:18007824769">

@@ -304,3 +304,52 @@ body {
 .timeline-event { font-size: 14px; font-weight: 600; color: #1a2744; margin-bottom: 2px; }
 .timeline-desc { font-size: 13px; color: #6b7280; margin-bottom: 2px; }
 .timeline-date { font-size: 12px; color: #9ca3af; }
+
+/* ============================================================
+   APPOINTMENTS PAGE
+   ============================================================ */
+.appt-free-banner {
+  background: #f0f4ff; border: 1px solid #c7d7ff; border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+.afb-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+.afb-left svg { width: 24px; height: 24px; stroke: #1a2744; flex-shrink: 0; }
+.afb-title { font-size: 15px; font-weight: 600; color: #1a2744; }
+.afb-sub { font-size: 13px; color: #6b7280; }
+.afb-counter { display: flex; align-items: baseline; gap: 4px; }
+.afb-num { font-size: 28px; font-weight: 700; color: #1a2744; font-family: 'Lora', serif; }
+.afb-den { font-size: 14px; color: #6b7280; }
+.appt-list { display: flex; flex-direction: column; gap: 10px; }
+.appt-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 16px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff;
+}
+.appt-date-box {
+  width: 52px; background: #f0f4ff; border-radius: 8px;
+  display: flex; flex-direction: column; align-items: center; padding: 8px 4px; flex-shrink: 0;
+}
+.appt-day { font-size: 22px; font-weight: 700; color: #1a2744; line-height: 1; }
+.appt-mon { font-size: 11px; color: #6b7280; text-transform: uppercase; }
+.appt-yr { font-size: 10px; color: #9ca3af; }
+.appt-info { flex: 1; }
+.appt-time { font-size: 15px; font-weight: 600; color: #1a2744; }
+.appt-notes { font-size: 13px; color: #6b7280; margin-top: 2px; }
+.appt-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+
+/* ============================================================
+   DOCUMENTS PAGE
+   ============================================================ */
+.doc-upload-card {
+  background: #fff; border: 2px dashed #e5e7eb; border-radius: 12px;
+  padding: 40px; text-align: center; margin-bottom: 24px;
+  transition: border-color .2s;
+}
+.doc-upload-card:hover { border-color: #1a2744; }
+.doc-upload-icon {
+  width: 56px; height: 56px; background: #f0f4ff; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
+}
+.doc-upload-icon svg { width: 28px; height: 28px; stroke: #1a2744; }
+.doc-upload-card h3 { font-family: 'Lora', serif; color: #1a2744; margin: 0 0 6px; }
+.doc-upload-card p { color: #6b7280; font-size: 14px; margin: 0 0 16px; }
