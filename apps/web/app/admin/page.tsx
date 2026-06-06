@@ -1,4 +1,4 @@
-/**
+﻿/**
  * app/admin/page.tsx
  *
  * Admin Overview Dashboard — accessible only to users with role 'lawyer' or 'admin'.
@@ -14,6 +14,7 @@
  * Supabase RLS policies ensure only lawyers/admins can read across all users' data.
  */
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
@@ -21,6 +22,9 @@ export default async function AdminOverviewPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Use admin client (bypasses RLS) to read all users' data
+  const admin = createAdminClient()
 
   // Fetch counts in parallel
   const [
@@ -33,18 +37,18 @@ export default async function AdminOverviewPage() {
     { data: recentApps },
     { data: recentTickets },
   ] = await Promise.all([
-    supabase.from('profiles').select('*', { count: 'exact', head: true }),
-    supabase.from('cases').select('*', { count: 'exact', head: true }),
-    supabase.from('cases').select('*', { count: 'exact', head: true }).in('status', ['open', 'in_progress']),
-    supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'submitted'),
-    supabase.from('tickets').select('*', { count: 'exact', head: true }).in('status', ['open', 'in_progress']),
-    supabase.from('appointments').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('applications')
+    admin.from('profiles').select('*', { count: 'exact', head: true }),
+    admin.from('cases').select('*', { count: 'exact', head: true }),
+    admin.from('cases').select('*', { count: 'exact', head: true }).in('status', ['open', 'in_progress']),
+    admin.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'submitted'),
+    admin.from('tickets').select('*', { count: 'exact', head: true }).in('status', ['open', 'in_progress']),
+    admin.from('appointments').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    admin.from('applications')
       .select('id, visa_type, status, submitted_at, profiles(full_name, email)')
       .eq('status', 'submitted')
       .order('submitted_at', { ascending: false })
       .limit(5),
-    supabase.from('tickets')
+    admin.from('tickets')
       .select('id, subject, priority, status, created_at, profiles(full_name)')
       .in('status', ['open', 'in_progress'])
       .order('created_at', { ascending: false })

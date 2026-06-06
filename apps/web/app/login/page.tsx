@@ -23,7 +23,11 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      router.push('/dashboard')
+      // Redirect lawyers and admins to /admin, everyone else to /dashboard
+      const { data: profile } = await supabase
+        .from('profiles').select('role').eq('id', (await supabase.auth.getUser()).data.user?.id ?? '').single()
+      const dest = (profile?.role === 'lawyer' || profile?.role === 'admin') ? '/admin' : '/dashboard'
+      router.push(dest)
       router.refresh()
     }
   }

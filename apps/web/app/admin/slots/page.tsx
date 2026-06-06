@@ -1,4 +1,4 @@
-/**
+﻿/**
  * app/admin/slots/page.tsx
  *
  * Lawyer Availability Manager — lets lawyers/admins create and manage
@@ -12,6 +12,7 @@
  * Run migration 003_slots.sql in Supabase first.
  */
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import SlotManager from './SlotManager'
 
@@ -19,6 +20,9 @@ export default async function AdminSlotsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Admin client bypasses RLS — reads ALL users' data
+  const admin = createAdminClient()
 
   // Fetch existing slots for the next 60 days
   const today = new Date().toISOString().split('T')[0]

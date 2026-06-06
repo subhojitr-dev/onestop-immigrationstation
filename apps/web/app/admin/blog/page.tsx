@@ -1,10 +1,11 @@
-/**
+﻿/**
  * app/admin/blog/page.tsx
  *
  * Admin Blog CMS — list all posts (published + drafts), with publish/unpublish toggle.
  * Only accessible to lawyer/admin roles (enforced by app/admin/layout.tsx).
  */
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import BlogPostActions from './BlogPostActions'
@@ -13,6 +14,9 @@ export default async function AdminBlogPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Admin client bypasses RLS — reads ALL users' data
+  const admin = createAdminClient()
 
   const { data: posts } = await supabase
     .from('blog_posts')

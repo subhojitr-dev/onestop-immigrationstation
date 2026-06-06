@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+﻿import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
@@ -19,6 +20,9 @@ export default async function AdminApplicationsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Admin client bypasses RLS — reads ALL users' data
+  const admin = createAdminClient()
 
   const { data: applications } = await supabase
     .from('applications')
