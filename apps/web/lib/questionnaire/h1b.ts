@@ -37,7 +37,7 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
   visaType: 'h1b',
   label: 'H-1B Specialty Occupation',
   description: 'For foreign nationals working in specialty occupations requiring at least a bachelor\'s degree.',
-  estimatedMinutes: 15,
+  estimatedMinutes: 10,
   uscisforms: ['I-129', 'H Classification Supplement', 'LCA (ETA-9035)'],
   sections: [
     // ── SECTION 1: PETITIONER (EMPLOYER) ────────────────────
@@ -47,11 +47,13 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
       subtitle: 'Basic details about the company sponsoring this H-1B. Fill in what you know — your attorney will complete the rest.',
       icon: '🏢',
       fields: [
-        { type: 'info', id: 'info_employer', text: 'Fill in what you know. Fields marked * are required. Your attorney will complete any missing employer details directly with HR.' } as any,
+        { type: 'info', id: 'info_employer', text: 'Only the company name and address are required — your attorney will fill in the rest directly with HR. Leave anything you don\'t know blank.' } as any,
         { id: 'employer_legal_name', type: 'text', label: 'Company Legal Name', required: true, placeholder: 'Acme Corporation Inc.', uscisRef: 'I-129 Part 1, Item 1' },
         { id: 'employer_trade_name', type: 'text', label: 'Trade Name / DBA (if different)', placeholder: 'Acme Corp' },
-        { id: 'employer_ein', type: 'text', label: 'Federal Employer ID Number (EIN)', placeholder: '12-3456789', hint: 'Found on your W-2 or offer letter. Leave blank if unknown — HR can provide this.' },
-        { id: 'employer_business_type', type: 'select', label: 'Type of Business', options: [
+        // EIN is on W-2/offer letter but many employees don't have it — attorney gets it from HR
+        { id: 'employer_ein', type: 'text', label: 'Federal Employer ID Number (EIN) — optional', placeholder: '12-3456789', hint: 'Found on your W-2 or offer letter. Leave blank if unknown.' },
+        // Business type is useful context but not blocking — lawyer confirms with HR
+        { id: 'employer_business_type', type: 'select', label: 'Type of Business (if known)', options: [
           { value: 'corporation', label: 'Corporation' },
           { value: 'llc', label: 'LLC' },
           { value: 'partnership', label: 'Partnership' },
@@ -83,13 +85,15 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
           {value:'WI',label:'Wisconsin'},{value:'WY',label:'Wyoming'},{value:'DC',label:'Washington DC'},
         ]},
         { id: 'employer_zip', type: 'text', label: 'ZIP Code', required: true, placeholder: '10001' },
-        { type: 'heading', id: 'h_contact', text: 'HR Contact (if known)' } as any,
+        // HR contact is all optional — attorney reaches out to HR directly
+        { type: 'heading', id: 'h_contact', text: 'HR Contact (optional — all fields below are optional)' } as any,
         { id: 'contact_name', type: 'text', label: 'HR Contact Name', placeholder: 'Jennifer Smith' },
         { id: 'contact_title', type: 'text', label: 'HR Contact Title', placeholder: 'HR Manager' },
         { id: 'contact_email', type: 'email', label: 'HR Contact Email', placeholder: 'hr@company.com' },
         { id: 'contact_phone', type: 'tel', label: 'HR Contact Phone', placeholder: '(555) 123-4567' },
+        // Cap-exempt status affects filing strategy — but "not sure" is a valid answer
         { id: 'is_cap_exempt', type: 'radio', label: 'Is your employer a university, nonprofit, or government research institution?',
-          hint: 'These employers are exempt from the annual H-1B lottery cap',
+          hint: 'These employers are exempt from the H-1B annual lottery. Select "Not sure" if you don\'t know.',
           options: [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }, { value: 'unsure', label: 'Not sure' }]
         },
       ],
@@ -128,7 +132,7 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
         { id: 'ben_in_us', type: 'radio', label: 'Are you currently in the United States?', required: true,
           options: [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No — I am outside the US' }]
         },
-        { id: 'ben_current_status', type: 'select', label: 'Current Immigration Status', required: true,
+        { id: 'ben_current_status', type: 'select', label: 'Current Immigration Status (select closest)',
           showIf: { field: 'ben_in_us', value: 'yes' },
           options: [
             { value: 'h1b', label: 'H-1B' }, { value: 'h4', label: 'H-4 (dependent)' },
@@ -143,9 +147,9 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
           showIf: { field: 'ben_in_us', value: 'yes' },
           hint: 'Find yours at cbp.gov/i94 — leave blank if unavailable'
         },
-        { id: 'ben_status_expiry', type: 'date', label: 'Current Status Expiry Date',
+        { id: 'ben_status_expiry', type: 'date', label: 'Current Status Expiry Date (optional)',
           showIf: { field: 'ben_in_us', value: 'yes' },
-          hint: 'The date shown on your I-94 or visa stamp'
+          hint: 'The date shown on your I-94 or visa stamp. Leave blank if unsure — attorney will verify.'
         },
       ],
     },
@@ -195,9 +199,17 @@ export const h1bQuestionnaire: VisaQuestionnaire = {
         { id: 'pos_full_time', type: 'radio', label: 'Is this a full-time position?', required: true,
           options: [{ value: 'yes', label: 'Yes — full time (35+ hours/week)' }, { value: 'no', label: 'No — part time' }]
         },
-        { id: 'pos_hours', type: 'number', label: 'Hours per Week', required: true, placeholder: '40' },
+        // Hours per week defaults to 40 for full-time — attorney confirms with employer
+        { id: 'pos_hours', type: 'number', label: 'Hours per Week (optional)', placeholder: '40',
+          hint: 'Leave blank if unsure — your attorney will confirm with your employer'
+        },
         { id: 'pos_wage_rate', type: 'text', label: 'Offered Annual Salary (USD)', required: true, placeholder: '120,000' },
-        { id: 'pos_start_date', type: 'date', label: 'Expected Start Date', required: true, hint: 'H-1B cap cases typically start October 1st' },
+        // SOC code is a technical Labor Dept classification — the attorney determines this, not the employee
+        { id: 'pos_soc_code', type: 'text', label: 'SOC / O*NET Occupation Code (optional)', placeholder: 'e.g. 15-1252',
+          hint: 'This is a government job classification code — leave blank, your attorney will determine this for the LCA filing'
+        },
+        // Start date is typically Oct 1 for cap cases but not always known at intake
+        { id: 'pos_start_date', type: 'date', label: 'Expected Start Date (optional)', hint: 'H-1B cap cases typically start October 1st. Leave blank if not yet determined.' },
         { type: 'heading', id: 'h_work_location', text: 'Work Location' } as any,
         { id: 'pos_same_address', type: 'radio', label: 'Will you work at the company\'s main office address?', required: true,
           options: [{ value: 'yes', label: 'Yes — same address as company' }, { value: 'no', label: 'No — different location' }]
