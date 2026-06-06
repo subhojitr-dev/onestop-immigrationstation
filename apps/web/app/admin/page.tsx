@@ -1,3 +1,18 @@
+/**
+ * app/admin/page.tsx
+ *
+ * Admin Overview Dashboard — accessible only to users with role 'lawyer' or 'admin'.
+ * Access control is enforced by app/admin/layout.tsx (redirects others to /dashboard).
+ *
+ * What this page shows:
+ *   - 6 stat cards: Total Users, Active Cases, New Applications (submitted), Open Tickets,
+ *     Pending Appointments, Total Cases. Cards with pending items show an "Action needed" badge.
+ *   - Recent submitted applications (last 5) — click to open /admin/applications/[id]
+ *   - Open support tickets (last 5) — click to open /dashboard/tickets/[id]
+ *
+ * All data is fetched server-side in parallel via Promise.all to minimize load time.
+ * Supabase RLS policies ensure only lawyers/admins can read across all users' data.
+ */
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'

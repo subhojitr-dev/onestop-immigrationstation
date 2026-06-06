@@ -1,3 +1,30 @@
+/**
+ * app/dashboard/layout.tsx
+ *
+ * Server component — wraps every /dashboard/* page with the portal shell.
+ *
+ * Responsibilities:
+ *   1. Auth gate: redirects unauthenticated users to /login
+ *   2. Fetches the user's profile (full_name, role) from Supabase
+ *   3. Renders the outer portal grid: sidebar (PortalSidebar) + main content area
+ *   4. Topbar: search input + notifications bell + user avatar initial
+ *
+ * Why server component:
+ *   - Fetching user/profile server-side means the sidebar gets the correct
+ *     role-based nav on the first render — no client-side flicker.
+ *   - The actual nav link active states are handled client-side in PortalSidebar
+ *     via usePathname(), which is why that component is 'use client'.
+ *
+ * Layout structure (CSS classes in globals.css):
+ *   .portal-body          — full-height background (#f4f6fb)
+ *     .portal             — CSS grid: 260px sidebar + 1fr main
+ *       .portal-sidebar   — rendered by PortalSidebar component
+ *       .portal-main      — scrollable right column
+ *         .portal-topbar  — sticky top bar with search + icons
+ *         .portal-page    — padded content area where {children} render
+ *
+ * Role fallback: if profile row is missing, defaults to role='beneficiary'
+ */
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import PortalSidebar from '@/components/PortalSidebar'

@@ -1,3 +1,27 @@
+/**
+ * components/PortalSidebar.tsx
+ *
+ * Client component — the left navigation sidebar shown on all /dashboard/* pages.
+ * Rendered inside app/dashboard/layout.tsx which passes user name and role as props.
+ *
+ * Features:
+ *   - Active link detection via usePathname() — highlights the current page with a gold bar
+ *   - Role-based nav: 'Beneficiaries' and 'HR Contacts' only appear for sponsors and admins
+ *   - SVG icons are stored as raw path strings and injected via dangerouslySetInnerHTML
+ *     (avoids importing an icon library — keeps the bundle small)
+ *   - Sign out: calls supabase.auth.signOut() then redirects to /login
+ *   - User chip at the bottom shows initials avatar, full name, and role badge
+ *
+ * Styling:
+ *   - All CSS classes (portal-sidebar, portal-nav-link, portal-logo, etc.) are defined
+ *     in apps/web/app/globals.css under the "Portal Layout" section
+ *   - Active state adds class 'active' which triggers the gold left-bar indicator
+ *
+ * To add a new nav item:
+ *   1. Add the SVG path string to the `svgs` object with a unique key
+ *   2. Add an entry to `mainNav` (or a new group) with href and label
+ *   3. If role-gated, wrap it in a conditional spread like the beneficiaries/contacts example
+ */
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'

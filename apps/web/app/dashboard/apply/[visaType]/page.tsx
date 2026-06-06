@@ -1,3 +1,39 @@
+/**
+ * app/dashboard/apply/[visaType]/page.tsx
+ *
+ * Smart Form Assistant — Questionnaire Engine (client component)
+ *
+ * URL param: visaType — matches a key in lib/questionnaire/index.ts
+ *   e.g. /dashboard/apply/h1b → visaType = 'h1b'
+ *
+ * How it works:
+ *   1. On mount: looks for an existing draft application for this user + visaType in Supabase.
+ *      If found, resumes from where the user left off (current_section, completed_sections, data).
+ *      If not found, creates a new row in the `applications` table with status='draft'.
+ *   2. Renders one Section at a time from the questionnaire definition.
+ *   3. Every "Save & Continue" click:
+ *      - Marks the current section as complete
+ *      - Advances to the next section
+ *      - Saves all answers + progress to Supabase (auto-save)
+ *   4. On the final section, "Submit Application" button:
+ *      - Updates status from 'draft' → 'submitted'
+ *      - Sets submitted_at timestamp
+ *      - Lawyer can now see it in /admin/applications
+ *
+ * State held in Supabase `applications` table:
+ *   - data (jsonb)              — flat map of { [fieldId]: value } for all answers
+ *   - current_section (int)     — which section the user is currently on
+ *   - completed_sections (int[]) — which sections have been finished
+ *   - status                    — 'draft' while in progress, 'submitted' after final submit
+ *
+ * Conditional field logic:
+ *   - Fields with `showIf` are hidden/shown based on current answers state (client-side only).
+ *   - Answers for hidden fields are preserved in state — they are NOT deleted when a field hides.
+ *
+ * Layout:
+ *   - Left: main form card (section header + fields + nav buttons)
+ *   - Right sticky sidebar: progress tracker, USCIS forms list, help card
+ */
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
