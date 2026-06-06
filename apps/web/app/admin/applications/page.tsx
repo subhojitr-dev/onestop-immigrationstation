@@ -24,15 +24,26 @@ export default async function AdminApplicationsPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
+  // Fetch applications and profiles separately to avoid join issues with service role client
   const { data: applications } = await admin
     .from('applications')
-    .select('*, profiles(full_name, email, phone)')
-    .order('submitted_at', { ascending: false })
+    .select('*')
     .order('created_at', { ascending: false })
 
-  const submitted = applications?.filter(a => a.status === 'submitted') ?? []
-  const inReview  = applications?.filter(a => a.status === 'under_review') ?? []
-  const others    = applications?.filter(a => !['submitted','under_review'].includes(a.status)) ?? []
+  // Fetch all profiles to manually join
+  const { data: allProfiles } = await admin.from('profiles').select('id, full_name, email, phone')
+  const profileMap = Object.fromEntries((allProfiles ?? []).map(p => [p.id, p]))
+
+  // Attach profile to each application
+  const appsWithProfiles = (applications ?? []).map(a => ({
+    ...a,
+    profiles: profileMap[a.user_id] ?? null,
+  }))
+
+  const submitted = appsWithProfiles.filter(a => a.status === 'submitted') ?? []
+  const inReview  = appsWithProfiles.filter(a => a.status === 'under_review') ?? []
+  // Show drafts + all other statuses (info_requested, approved, rejected) together
+  const others    = appsWithProfiles.filter(a => !['submitted','under_review'].includes(a.status)) ?? []
 
   function AppRow({ app }: { app: any }) {
     const s = statusColors[app.status] || statusColors.draft
@@ -76,7 +87,7 @@ export default async function AdminApplicationsPage() {
           {[
             { label: `${submitted.length} New`, color: '#047857', bg:'#e6f6ef' },
             { label: `${inReview.length} In Review`, color:'#b45309', bg:'#fdf3e3' },
-            { label: `${applications?.length ?? 0} Total`, color:'#566173', bg:'#eef0f4' },
+            { label: `${appsWithProfiles.length} Total`, color:'#566173', bg:'#eef0f4' },
           ].map((chip, i) => (
             <span key={i} style={{background:chip.bg, color:chip.color, borderRadius:'20px', padding:'6px 14px', fontSize:'13px', fontWeight:600}}>
               {chip.label}
@@ -116,7 +127,7 @@ export default async function AdminApplicationsPage() {
         </div>
       )}
 
-      {(!applications || applications.length === 0) && (
+      {(appsWithProfiles.length === 0) && (
         <div style={{textAlign:'center', padding:'60px 20px', color:'#98a0b0'}}>
           <div style={{fontSize:'48px', marginBottom:'16px'}}>📋</div>
           <div style={{fontSize:'18px', fontFamily:'Lora, serif', color:'#1a2744', marginBottom:'8px'}}>No applications yet</div>

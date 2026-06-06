@@ -57,7 +57,7 @@ export default async function AdminTicketsPage() {
           const p = priorityColors[ticket.priority] || priorityColors.medium
           const profile = ticket.profiles as any
           return (
-            <Link key={ticket.id} href={`/dashboard/tickets/${ticket.id}`} style={{textDecoration:'none'}}>
+            <Link key={ticket.id} href={`/admin/tickets/${ticket.id}`} style={{textDecoration:'none'}}>
               <div style={{display:'flex', alignItems:'center', gap:'14px', padding:'14px 20px', borderBottom:'1px solid #eef1f7', cursor:'pointer', transition:'background .14s'}}>
                 <div style={{flex:1, minWidth:0}}>
                   <div style={{fontSize:'14px', fontWeight:600, color:'#1a2744', marginBottom:'3px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
