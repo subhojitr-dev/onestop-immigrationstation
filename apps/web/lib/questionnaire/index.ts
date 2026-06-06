@@ -17,24 +17,23 @@
  */
 
 import { h1bQuestionnaire } from './h1b'
-// Phase 2 imports (uncomment when questionnaire files are created):
-// import { l1Questionnaire } from './l1'
-// import { greenCardQuestionnaire } from './green_card'
-// import { k1Questionnaire } from './k1'
-// import { familyPetitionQuestionnaire } from './family_petition'
+import { l1Questionnaire } from './l1'
+import { greenCardQuestionnaire } from './green_card'
+import { k1Questionnaire } from './k1'
+import { familyPetitionQuestionnaire } from './family_petition'
 import type { VisaQuestionnaire } from './types'
 
 /**
  * Map of visaType string → questionnaire data.
  * Used by the questionnaire engine to load the correct set of sections and fields.
+ * All five visa types are now available.
  */
 export const questionnaires: Record<string, VisaQuestionnaire> = {
   h1b: h1bQuestionnaire,
-  // Phase 2 — uncomment as each questionnaire is built:
-  // l1: l1Questionnaire,
-  // green_card: greenCardQuestionnaire,
-  // k1: k1Questionnaire,
-  // family_petition: familyPetitionQuestionnaire,
+  l1: l1Questionnaire,
+  green_card: greenCardQuestionnaire,
+  k1: k1Questionnaire,
+  family_petition: familyPetitionQuestionnaire,
 }
 
 /**
@@ -62,7 +61,7 @@ export const visaTypeOptions = [
     icon: '🌐',
     forms: ['I-129 with L Supplement'],
     processingTime: '2–5 months',
-    available: false, // ⬜ Phase 2 — set to true after creating l1.ts
+    available: true,  // ✅ questionnaire built
   },
   {
     id: 'green_card',
@@ -72,7 +71,7 @@ export const visaTypeOptions = [
     icon: '🟢',
     forms: ['I-140', 'I-485', 'I-864'],
     processingTime: 'Varies widely by category',
-    available: false, // ⬜ Phase 2
+    available: true,  // ✅ questionnaire built
   },
   {
     id: 'k1',
@@ -82,7 +81,7 @@ export const visaTypeOptions = [
     icon: '💍',
     forms: ['I-129F', 'DS-160'],
     processingTime: '6–12 months',
-    available: false, // ⬜ Phase 2
+    available: true,  // ✅ questionnaire built
   },
   {
     id: 'family_petition',
@@ -92,7 +91,7 @@ export const visaTypeOptions = [
     icon: '👨‍👩‍👧',
     forms: ['I-130', 'I-485', 'I-864'],
     processingTime: 'Varies by relationship category',
-    available: false, // ⬜ Phase 2
+    available: true,  // ✅ questionnaire built
   },
 ]
 
