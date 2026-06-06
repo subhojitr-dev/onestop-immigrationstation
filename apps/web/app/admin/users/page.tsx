@@ -29,16 +29,22 @@ export default async function AdminUsersPage() {
 
   return (
     <div style={{padding:'32px'}}>
-      <div style={{marginBottom:'28px', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
+      <div style={{marginBottom:'28px', display:'flex', alignItems:'flex-start', justifyContent:'space-between', flexWrap:'wrap', gap:'16px'}}>
         <div>
           <h1 style={{fontFamily:'Lora, serif', fontSize:'28px', color:'#1a2744', margin:'0 0 6px'}}>Users</h1>
           <p style={{color:'#586176', fontSize:'15px', margin:0}}>All registered users — {users?.length ?? 0} total</p>
         </div>
-        <div style={{display:'flex', gap:'8px', flexWrap:'wrap'}}>
-          {Object.entries(roleCount).map(([role, count]) => {
-            const c = roleColors[role] || roleColors.beneficiary
-            return <span key={role} style={{background:c.bg, color:c.color, borderRadius:'20px', padding:'5px 13px', fontSize:'12px', fontWeight:600, textTransform:'capitalize'}}>{role} ({count})</span>
-          })}
+        <div style={{display:'flex', alignItems:'center', gap:'12px', flexWrap:'wrap'}}>
+          <div style={{display:'flex', gap:'8px', flexWrap:'wrap'}}>
+            {Object.entries(roleCount).map(([role, count]) => {
+              const c = roleColors[role] || roleColors.beneficiary
+              return <span key={role} style={{background:c.bg, color:c.color, borderRadius:'20px', padding:'5px 13px', fontSize:'12px', fontWeight:600, textTransform:'capitalize'}}>{role} ({count})</span>
+            })}
+          </div>
+          <Link href="/admin/users/new"
+            style={{background:'linear-gradient(135deg,#cfa94a,#b8952a)', color:'#0b1322', padding:'10px 18px', borderRadius:'10px', textDecoration:'none', fontWeight:700, fontSize:'13px', flexShrink:0, whiteSpace:'nowrap'}}>
+            + Add New Lawyer
+          </Link>
         </div>
       </div>
 
