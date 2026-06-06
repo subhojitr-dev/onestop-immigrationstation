@@ -11,7 +11,7 @@ export default async function AdminAppointmentsPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: appointments } = await supabase
+  const { data: appointments } = await admin
     .from('appointments')
     .select('*, profiles(full_name, email)')
     .order('date', { ascending: true })

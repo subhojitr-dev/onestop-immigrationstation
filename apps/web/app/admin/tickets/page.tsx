@@ -24,12 +24,12 @@ export default async function AdminTicketsPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: tickets } = await supabase
+  const { data: tickets } = await admin
     .from('tickets')
     .select('*, profiles(full_name, email)')
     .order('created_at', { ascending: false })
 
-  const { data: replyCount } = await supabase
+  const { data: replyCount } = await admin
     .from('ticket_replies')
     .select('ticket_id')
 

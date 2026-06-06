@@ -19,7 +19,7 @@ export default async function AdminUsersPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: users } = await supabase
+  const { data: users } = await admin
     .from('profiles')
     .select('*')
     .order('created_at', { ascending: false })

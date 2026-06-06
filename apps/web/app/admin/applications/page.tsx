@@ -24,7 +24,7 @@ export default async function AdminApplicationsPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: applications } = await supabase
+  const { data: applications } = await admin
     .from('applications')
     .select('*, profiles(full_name, email, phone)')
     .order('submitted_at', { ascending: false })

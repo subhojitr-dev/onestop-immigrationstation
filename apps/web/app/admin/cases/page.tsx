@@ -21,7 +21,7 @@ export default async function AdminCasesPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: cases } = await supabase
+  const { data: cases } = await admin
     .from('cases')
     .select('*, profiles!cases_user_id_fkey(full_name, email)')
     .order('opened_date', { ascending: false })

@@ -28,7 +28,7 @@ export default async function AdminSlotsPage() {
   const today = new Date().toISOString().split('T')[0]
   const in60 = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
-  const { data: slots } = await supabase
+  const { data: slots } = await admin
     .from('consultation_slots')
     .select('*, booked_profile:profiles!booked_by(full_name, email)')
     .gte('slot_date', today)

@@ -18,7 +18,7 @@ export default async function AdminBlogPage() {
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
-  const { data: posts } = await supabase
+  const { data: posts } = await admin
     .from('blog_posts')
     .select('id, title, slug, category, is_published, published_at, author_name, created_at')
     .order('created_at', { ascending: false })
