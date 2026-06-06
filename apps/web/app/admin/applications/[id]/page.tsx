@@ -20,14 +20,21 @@ export default async function AdminApplicationDetailPage({ params }: { params: P
   const admin = createAdminClient()
   const { data: app } = await admin
     .from('applications')
-    .select('*, profiles(full_name, email, phone, role)')
+    .select('*')
     .eq('id', id)
     .single()
 
   if (!app) notFound()
 
+  // Fetch profile separately (join fails with service role client)
+  const { data: profileData } = await admin
+    .from('profiles')
+    .select('full_name, email, phone, role')
+    .eq('id', app.user_id)
+    .single()
+
   const q = questionnaires[app.visa_type]
-  const profile = app.profiles as any
+  const profile = profileData as any
   const answers = app.data as Record<string, any>
 
   const statusColors: Record<string, {bg:string;color:string;label:string}> = {

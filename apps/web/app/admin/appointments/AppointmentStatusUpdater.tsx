@@ -17,8 +17,12 @@ export default function AppointmentStatusUpdater({ apptId, currentStatus, status
   async function handleChange(newStatus: string) {
     setStatus(newStatus)
     setSaving(true)
-    const supabase = createClient()
-    await supabase.from('appointments').update({ status: newStatus }).eq('id', apptId)
+    // Use admin API route — regular client blocked by RLS on other users' appointments
+    await fetch('/api/admin/update-appointment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apptId, status: newStatus }),
+    })
     setSaving(false)
     router.refresh()
   }

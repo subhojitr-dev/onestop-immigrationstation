@@ -70,7 +70,9 @@ export default async function AdminApplicationsPage() {
           <span style={{background:s.bg, color:s.color, borderRadius:'20px', padding:'4px 12px', fontSize:'12px', fontWeight:600, flexShrink:0}}>
             {s.label}
           </span>
-          <span style={{color:'#98a0b0', fontSize:'13px', flexShrink:0}}>→</span>
+          <span style={{background:'linear-gradient(135deg,#1a2744,#243355)', color:'#fff', borderRadius:'8px', padding:'6px 14px', fontSize:'12px', fontWeight:700, flexShrink:0}}>
+            Review →
+          </span>
         </div>
       </Link>
     )
