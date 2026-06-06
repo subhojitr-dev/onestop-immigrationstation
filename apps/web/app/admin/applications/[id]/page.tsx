@@ -144,7 +144,15 @@ export default async function AdminApplicationDetailPage({ params }: { params: P
 
         {/* ── RIGHT: Actions panel ── */}
         <div style={{position:'sticky', top:'20px'}}>
-          <ApplicationActions appId={app.id} currentStatus={app.status} lawyerNotes={app.lawyer_notes || ''} />
+          <ApplicationActions
+            appId={app.id}
+            currentStatus={app.status}
+            lawyerNotes={app.lawyer_notes || ''}
+            visaType={app.visa_type}
+            clientUserId={app.user_id}
+            clientName={profile?.full_name || profile?.email || 'Client'}
+            existingCaseId={app.case_id ?? null}
+          />
           <DownloadPdf
             application={{ id: app.id, visa_type: app.visa_type, status: app.status, submitted_at: app.submitted_at, data: app.data, profiles: profile }}
             questionnaire={q || null}

@@ -28,22 +28,38 @@ export default async function AdminSlotsPage() {
   const today = new Date().toISOString().split('T')[0]
   const in60 = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
-  const { data: slots } = await admin
+  // Each lawyer only sees their OWN slots — filtered by lawyer_id = current user
+  const { data: rawSlots } = await admin
     .from('consultation_slots')
-    .select('*, booked_profile:profiles!booked_by(full_name, email)')
+    .select('*')
+    .eq('lawyer_id', user.id)   // ← key: only this lawyer's slots
     .gte('slot_date', today)
     .lte('slot_date', in60)
     .order('slot_date', { ascending: true })
     .order('slot_time', { ascending: true })
 
+  // Manually join booked_by profile
+  const bookedByIds = [...new Set((rawSlots ?? []).filter(s => s.booked_by).map(s => s.booked_by))]
+  const { data: bookedProfiles } = bookedByIds.length > 0
+    ? await admin.from('profiles').select('id, full_name, email').in('id', bookedByIds)
+    : { data: [] }
+  const bookedMap = Object.fromEntries((bookedProfiles ?? []).map(p => [p.id, p]))
+
+  const slots = (rawSlots ?? []).map(s => ({
+    ...s,
+    booked_profile: s.booked_by ? bookedMap[s.booked_by] ?? null : null,
+  }))
+
   return (
     <div style={{ padding: '32px' }}>
       <div style={{ marginBottom: '28px' }}>
-        <h1 style={{ fontFamily: 'Lora, serif', fontSize: '28px', color: '#1a2744', margin: '0 0 6px' }}>Availability</h1>
-        <p style={{ color: '#586176', fontSize: '15px', margin: 0 }}>Manage consultation time slots clients can book</p>
+        <h1 style={{ fontFamily: 'Lora, serif', fontSize: '28px', color: '#1a2744', margin: '0 0 6px' }}>My Availability</h1>
+        <p style={{ color: '#586176', fontSize: '15px', margin: 0 }}>
+          Your consultation slots — {slots.filter(s => !s.is_booked).length} available · {slots.filter(s => s.is_booked).length} booked
+        </p>
       </div>
 
-      <SlotManager slots={slots ?? []} lawyerId={user.id} />
+      <SlotManager slots={slots} lawyerId={user.id} />
     </div>
   )
 }

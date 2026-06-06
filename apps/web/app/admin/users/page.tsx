@@ -2,6 +2,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import UserRoleChanger from './UserRoleChanger'
 
 const roleColors: Record<string,{bg:string;color:string}> = {
   beneficiary: { bg:'#eef0f4', color:'#566173' },
@@ -45,7 +46,7 @@ export default async function AdminUsersPage() {
         <table style={{width:'100%', borderCollapse:'collapse', fontSize:'14px'}}>
           <thead>
             <tr style={{background:'#f5f6fa'}}>
-              {['Name','Email','Role','Phone','Joined'].map(h => (
+              {['Name','Email','Role','Phone','Joined','Change Role'].map(h => (
                 <th key={h} style={{textAlign:'left', padding:'11px 16px', fontSize:'11px', fontWeight:700, textTransform:'uppercase', letterSpacing:'.06em', color:'#98a0b0', borderBottom:'1px solid #e7e9f0'}}>
                   {h}
                 </th>
@@ -74,6 +75,9 @@ export default async function AdminUsersPage() {
                   <td style={{padding:'13px 16px', color:'#586176'}}>{u.phone || '—'}</td>
                   <td style={{padding:'13px 16px', color:'#98a0b0', fontSize:'13px'}}>
                     {new Date(u.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}
+                  </td>
+                  <td style={{padding:'13px 16px'}}>
+                    <UserRoleChanger userId={u.id} currentRole={u.role} />
                   </td>
                 </tr>
               )
