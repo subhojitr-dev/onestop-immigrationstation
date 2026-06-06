@@ -1,17 +1,20 @@
 -- ============================================================
--- Migration 003: Populate consultation_slots table
+-- Migration 003: Create consultation_slots table
 -- Run this in Supabase → SQL Editor → New query
 -- ============================================================
 
--- Ensure the table has the right columns (add if missing)
-alter table public.consultation_slots
-  add column if not exists lawyer_id  uuid references public.profiles(id),
-  add column if not exists slot_date  date,
-  add column if not exists slot_time  text,
-  add column if not exists is_booked  boolean default false,
-  add column if not exists booked_by  uuid references public.profiles(id);
+-- Create the table from scratch (handles case where it doesn't exist yet)
+create table if not exists public.consultation_slots (
+  id          uuid default uuid_generate_v4() primary key,
+  lawyer_id   uuid references public.profiles(id),
+  slot_date   date not null,
+  slot_time   text not null,
+  is_booked   boolean default false,
+  booked_by   uuid references public.profiles(id),
+  created_at  timestamptz default now()
+);
 
--- RLS: everyone can read available slots; only lawyers/admins can insert/update
+-- RLS: everyone can read slots; only lawyers/admins can insert/update/delete
 alter table public.consultation_slots enable row level security;
 
 drop policy if exists "Anyone reads available slots" on public.consultation_slots;
