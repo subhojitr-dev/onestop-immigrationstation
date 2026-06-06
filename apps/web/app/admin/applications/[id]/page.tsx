@@ -3,6 +3,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { questionnaires } from '@/lib/questionnaire'
 import ApplicationActions from './ApplicationActions'
+import DownloadPdf from './DownloadPdf'
 
 const visaLabels: Record<string,string> = {
   h1b:'H-1B', l1:'L-1', green_card:'Green Card', k1:'K-1', family_petition:'Family Petition'
@@ -134,6 +135,10 @@ export default async function AdminApplicationDetailPage({ params }: { params: P
         {/* ── RIGHT: Actions panel ── */}
         <div style={{position:'sticky', top:'20px'}}>
           <ApplicationActions appId={app.id} currentStatus={app.status} lawyerNotes={app.lawyer_notes || ''} />
+          <DownloadPdf
+            application={{ id: app.id, visa_type: app.visa_type, status: app.status, submitted_at: app.submitted_at, data: app.data, profiles: profile }}
+            questionnaire={q || null}
+          />
 
           {/* Quick links */}
           <div style={{background:'#fff', borderRadius:'16px', padding:'20px', border:'1px solid #e7e9f0', boxShadow:'0 1px 2px rgba(17,27,49,.04)'}}>

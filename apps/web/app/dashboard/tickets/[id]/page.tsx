@@ -86,6 +86,28 @@ export default function TicketDetailPage() {
         .eq('ticket_id', ticketId)
         .order('created_at', { ascending: true })
       setReplies(r ?? [])
+
+      // Email the ticket owner that they got a reply (non-blocking)
+      const { data: ticketOwner } = await supabase
+        .from('profiles').select('full_name, email:id').eq('id', ticket.user_id).single() as any
+      const { data: senderProfile } = await supabase
+        .from('profiles').select('full_name, role').eq('id', user.id).single() as any
+      if (ticketOwner && ticket.user_id !== user.id) {
+        fetch('/api/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'ticket_reply',
+            recipientName: ticketOwner.full_name || 'Client',
+            recipientEmail: user.email, // use authenticated user's email as fallback
+            ticketSubject: ticket.subject,
+            ticketId,
+            replyBody: message.trim(),
+            replierName: senderProfile?.full_name || 'Team',
+            isStaffReply: false,
+          }),
+        }).catch(() => {})
+      }
     }
     setSending(false)
   }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Blog & News — One Stop Immigration Station",
@@ -219,7 +220,25 @@ const SiteFooter = () => (
   </>
 );
 
-export default function BlogPage() {
+// Hardcoded fallback posts shown when Supabase has no published posts yet
+const FALLBACK_POSTS = [
+  { id:'1', slug:'#', title:'Maintaining Employee Well-Being During Times of Uncertainty', excerpt:'A mindful approach can help organizations maintain a positive employee experience in uncertain business conditions.', category:'Workplace', author_name:'OSIS Team', published_at:'2022-02-25', featured_image:'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&h=450&q=80' },
+  { id:'2', slug:'#', title:'USCIS Releases Timetable to Resume Premium Processing for I-129 and I-140', excerpt:'USCIS announced that premium processing will resume for all I-129 and I-140 petitions in phases.', category:'USCIS Updates', author_name:'OSIS Team', published_at:'2020-06-02', featured_image:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&h=450&q=80' },
+  { id:'3', slug:'#', title:'H-1B Cap Season: What Employers Need to Know', excerpt:'As the H-1B cap season approaches, employers must prepare their petitions well in advance of the April filing window.', category:'H-1B', author_name:'OSIS Team', published_at:'2024-01-15', featured_image:'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=450&q=80' },
+]
+
+export default async function BlogPage() {
+  // Fetch published posts from Supabase — falls back to hardcoded posts if table is empty
+  const supabase = await createClient()
+  const { data: dbPosts } = await supabase
+    .from('blog_posts')
+    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image')
+    .eq('is_published', true)
+    .order('published_at', { ascending: false })
+    .limit(20)
+
+  const posts = (dbPosts && dbPosts.length > 0) ? dbPosts : FALLBACK_POSTS
+
   return (
     <>
       <a href="#main" className="skip-link">Skip to content</a>
@@ -241,81 +260,39 @@ export default function BlogPage() {
         <section className="section">
           <div className="container blog-layout">
             <div className="post-list">
-              <article className="post-item reveal">
-                <div className="post-thumb ph has-img">
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
-                  <div className="blog-date"><div className="d">25</div><div className="m">Feb</div></div>
-                </div>
-                <div className="post-body">
-                  <div className="post-meta">
-                    <span className="cat-badge">Workplace</span>
-                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Feb 25, 2022</span>
-                  </div>
-                  <h2><a href="#">Maintaining Employee Well-Being During Times of Uncertainty</a></h2>
-                  <p>A mindful approach can help organizations maintain a positive employee experience in uncertain business conditions as economic conditions continue to shift across industries.</p>
-                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-              </article>
-              <article className="post-item reveal">
-                <div className="post-thumb ph has-img">
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
-                  <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
-                </div>
-                <div className="post-body">
-                  <div className="post-meta">
-                    <span className="cat-badge">USCIS Updates</span>
-                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
-                  </div>
-                  <h2><a href="#">USCIS Releases Timetable to Resume Premium Processing for I-129 and I-140</a></h2>
-                  <p>USCIS announced that premium processing will resume for all I-129 and I-140 petitions in phases throughout the month — note these dates remain subject to change.</p>
-                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-              </article>
-              <article className="post-item reveal">
-                <div className="post-thumb ph has-img">
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
-                  <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
-                </div>
-                <div className="post-body">
-                  <div className="post-meta">
-                    <span className="cat-badge">Court Decisions</span>
-                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
-                  </div>
-                  <h2><a href="#">Court Decision Overturns Employer-Employee Relationship Scrutiny in H-1B Cases</a></h2>
-                  <p>USCIS settled a lawsuit to overturn restrictive H-1B policies, following a District Court opinion ruling that key practices limiting the employer-employee relationship were unlawful.</p>
-                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-              </article>
-              <article className="post-item reveal">
-                <div className="post-thumb ph has-img">
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
-                  <div className="blog-date"><div className="d">02</div><div className="m">Jun</div></div>
-                </div>
-                <div className="post-body">
-                  <div className="post-meta">
-                    <span className="cat-badge">Workplace</span>
-                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jun 2, 2020</span>
-                  </div>
-                  <h2><a href="#">Maintaining Employee Well-Being During Times of Uncertainty</a></h2>
-                  <p>Practical guidance for HR leaders and sponsoring employers on supporting foreign-national staff through processing delays and policy changes.</p>
-                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-              </article>
-              <article className="post-item reveal">
-                <div className="post-thumb ph has-img">
-                  <img className="ph-img" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&h=450&q=80" alt="" loading="lazy" referrerPolicy="no-referrer" />
-                  <div className="blog-date"><div className="d">20</div><div className="m">Jul</div></div>
-                </div>
-                <div className="post-body">
-                  <div className="post-meta">
-                    <span className="cat-badge">Policy</span>
-                    <span className="meta-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Jul 20, 2018</span>
-                  </div>
-                  <h2><a href="#">COVID-19&apos;s Impact on Immigrants, the Labor Market and the Economy</a></h2>
-                  <p>An overview of how pandemic-era restrictions reshaped visa processing, the labor market, and the broader economic outlook for immigrant communities.</p>
-                  <a href="#" className="link-arrow">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-              </article>
+              {posts.map((post: any) => {
+                const date = post.published_at ? new Date(post.published_at) : null
+                const day  = date ? date.getDate().toString().padStart(2,'0') : ''
+                const mon  = date ? date.toLocaleDateString('en-US',{month:'short'}) : ''
+                const href = post.slug === '#' ? '#' : `/blog/${post.slug}`
+                return (
+                  <article key={post.id} className="post-item reveal">
+                    <div className="post-thumb ph has-img">
+                      {post.featured_image
+                        ? <img className="ph-img" src={post.featured_image} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                        : <div className="ph-img" style={{background:'linear-gradient(135deg,#1a2744,#243355)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'40px'}}>📰</div>
+                      }
+                      {day && <div className="blog-date"><div className="d">{day}</div><div className="m">{mon}</div></div>}
+                    </div>
+                    <div className="post-body">
+                      <div className="post-meta">
+                        <span className="cat-badge">{post.category || 'Immigration'}</span>
+                        {date && (
+                          <span className="meta-date">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                            {date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+                          </span>
+                        )}
+                      </div>
+                      <h2><a href={href}>{post.title}</a></h2>
+                      {post.excerpt && <p>{post.excerpt}</p>}
+                      <a href={href} className="link-arrow">
+                        Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </article>
+                )
+              })}
             </div>
 
             <aside className="sidebar">

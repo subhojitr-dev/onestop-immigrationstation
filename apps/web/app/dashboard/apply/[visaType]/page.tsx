@@ -137,6 +137,25 @@ export default function QuestionnairePage() {
       completed_sections: allCompleted,
       submitted_at: new Date().toISOString(),
     }).eq('id', appId)
+
+    // Fire confirmation email to client + notification to lawyer
+    // Non-blocking — a failed email never prevents the submission from completing
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
+      fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'application_submitted',
+          clientName: profile?.full_name || user.email?.split('@')[0] || 'Client',
+          clientEmail: user.email,
+          visaType: q.label,
+          appId,
+        }),
+      }).catch(() => {}) // swallow network errors silently
+    }
+
     setSubmitted(true)
     setSubmitting(false)
   }

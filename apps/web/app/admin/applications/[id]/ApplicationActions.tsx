@@ -27,11 +27,42 @@ export default function ApplicationActions({ appId, currentStatus, lawyerNotes }
   async function handleSave() {
     setSaving(true)
     const supabase = createClient()
+
+    // Fetch application + client profile before updating (need email + visa type)
+    const { data: app } = await supabase
+      .from('applications')
+      .select('visa_type, user_id, status, profiles(full_name)')
+      .eq('id', appId)
+      .single() as any
+
     await supabase.from('applications').update({
       status,
       lawyer_notes: notes,
       reviewed_at: new Date().toISOString(),
     }).eq('id', appId)
+
+    // Email client when status actually changed (not just notes update)
+    if (app && status !== app.status && status !== 'submitted') {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (authUser) {
+        // Get client's email from auth — profiles doesn't store email directly
+        const { data: clientAuth } = await supabase
+          .from('profiles').select('email:id').eq('id', app.user_id).single() as any
+        fetch('/api/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'application_status',
+            clientName: app.profiles?.full_name || 'Client',
+            clientEmail: clientAuth?.email || '',
+            visaType: app.visa_type,
+            newStatus: status,
+            lawyerNote: notes || undefined,
+          }),
+        }).catch(() => {})
+      }
+    }
+
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)

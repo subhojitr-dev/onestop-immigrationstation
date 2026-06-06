@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
+import LawyerActions from './LawyerActions'
 
 const statusColors: Record<string, { bg: string; color: string; label: string }> = {
   open:               { bg: '#e8effe', color: '#1d4ed8', label: 'Open' },
@@ -17,6 +18,10 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  // Fetch profile to know role (lawyers get extra action panel)
+  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+  const isLawyer = profile?.role === 'lawyer' || profile?.role === 'admin'
 
   const { data: c } = await supabase
     .from('cases').select('*').eq('id', id).single()
@@ -180,6 +185,15 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
               </div>
             )}
           </div>
+
+          {/* Lawyer actions — only shown to lawyers/admins */}
+          {isLawyer && (
+            <LawyerActions
+              caseId={c.id}
+              caseNumber={c.case_number}
+              clientUserId={c.user_id}
+            />
+          )}
 
           {/* Help card */}
           <div className="help-card">
