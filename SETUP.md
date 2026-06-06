@@ -120,6 +120,49 @@ supabase/migrations/003_slots.sql          ← consultation_slots table (CREATE 
 ```
 **How to run:** Supabase dashboard → SQL Editor → New query → paste contents → Run
 
+### Additional RLS Policies (run manually in SQL Editor — 2026-06-06)
+**What:** The initial RLS policies only allowed users to see their own data. Lawyers and admins need to see ALL users' data in the admin panel.  
+**Why:** Without these, `/admin/appointments`, `/admin/applications`, `/admin/cases` etc. all showed empty even though data existed — because Supabase blocked the admin from reading other users' rows.  
+**Fix:** Run this SQL in Supabase → SQL Editor:
+
+```sql
+-- Appointments: lawyers/admins see all
+drop policy if exists "Lawyers see all appointments" on public.appointments;
+create policy "Lawyers see all appointments"
+  on public.appointments for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+
+-- Cases: lawyers/admins see all
+drop policy if exists "Lawyers see all cases" on public.cases;
+create policy "Lawyers see all cases"
+  on public.cases for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+
+-- Tickets: lawyers/admins see all
+drop policy if exists "Lawyers see all tickets" on public.tickets;
+create policy "Lawyers see all tickets"
+  on public.tickets for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+
+-- Documents: lawyers/admins see all
+drop policy if exists "Lawyers see all documents" on public.documents;
+create policy "Lawyers see all documents"
+  on public.documents for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+
+-- Profiles: lawyers/admins see all
+drop policy if exists "Lawyers see all profiles" on public.profiles;
+create policy "Lawyers see all profiles"
+  on public.profiles for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+
+-- Applications: lawyers/admins see all
+drop policy if exists "Lawyers see all applications" on public.applications;
+create policy "Lawyers see all applications"
+  on public.applications for select
+  using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
+```
+
 ### Storage Buckets
 - `avatars` — PUBLIC bucket (profile pictures)
 - `documents` — PRIVATE bucket with RLS policies
