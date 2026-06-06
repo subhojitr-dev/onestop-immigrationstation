@@ -163,6 +163,28 @@ create policy "Lawyers see all applications"
   using (exists (select 1 from public.profiles where id = auth.uid() and role in ('lawyer','admin')));
 ```
 
+⚠️ **IMPORTANT — Do NOT add "Lawyers see all profiles"** — that policy is recursive.
+It queries the profiles table to check if you're a lawyer, which triggers the policy again → infinite loop → breaks login for everyone. The original "Users see own profile" policy (`auth.uid() = id`) is sufficient because the admin layout only reads the current user's own profile row.
+
+**The real fix for admin data reads** is the service role client in `lib/supabase/admin.ts` — it bypasses RLS entirely. All `/admin/*` server pages use `createAdminClient()` for data queries and `createClient()` only for auth checks.
+
+### Additional Manual SQL (run after migrations — 2026-06-06)
+**What:** Profile table schema fixes needed for lawyer accounts.  
+**Why:** Original schema was missing `address` column and `lawyer` was not in the role check constraint.
+
+```sql
+-- Add address column to profiles
+alter table public.profiles
+  add column if not exists address text;
+
+-- Fix role check constraint to include 'lawyer'
+alter table public.profiles
+  drop constraint if exists profiles_role_check;
+alter table public.profiles
+  add constraint profiles_role_check
+  check (role in ('beneficiary','sponsor','contact','admin','lawyer'));
+```
+
 ### Storage Buckets
 - `avatars` — PUBLIC bucket (profile pictures)
 - `documents` — PRIVATE bucket with RLS policies
@@ -468,4 +490,116 @@ See `TESTING.md` for the complete test plan.
 
 **Immediate action required:**
 1. Add `RESEND_API_KEY` to Vercel environment variables (for production emails)
-2. Test all 5 features using `TESTING.md` as the checklist
+2. Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel environment variables (for admin panel data reads)
+3. Test all features using `TESTING.md` as the checklist
+
+---
+
+## Step 16 — Admin Panel Data Visibility Fix ✅
+
+**What:** Admin pages (applications, appointments, tickets etc.) were showing empty even though data existed.  
+**Why:** The regular Supabase server client uses the anon key and respects RLS — so a lawyer reading another user's data gets blocked. The fix is a service role client that bypasses RLS for admin reads.
+
+**Solution: Two-client pattern**
+
+```
+lib/supabase/server.ts  → anon key, respects RLS → use for auth checks only
+lib/supabase/admin.ts   → service role key, bypasses RLS → use for admin data reads
+```
+
+All `/admin/*` server pages now do:
+```typescript
+const supabase = await createClient()          // auth check
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) redirect('/login')
+
+const admin = createAdminClient()              // data reads
+const { data } = await admin.from('...').select(...)
+```
+
+**env variable required:** `SUPABASE_SERVICE_ROLE_KEY=sb_secret_IQKgcx_XtmOLv6MDiwp3ZQ_B6nbmYjA`  
+Set in both `apps/web/.env.local` AND Vercel dashboard.
+
+**Admin API routes** (for client-side mutations that need to bypass RLS):
+- `POST /api/admin/update-appointment` — lawyer updates appointment status
+- `POST /api/admin/update-application` — lawyer updates application status/notes
+- `POST /api/admin/open-case` — converts application into active legal case
+- `POST /api/admin/update-user-role` — admin changes any user's role
+- `POST /api/admin/create-lawyer` — admin creates lawyer account
+
+---
+
+## Step 17 — Application → Case Flow ✅
+
+**What:** Added "Open Case" button on application detail page that auto-creates a case from the application.  
+**Why:** Cases and applications were completely disconnected. Lawyers had no way to convert a reviewed application into an active legal case without direct database access.
+
+**Flow:**
+1. Client submits questionnaire → `applications` table, status = `submitted`
+2. Lawyer reviews in `/admin/applications/[id]` → adds notes → changes status → **Save Review**
+3. Lawyer clicks **"+ Open Case for This Application"**
+4. `/api/admin/open-case` creates a row in `cases` table with:
+   - Auto-generated case number: `OSIS-YYYY-NNN`
+   - visa_type from the application
+   - user_id = the client's user ID
+   - assigned_attorney = the lawyer's name
+   - Initial timeline event: "Case Opened"
+5. Case appears in `/admin/cases` and client's `/dashboard/cases`
+
+---
+
+## Step 18 — Lawyer Account Management ✅
+
+**What:** Admin can create lawyer accounts and change any user's role from the UI — no SQL required.  
+**Why:** Previously, creating a lawyer required direct Supabase SQL access. The admin needed a UI to manage this.
+
+### Creating a Lawyer Account (/admin/users/new)
+1. Go to `/admin/users` → click **+ Add New Lawyer**
+2. Fill: First Name, Last Name, Email, Phone, Address
+3. Click **Create Lawyer Account**
+4. System calls `/api/admin/create-lawyer` which:
+   - Creates Supabase auth user (pre-verified, no email confirmation needed)
+   - Creates profile row with role = `lawyer`
+   - Sends welcome email with "Set My Password" link
+5. Lawyer clicks the link → sets password → logs in → goes to `/admin` automatically
+
+### Changing User Roles (/admin/users)
+Each user row has an inline role dropdown. Change it → saves instantly via `/api/admin/update-user-role`.  
+Only `admin` role users can change roles (lawyers cannot).
+
+---
+
+## Step 19 — Lawyer-Specific Admin Views ✅
+
+**What:** Lawyers see only their own availability slots; role-based redirect on login.  
+**Why:** All lawyers sharing one slot pool created confusion. Each lawyer should manage their own calendar.
+
+**Availability (/admin/slots):**
+- Filters by `lawyer_id = auth user's id`
+- Shows "My Availability" with count of available vs booked slots
+- Adding a slot sets `lawyer_id` to the current user
+- Client booking page queries slots without lawyer_id filter (sees all available slots)
+
+**Login redirect:**
+- `lawyer` or `admin` role → `/admin`
+- All other roles → `/dashboard`
+
+---
+
+## Known Issues & Gotchas (Updated)
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Mid-page content invisible | `.reveal` class hides content | `opacity: 1 !important` in additions.css — never remove |
+| `liberty.png` not found | Relative path breaks | Use `/liberty.png` in script.js |
+| `globals.css` not loading | Must be imported | `import "./globals.css"` in app/layout.tsx |
+| Images staying hidden | Wrong CSS class | Use `className="ph has-img"` |
+| Port 3000 in use | Prior server running | `taskkill /F /IM node.exe` on Windows |
+| `consultation_slots` missing | Not created in 001 | Run migration 003 |
+| Emails not sending in production | Key not in Vercel | Add `RESEND_API_KEY` to Vercel env vars |
+| Admin shows empty data | Regular client respects RLS | Use `createAdminClient()` for admin data reads |
+| "Lawyers see all profiles" policy | Recursive — breaks login | Never add this policy — use admin client instead |
+| Appointment status reverts | RLS blocks lawyer updating client's row | Use `/api/admin/update-appointment` route |
+| `profiles_role_check` blocks lawyer | Constraint missing 'lawyer' | Run manual SQL to drop + recreate constraint |
+| `address` column missing | Not in original schema | Run: `alter table public.profiles add column if not exists address text` |
+| Dev server env changes ignored | Env only loads on start | Restart `npm run dev` after `.env.local` changes |
