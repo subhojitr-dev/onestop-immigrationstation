@@ -44,7 +44,9 @@ export async function POST(req: NextRequest) {
   const { data: authData, error: authError } = await admin.auth.admin.createUser({
     email: email.trim().toLowerCase(),
     email_confirm: true,  // auto-confirm — lawyer sets password via forgot-password flow
-    user_metadata: { full_name: fullName, role: 'lawyer' },
+    user_metadata: { full_name: fullName },
+    // Note: role NOT passed here — the trigger defaults to 'beneficiary'.
+    // The upsert below immediately sets it to 'lawyer'.
   })
 
   if (authError) {
