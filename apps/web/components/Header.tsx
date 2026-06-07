@@ -10,15 +10,29 @@ import { createClient } from '@/lib/supabase/client'
 
 export default function Header({ activePage = 'home' }: { activePage?: string }) {
   const [user, setUser] = useState<any>(null)
+  const [role, setRole] = useState<string>('')
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(async ({ data }) => {
+      setUser(data.user)
+      if (data.user) {
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.user.id).single()
+        setRole(profile?.role || '')
+      }
+    })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null)
+      if (!session?.user) setRole('')
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    window.location.href = '/'
+  }
 
   return (
     <>
@@ -129,9 +143,14 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
 
           <div className="header-cta">
             {user ? (
-              <Link href="/dashboard" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>
-                My Portal
-              </Link>
+              <>
+                <Link href={role === 'admin' || role === 'lawyer' ? '/admin' : '/dashboard'} className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>
+                  My Portal
+                </Link>
+                <button onClick={handleSignOut} className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>
+                  Sign Out
+                </button>
+              </>
             ) : (
               <>
                 <Link href="/login" className="btn btn--outline-navy btn--sm" style={{marginRight:'6px'}}>Login</Link>
@@ -181,9 +200,10 @@ export default function Header({ activePage = 'home' }: { activePage?: string })
         </nav>
         <div className="mobile-foot">
           {user ? (
-            <Link href="/dashboard" className="btn btn--navy" style={{display:'block', textAlign:'center', marginBottom:'8px'}}>
-              My Portal
-            </Link>
+            <div style={{display:'flex', gap:'8px', marginBottom:'8px'}}>
+              <Link href={role === 'admin' || role === 'lawyer' ? '/admin' : '/dashboard'} className="btn btn--navy" style={{flex:1, textAlign:'center'}}>My Portal</Link>
+              <button onClick={handleSignOut} className="btn btn--outline-navy" style={{flex:1, textAlign:'center'}}>Sign Out</button>
+            </div>
           ) : (
             <div style={{display:'flex', gap:'8px', marginBottom:'8px'}}>
               <Link href="/login" className="btn btn--outline-navy" style={{flex:1, textAlign:'center'}}>Login</Link>
