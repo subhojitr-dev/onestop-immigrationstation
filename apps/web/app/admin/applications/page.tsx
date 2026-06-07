@@ -10,6 +10,7 @@ const statusColors: Record<string, {bg:string;color:string;label:string}> = {
   info_requested: { bg:'#fdeceb', color:'#b42318', label:'Info Requested' },
   approved:       { bg:'#e8effe', color:'#1d4ed8', label:'Approved' },
   rejected:       { bg:'#fdeceb', color:'#b42318', label:'Rejected' },
+  case_opened:    { bg:'#e6f6ef', color:'#047857', label:'Case Opened' },
 }
 
 const visaLabels: Record<string,string> = {

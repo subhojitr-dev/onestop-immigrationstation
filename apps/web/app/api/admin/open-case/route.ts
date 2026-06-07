@@ -27,6 +27,13 @@ export async function POST(req: NextRequest) {
   const { appId, visaType, clientUserId, clientName, notes } = await req.json()
   const admin = createAdminClient()
 
+  // Guard: check if a case already exists for this application
+  const { data: existingApp } = await admin
+    .from('applications').select('case_id').eq('id', appId).single()
+  if (existingApp?.case_id) {
+    return NextResponse.json({ ok: true, caseId: existingApp.case_id, alreadyExisted: true })
+  }
+
   // Generate case number: OSIS-2026-001
   const year = new Date().getFullYear()
   const { count } = await admin.from('cases').select('*', { count: 'exact', head: true })
@@ -58,8 +65,10 @@ export async function POST(req: NextRequest) {
     description: `${visaLabels[visaType] || visaType} case opened for ${clientName}. Intake questionnaire reviewed by ${profile?.full_name || 'attorney'}.`,
   })
 
-  // Update application status so it no longer shows as "submitted"
-  await admin.from('applications').update({ status: 'case_opened' }).eq('id', appId)
+  // Update application: set status + link to the new case
+  await admin.from('applications')
+    .update({ status: 'case_opened', case_id: newCase.id })
+    .eq('id', appId)
 
   return NextResponse.json({ ok: true, caseId: newCase.id, caseNumber: caseNum })
 }
