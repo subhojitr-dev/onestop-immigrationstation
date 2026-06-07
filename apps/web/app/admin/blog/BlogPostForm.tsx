@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 const CATEGORIES = ['Policy & News', 'USCIS Updates', 'H-1B', 'Green Card', 'Family Immigration', 'Court Decisions', 'Workplace', 'Employer Compliance', 'General']
 
 function slugify(str: string) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60)
 }
 
 interface Props {
