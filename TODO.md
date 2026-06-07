@@ -1,198 +1,197 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-06 (evening)
+**Last updated:** 2026-06-07 (Session 3)
 
 ---
 
-## ✅ COMPLETED — Everything Built and Deployed to Vercel
+## ✅ COMPLETED — Everything Built and Deployed
 
 ### Infrastructure & DevOps
 - [x] GitHub repo: `subhojitr-dev/onestop-immigrationstation`
 - [x] Turborepo monorepo (`apps/web`, `apps/mobile` placeholder, `supabase/migrations`)
 - [x] Next.js 16 in `apps/web/` with TypeScript
-- [x] Supabase project — 16 tables, RLS policies, Storage buckets
+- [x] Supabase project — 16+ tables, RLS policies, Storage buckets
 - [x] Deployed to Vercel — auto-deploys on every push to `main`
 - [x] Custom email domain — `noreply@onestopimmigrationstation.com` (Resend + GoDaddy DNS)
 - [x] Google OAuth — Google Cloud project "OnestopImmigration" wired to Supabase
-- [x] `RESEND_API_KEY` in `.env.local` + **Vercel environment variables** ✅
-- [x] `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` + **Vercel environment variables** ✅
-- [x] Vercel redeployed with both new keys active ✅
+- [x] `RESEND_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` + Vercel env vars ✅
 
-### Database Migrations Run in Supabase
+### Database Migrations (all run in Supabase)
 - [x] `001_initial_schema.sql` — tables, RLS, storage, auth trigger
 - [x] `002_applications.sql` — applications table
 - [x] `003_slots.sql` — consultation_slots table
-- [x] Manual SQL: `address` column added to profiles
-- [x] Manual SQL: `lawyer` added to profiles role check constraint
-- [x] Manual SQL: RLS policies for lawyers to read all appointments/cases/tickets/docs/applications
+- [x] `004_blog_comments.sql` — blog_comments table with RLS
+- [x] `005_lawyer_profile_fields.sql` — gender, date_of_birth, qualification on profiles
+- [x] `006_appointment_location.sql` — location, meeting_link on appointments
+- [x] `007_appointment_lawyer_name.sql` — lawyer_name on appointments
+- [x] Manual: `address` column on profiles
+- [x] Manual: `lawyer` added to profiles role check constraint
+- [x] Manual: `case_id` column on applications + `case_opened` status constraint
+- [x] Manual: RLS policies for lawyers to read all appointments/cases/tickets/docs/applications
 
-### Design System (v2 Claude Design Premium)
-- [x] Navy `#1a2744` + Gold `#b8952a` color scheme
-- [x] Fonts: Lora + Libre Franklin
-- [x] Gradient sidebar with gold active indicator
-- [x] Portal CSS in `apps/web/app/globals.css`
-- [x] Public CSS in `apps/web/public/design/`
-- [x] `.reveal { opacity: 1 !important; }` fix in additions.css
-
-### Auth
-- [x] `/login` — email+password + Google OAuth + role-based redirect (lawyer/admin → /admin)
+### Auth & User Management
+- [x] `/login` — email+password + Google OAuth + role-based redirect
 - [x] `/signup` — 2-step: role selection → details form
-- [x] `/forgot-password` + `/reset-password`
-- [x] `/auth/callback` — OAuth redirect handler
-- [x] `middleware.ts` — route protection
+- [x] `/forgot-password` — now routes through Resend (bypasses Supabase email)
+- [x] `/reset-password` — fixed session isolation; eye toggle on password fields
+- [x] `/auth/callback` — role-aware redirect (admin/lawyer → /admin, others → /dashboard)
+- [x] Password show/hide eye toggle on login, signup, reset-password pages
+- [x] Sign Out button in public website header (desktop + mobile)
+- [x] Google OAuth redirects admin/lawyer to /admin correctly
+
+### Lawyer Account Management
+- [x] `/admin/users/new` — Add New Lawyer form (First Name, Last Name, Email, Phone, Address, Gender, DOB, Qualification)
+- [x] Creates Supabase auth user + profile with role=lawyer + random temp password
+- [x] Generates direct recovery link via admin API → sends via Resend welcome email
+- [x] Form hides after successful creation
+- [x] `/admin/users` — All users with inline role dropdown + "+ Add New Lawyer" button
 
 ### Public Website Pages
 - [x] `/` — Homepage
 - [x] `/blog` — Dynamic from Supabase blog_posts (hardcoded fallback)
-- [x] `/blog/[slug]` — Individual post page with related sidebar + CTA
+- [x] `/blog/[slug]` — Individual post page + threaded comments
 - [x] `/success-stories`, `/videos`, `/press-media`, `/contact`
 
 ### Client Dashboard (all protected, live Supabase data)
 - [x] `/dashboard` — Home with live stats
 - [x] `/dashboard/cases` — Role-aware case list
 - [x] `/dashboard/cases/[id]` — Case detail + timeline + docs + LawyerActions panel
-- [x] `/dashboard/appointments` — Upcoming/past list with free consultation counter
-- [x] `/dashboard/appointments/book` — Books from real consultation_slots
+- [x] `/dashboard/appointments` — List with location + Join Meeting link when confirmed
+- [x] `/dashboard/appointments/book` — Books from real consultation_slots (captures lawyer_name)
 - [x] `/dashboard/documents` — Upload/download/delete (Supabase Storage)
-- [x] `/dashboard/profile` — Edit name/phone
-- [x] `/dashboard/tickets` — Support ticket list
-- [x] `/dashboard/tickets/new` — Create ticket
-- [x] `/dashboard/tickets/[id]` — Threaded replies
+- [x] `/dashboard/profile` — Edit name/phone + Gender/DOB/Qualification for lawyer/admin
+- [x] `/dashboard/tickets` + `/new` + `/[id]` — Support tickets
 - [x] `/dashboard/beneficiaries` + `/add` — Sponsor only
 - [x] `/dashboard/contacts` + `/add` — Sponsor only
-- [x] `/dashboard/apply` — All 5 visa types available
+- [x] `/dashboard/apply` — All 5 visa types
 - [x] `/dashboard/apply/[visaType]` — Multi-step questionnaire engine (save & resume)
 
-### Smart Form Assistant — All 5 Visa Types
-- [x] H-1B (6 sections), L-1 (5 sections), Green Card (5 sections), K-1 (4 sections), Family Petition (4 sections)
-- [x] Beneficiary-first: EIN/NAICS removed, employer fields optional
-- [x] Save & resume, conditional fields, USCIS form references
-
-### Email Notifications (Resend — working in both local and production)
-- [x] Application submitted → client confirmation + lawyer/admin notification
-- [x] Application status changed → client email with lawyer note
-- [x] Ticket reply → other party notified
-- [x] Appointment booked → client confirmation + admin notification
-- [x] Appointment confirmed/cancelled → client notified
-- [x] Case timeline event added → client email
-
-### PDF Summary Download
-- [x] Browser-side jspdf generation in admin application detail page
-- [x] Navy header, all sections, answered fields only, page numbers, auto-download
-
-### Blog CMS
-- [x] `/admin/blog` — List with publish/unpublish/delete
-- [x] `/admin/blog/new` + `/admin/blog/[id]` — Create + edit
-- [x] Slug auto-generation, category, tags, featured image, author, publish toggle
-
-### Lawyer Portal Actions (on case detail page)
-- [x] Add timeline events to any case
-- [x] Upload documents to a case (Supabase Storage → documents table)
-
-### Appointment Slots
-- [x] `/admin/slots` — Lawyer's own availability (filtered by lawyer_id)
-- [x] Add single slot + bulk add Mon–Fri for N weeks
-- [x] Booked slots show client name, unbooked slots deletable
-
-### Admin Panel (all data via service role client — bypasses RLS)
+### Admin Panel
 - [x] `/admin` — Overview (stats, recent apps, open tickets)
-- [x] `/admin/applications` — All questionnaires with "Review →" button
-- [x] `/admin/applications/[id]` — Review + status + notes + **"Open Case" button** + PDF download
-- [x] `/admin/tickets` — All tickets
-- [x] `/admin/tickets/[id]` — **New** — threaded view + staff reply form + client email
-- [x] `/admin/blog` — Blog CMS
-- [x] `/admin/slots` — Lawyer's own availability
-- [x] `/admin/users` — All users + inline role dropdown + **"+ Add New Lawyer" button**
-- [x] `/admin/users/new` — **New** — Add New Lawyer form (creates auth + profile + welcome email)
+- [x] `/admin/applications` — All questionnaires; status shows "Case Opened" after case opened
+- [x] `/admin/applications/[id]` — Full review + status + notes + "Open Case" (no duplicates) + PDF download
+- [x] `/admin/tickets` + `/[id]` — All tickets with threaded replies
+- [x] `/admin/blog` + `/new` + `/[id]` — Blog CMS
+- [x] `/admin/slots` — Lawyer's own availability (filtered by lawyer_id)
+- [x] `/admin/users` — All users + role management + Add New Lawyer
 - [x] `/admin/cases` — All cases
-- [x] `/admin/appointments` — All appointments with status updater (via admin API)
+- [x] `/admin/appointments` — All appointments with location/meeting link + status updater
 
 ### Application → Case Flow
-- [x] "Open Case" button on application detail creates case automatically
+- [x] "Open Case" button creates case (no duplicates — guarded by case_id check)
+- [x] Application status updates to "Case Opened" after case is opened
+- [x] case_id saved back to application row
 - [x] Auto case number: `OSIS-YYYY-NNN`
 - [x] Initial timeline event "Case Opened" added automatically
-- [x] Case linked to client, assigned attorney name recorded
+
+### PDF Summary Download
+- [x] Fixed broken emoji in section headers
+- [x] Dates formatted (March 15, 1996 not 1996-03-15)
+- [x] Salary formatted ($129,999 not 129999)
+- [x] Yes/No/degree values human-readable
+- [x] Raw lowercase values capitalized
+
+### Blog Comments
+- [x] Threaded comments on /blog/[slug] (registered users only)
+- [x] Auto-publish, admin/lawyer can remove any comment
+- [x] Server-side initial fetch, client-side posting
+
+### Email Notifications (all via Resend)
+- [x] Application submitted, status changed
+- [x] Ticket reply
+- [x] Appointment booked, confirmed/cancelled
+- [x] Case timeline updated
+- [x] Lawyer welcome email with direct Set Password link
+- [x] Password reset email (via /api/auth/forgot-password → Resend)
 
 ### Admin API Routes (service role — bypass RLS)
-- [x] `POST /api/admin/update-appointment` — lawyer changes appointment status
-- [x] `POST /api/admin/update-application` — lawyer changes application status + emails client
-- [x] `POST /api/admin/open-case` — converts application into active case
-- [x] `POST /api/admin/update-user-role` — admin changes any user's role
-- [x] `POST /api/admin/create-lawyer` — creates lawyer account + sends welcome email
-
-### Supabase Clients
-- [x] `lib/supabase/server.ts` — anon key, respects RLS (auth checks only)
-- [x] `lib/supabase/admin.ts` — service role key, bypasses RLS (admin data reads)
-- [x] `lib/supabase/client.ts` — browser client
+- [x] `POST /api/admin/update-appointment` — status + location + meeting_link
+- [x] `POST /api/admin/update-application` — status + notes + emails client
+- [x] `POST /api/admin/open-case` — creates case, updates application status + case_id
+- [x] `POST /api/admin/update-user-role`
+- [x] `POST /api/admin/create-lawyer` — gender/DOB/qualification fields added
+- [x] `POST /api/auth/forgot-password` — generates link + sends via Resend
 
 ---
 
 ## 🔴 HIGH PRIORITY — Next Build Phase
 
-### 1. Pre-Filled USCIS PDF Forms (Phase 2)
+### 1. Fix lawyer appointment visibility (security gap)
+- [ ] Lawyers should only see THEIR OWN appointments in `/admin/appointments`
+- [ ] Admin sees ALL appointments
+- [ ] Filter by `lawyer_name` matching logged-in lawyer's name (or better: add `lawyer_id` to appointments)
+- **Why:** Currently all lawyers see all other lawyers' appointments — privacy/security issue
+
+### 2. Fix lawyer login flow (session isolation)
+- [ ] Recovery link set-password flow still has issues when admin is logged in same browser
+- [ ] Consider: add "Resend Setup Email" button to /admin/users for existing lawyers
+- [ ] Consider: store `lawyer_id` on appointments for more robust filtering
+- **Workaround:** Lawyer uses forgot-password while logged out as admin
+
+### 3. Pre-Filled USCIS PDF Forms (Phase 2)
 - [ ] Install `pdf-lib`
-- [ ] Download official I-129 PDF, identify form field names
 - [ ] Map H-1B questionnaire answers to I-129 field names
 - [ ] Generate pre-filled I-129 downloadable from admin panel
-- [ ] Extend to I-130 (Family), I-129F (K-1), I-140 (Green Card)
+- [ ] Extend to I-130, I-129F, I-140
 - **Why:** Reduces attorney prep time from hours to minutes
 
-### 2. Create Case button from Admin Cases page
-- [ ] Add "+ New Case" button on `/admin/cases`
-- [ ] Form: client (dropdown from users), visa type, description
-- [ ] Lawyer can create a case without going through an application
-- **Why:** Lawyer may need to create cases for existing clients not using the portal
+### 4. Create Case directly from Admin Cases page
+- [ ] "+ New Case" button on `/admin/cases`
+- [ ] Form: client dropdown, visa type, description
+- [ ] No application required
+- **Why:** Lawyer may need to create cases for walk-in/phone clients
 
-### 3. Case Status Update from Admin
-- [ ] Lawyer can change case status from `/admin/cases` or case detail
-- [ ] Email client when case status changes
-- **Why:** Currently cases are created but status can't be updated from UI
+### 5. Case Status Update from Admin
+- [ ] Lawyer can change case status from case detail page
+- [ ] Email client when status changes
+- **Why:** Cases are created but status stuck at "open"
 
 ---
 
-## 🟡 MEDIUM PRIORITY — Pending Decisions
+## 🟡 MEDIUM PRIORITY
 
-### 4. News/Videos Auto-Update (discuss first)
-- [ ] **Decision needed:** Auto-publish USCIS RSS or admin approval first?
-- [ ] **Decision needed:** Videos — curated YouTube links or auto-discovered?
-- [ ] **Decision needed:** Archive threshold (how old before archiving?)
-- [ ] Once decided: Vercel cron job → fetch USCIS RSS → insert to blog_posts
+### 6. News/Videos Auto-Update
+- [ ] Decision: Auto-publish USCIS RSS or admin approval first?
+- [ ] Decision: Videos — curated YouTube or auto-discovered?
+- [ ] Decision: Archive threshold?
+- [ ] Once decided: Vercel cron → fetch USCIS RSS → insert to blog_posts
 
-### 5. Community Blog with Comments (discuss first)
-- [ ] **Decision needed:** Who can post — any registered user or verified clients only?
-- [ ] **Decision needed:** Separate from firm blog or mixed together?
-- [ ] **Decision needed:** Upvotes / "helpful" reactions?
-- [ ] Once decided: comments table, threaded UI on /blog/[slug]
-
-### 6. Blog Category/Archive Filtering
+### 7. Blog Category/Archive Filtering
 - [ ] Wire sidebar category links on /blog to filter posts
 - [ ] Pagination (currently loads 20 max)
 
-### 7. Real-Time Notifications (in-portal)
-- [ ] Wire `notifications` table to a bell icon in topbar
+### 8. Real-Time In-Portal Notifications
+- [ ] Bell icon in topbar wired to `notifications` table
 - [ ] Mark as read functionality
 - [ ] Triggers: case update, appointment confirmed, ticket reply
+
+### 9. Appointment location/meeting link on confirmation email
+- [ ] When lawyer confirms + adds location/link, include in the confirmation email to client
+- **Currently:** Client sees location in portal but email doesn't include it
 
 ---
 
 ## 🟢 LOWER PRIORITY / FUTURE
 
-### 8. Custom Domain
+### 10. Custom Domain
 - [ ] Vercel → Domains → add `onestopimmigrationstation.com`
 - [ ] GoDaddy DNS: A record → `76.76.21.21`, CNAME www → `cname.vercel-dns.com`
-- [ ] Update all email template URLs to use new domain
 - [ ] Update `NEXT_PUBLIC_SITE_URL` in Vercel env vars
 - **When:** After all features tested and signed off
 
-### 9. Vercel Analytics
-- [ ] Enable in Vercel dashboard → Analytics (free, one-click)
+### 11. Vercel Analytics
+- [ ] Enable in Vercel dashboard → Analytics tab (free, one-click)
 
-### 10. React Native Mobile App
+### 12. React Native Mobile App
 - [ ] Expo in `apps/mobile/`
 - [ ] Supabase Auth (expo-auth-session for Google OAuth)
 - [ ] Screens: Login, Signup, Dashboard, Cases, Appointments, Documents, Profile
 - [ ] Push notifications (Expo Notifications)
 - [ ] EAS Build → iOS App Store + Google Play
+
+### 13. middleware.ts deprecation warning
+- [ ] Next.js 16 deprecated `middleware` convention — rename to `proxy`
+- [ ] Currently shows warning in dev console but works fine
 
 ---
 
@@ -205,11 +204,13 @@
 | Dashboard layout | `apps/web/app/dashboard/layout.tsx` |
 | Admin layout | `apps/web/app/admin/layout.tsx` |
 | Sidebar | `apps/web/components/PortalSidebar.tsx` |
+| Header (public) | `apps/web/components/Header.tsx` |
 | Supabase server | `apps/web/lib/supabase/server.ts` |
 | Supabase admin | `apps/web/lib/supabase/admin.ts` |
 | Supabase browser | `apps/web/lib/supabase/client.ts` |
 | Email functions | `apps/web/lib/email/resend.ts` |
 | Email API | `apps/web/app/api/email/route.ts` |
+| Forgot password API | `apps/web/app/api/auth/forgot-password/route.ts` |
 | Admin API routes | `apps/web/app/api/admin/` |
 | Questionnaires | `apps/web/lib/questionnaire/` |
 | Questionnaire engine | `apps/web/app/dashboard/apply/[visaType]/page.tsx` |
@@ -219,7 +220,8 @@
 | Add Lawyer form | `apps/web/app/admin/users/new/page.tsx` |
 | Create Lawyer API | `apps/web/app/api/admin/create-lawyer/route.ts` |
 | Open Case API | `apps/web/app/api/admin/open-case/route.ts` |
+| Blog comments | `apps/web/app/blog/[slug]/BlogComments.tsx` |
+| Issues log | `ISSUES.md` |
 | Migrations | `supabase/migrations/` |
-| Test plan | `TESTING.md` |
 | Setup guide | `SETUP.md` |
 | Task list | `TODO.md` (this file) |
