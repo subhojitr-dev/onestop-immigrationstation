@@ -22,9 +22,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const { apptId, status } = await req.json()
+  const { apptId, status, location, meeting_link } = await req.json()
   const admin = createAdminClient()
-  const { error } = await admin.from('appointments').update({ status }).eq('id', apptId)
+  const updates: Record<string, any> = { status }
+  if (location !== undefined) updates.location = location
+  if (meeting_link !== undefined) updates.meeting_link = meeting_link
+  const { error } = await admin.from('appointments').update(updates).eq('id', apptId)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ ok: true })

@@ -55,7 +55,7 @@ export default async function AdminAppointmentsPage() {
           </div>
         </div>
         {/* Status updater */}
-        <AppointmentStatusUpdater apptId={appt.id} currentStatus={appt.status} statusColors={statusColors} />
+        <AppointmentStatusUpdater apptId={appt.id} currentStatus={appt.status} currentLocation={appt.location} currentMeetingLink={appt.meeting_link} statusColors={statusColors} />
       </div>
     )
   }

@@ -30,10 +30,11 @@ interface Props {
 
 const statusOptions = [
   { value: 'submitted',      label: '● New Submission',    color: '#047857', bg:'#e6f6ef' },
-  { value: 'under_review',   label: '🔍 Under Review',     color: '#b45309', bg:'#fdf3e3' },
-  { value: 'info_requested', label: '❓ Info Requested',   color: '#b42318', bg:'#fdeceb' },
-  { value: 'approved',       label: '✓ Approved',          color: '#1d4ed8', bg:'#e8effe' },
-  { value: 'rejected',       label: '✗ Rejected',          color: '#b42318', bg:'#fdeceb' },
+  { value: 'under_review',   label: 'Under Review',        color: '#b45309', bg:'#fdf3e3' },
+  { value: 'info_requested', label: 'Info Requested',      color: '#b42318', bg:'#fdeceb' },
+  { value: 'approved',       label: 'Approved',            color: '#1d4ed8', bg:'#e8effe' },
+  { value: 'rejected',       label: 'Rejected',            color: '#b42318', bg:'#fdeceb' },
+  { value: 'case_opened',    label: 'Case Opened',         color: '#047857', bg:'#e6f6ef' },
 ]
 
 const visaLabels: Record<string,string> = {
@@ -149,7 +150,8 @@ export default function ApplicationActions({ appId, currentStatus, lawyerNotes, 
           <div>
             <p style={{fontSize:'13px', color:'#586176', lineHeight:1.6, margin:'0 0 12px'}}>
               Once you have reviewed this application, open a case to begin the legal process.
-              This creates a <strong>{visaLabels[visaType] || visaType}</strong> case for <strong>{clientName}</strong> in the Cases section.
+              This creates a <strong>{visaLabels[visaType] || visaType}</strong> case for <strong>{clientName}</strong>,
+              assigned to <strong>One Stop Immigration Station</strong>.
             </p>
             <button onClick={handleOpenCase} disabled={opening}
               style={{width:'100%', padding:'11px', borderRadius:'9px', border:'none', background: opening ? '#eef0f4' : 'linear-gradient(135deg,#cfa94a,#b8952a)', color: opening ? '#98a0b0' : '#0b1322', fontSize:'13px', fontWeight:700, cursor: opening ? 'not-allowed' : 'pointer'}}>

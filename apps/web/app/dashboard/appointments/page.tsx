@@ -81,6 +81,14 @@ export default async function AppointmentsPage() {
                       <div className="appt-time">{a.time_slot}</div>
                       {a.is_free && <span className="pa-free">Free Consultation</span>}
                       {a.notes && <div className="appt-notes">{a.notes}</div>}
+                      {a.location && <div className="appt-notes">📍 {a.location}</div>}
+                      {a.meeting_link && (
+                        <div className="appt-notes">
+                          <a href={a.meeting_link} target="_blank" rel="noreferrer" style={{color:'#b8952a', fontWeight:600, textDecoration:'none'}}>
+                            🔗 Join Meeting
+                          </a>
+                        </div>
+                      )}
                     </div>
                     <div className="appt-right">
                       <span className="pt-status" style={{background: s.bg, color: s.color}}>

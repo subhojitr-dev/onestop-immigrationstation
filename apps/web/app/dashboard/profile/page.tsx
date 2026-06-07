@@ -6,12 +6,15 @@ import { createClient } from '@/lib/supabase/client'
 
 export default function ProfilePage() {
   const router = useRouter()
-  const [profile, setProfile] = useState<any>(null)
-  const [fullName, setFullName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState('')
+  const [profile,       setProfile]       = useState<any>(null)
+  const [fullName,      setFullName]      = useState('')
+  const [phone,         setPhone]         = useState('')
+  const [gender,        setGender]        = useState('')
+  const [dateOfBirth,   setDateOfBirth]   = useState('')
+  const [qualification, setQualification] = useState('')
+  const [loading,       setLoading]       = useState(true)
+  const [saving,        setSaving]        = useState(false)
+  const [message,       setMessage]       = useState('')
 
   useEffect(() => {
     async function load() {
@@ -26,6 +29,9 @@ export default function ProfilePage() {
         setProfile(data)
         setFullName(data.full_name || '')
         setPhone(data.phone || '')
+        setGender(data.gender || '')
+        setDateOfBirth(data.date_of_birth || '')
+        setQualification(data.qualification || '')
       }
       setLoading(false)
     }
@@ -41,9 +47,15 @@ export default function ProfilePage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
+    const updates: Record<string, any> = { full_name: fullName, phone, updated_at: new Date().toISOString() }
+    if (profile?.role === 'lawyer' || profile?.role === 'admin') {
+      updates.gender = gender || null
+      updates.date_of_birth = dateOfBirth || null
+      updates.qualification = qualification || null
+    }
     const { error } = await supabase
       .from('profiles')
-      .update({ full_name: fullName, phone, updated_at: new Date().toISOString() })
+      .update(updates)
       .eq('id', user.id)
 
     if (error) {
@@ -138,6 +150,46 @@ export default function ProfilePage() {
                   placeholder="(555) 000-0000"
                 />
               </div>
+              {/* Lawyer / Admin only fields */}
+              {(profile?.role === 'lawyer' || profile?.role === 'admin') && (
+                <>
+                  <div style={{borderTop:'1px solid #e5e7eb', paddingTop:'16px', marginTop:'8px', marginBottom:'8px'}}>
+                    <div style={{fontSize:'12px', fontWeight:700, textTransform:'uppercase', letterSpacing:'.05em', color:'#9ca3af', marginBottom:'14px'}}>Attorney Information</div>
+                  </div>
+                  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px'}}>
+                    <div className="auth-field">
+                      <label htmlFor="gender">Gender</label>
+                      <select id="gender" value={gender} onChange={e => setGender(e.target.value)}
+                        style={{width:'100%', padding:'9px 12px', border:'1.5px solid #e5e7eb', borderRadius:'8px', fontFamily:'inherit', fontSize:'14px'}}>
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer_not_to_say">Prefer not to say</option>
+                      </select>
+                    </div>
+                    <div className="auth-field">
+                      <label htmlFor="dob">Date of Birth</label>
+                      <input id="dob" type="date" value={dateOfBirth} onChange={e => setDateOfBirth(e.target.value)}
+                        style={{width:'100%', padding:'9px 12px', border:'1.5px solid #e5e7eb', borderRadius:'8px', fontFamily:'inherit', fontSize:'14px'}} />
+                    </div>
+                  </div>
+                  <div className="auth-field">
+                    <label htmlFor="qualification">Legal Qualification</label>
+                    <select id="qualification" value={qualification} onChange={e => setQualification(e.target.value)}
+                      style={{width:'100%', padding:'9px 12px', border:'1.5px solid #e5e7eb', borderRadius:'8px', fontFamily:'inherit', fontSize:'14px'}}>
+                      <option value="">Select</option>
+                      <option value="jd">Juris Doctor (JD)</option>
+                      <option value="llm">Master of Laws (LLM)</option>
+                      <option value="llb">Bachelor of Laws (LLB)</option>
+                      <option value="sjd">Doctor of Juridical Science (SJD)</option>
+                      <option value="paralegal">Paralegal Certificate</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </>
+              )}
+
               <button type="submit" className="btn btn--navy" disabled={saving} style={{marginTop:'8px'}}>
                 {saving ? 'Saving…' : 'Save Changes'}
               </button>
