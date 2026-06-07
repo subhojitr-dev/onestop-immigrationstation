@@ -45,7 +45,12 @@ export default function ResetPasswordPage() {
     const { error } = await supabase.auth.updateUser({ password })
 
     if (error) {
-      setError(error.message)
+      // Supabase returns a confusing "different from old password" error when
+      // password reuse prevention is on. Give a clearer message.
+      const msg = error.message.toLowerCase().includes('different')
+        ? 'Please choose a different password and try again. If this is your first time setting a password, try a completely new password you have not used before.'
+        : error.message
+      setError(msg)
       setLoading(false)
     } else {
       setSuccess(true)
