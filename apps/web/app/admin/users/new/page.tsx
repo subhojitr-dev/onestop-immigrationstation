@@ -100,7 +100,7 @@ export default function AddLawyerPage() {
         </div>
       )}
 
-      <div style={{ background: '#fff', borderRadius: '16px', padding: '28px', border: '1px solid #e7e9f0' }}>
+      {!success && <div style={{ background: '#fff', borderRadius: '16px', padding: '28px', border: '1px solid #e7e9f0' }}>
         <form onSubmit={handleSubmit}>
           {/* Name row */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
@@ -223,10 +223,10 @@ export default function AddLawyerPage() {
             </Link>
           </div>
         </form>
-      </div>
+      </div>}
 
       {/* What happens next */}
-      <div style={{ marginTop: '20px', background: '#fff', borderRadius: '16px', padding: '22px', border: '1px solid #e7e9f0' }}>
+      {!success && <div style={{ marginTop: '20px', background: '#fff', borderRadius: '16px', padding: '22px', border: '1px solid #e7e9f0' }}>
         <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a2744', marginBottom: '14px' }}>What happens after you create the account:</div>
         {[
           { step: '1', text: 'Account is created instantly with Lawyer role' },
@@ -242,7 +242,7 @@ export default function AddLawyerPage() {
             <span style={{ fontSize: '13px', color: '#586176', paddingTop: '3px', lineHeight: 1.5 }}>{item.text}</span>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   )
 }
