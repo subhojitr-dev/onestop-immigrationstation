@@ -6,11 +6,8 @@
 
 ## 🔴 OPEN ISSUES
 
-### 1. Admin password reset via forgot-password not working
-- **Symptom:** `/forgot-password` shows "Error sending recovery email"
-- **Root cause:** Supabase's built-in auth email system (used for forgot-password) is unreliable on the free tier — separate from Resend which we use for custom emails
-- **Workaround:** Admin uses Google OAuth ("Continue with Google") to log in — works fine
-- **Fix needed:** Route forgot-password through our own Resend API instead of Supabase's email system
+### 1. ~~Admin password reset via forgot-password not working~~ ✅ FIXED
+- **Fix:** Created `/api/auth/forgot-password` route that uses `admin.auth.admin.generateLink()` + sends via Resend, bypassing Supabase's unreliable email system
 
 ### 2. Lawyer "Set My Password" flow — session isolation
 - **Symptom:** After setting password via welcome email link, login fails with "Invalid login credentials"
