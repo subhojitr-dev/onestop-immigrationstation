@@ -18,23 +18,37 @@ export default function ResetPasswordPage() {
     const supabase = createClient()
     const hasToken = window.location.hash.includes('access_token')
 
+    if (!hasToken) {
+      setChecking(false)
+      return
+    }
+
+    // Poll getSession — Supabase client exchanges the hash token async
+    let attempts = 0
+    const poll = setInterval(async () => {
+      attempts++
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        setValidSession(true)
+        setChecking(false)
+        clearInterval(poll)
+      } else if (attempts >= 8) {
+        // Give up after 4 seconds
+        setChecking(false)
+        clearInterval(poll)
+      }
+    }, 500)
+
+    // Also listen for auth state events as a backup
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
+      if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
         setValidSession(true)
         setChecking(false)
-      } else if (event === 'SIGNED_IN' && session && hasToken) {
-        // Recovery links sign the user in — treat this as valid too
-        setValidSession(true)
-        setChecking(false)
+        clearInterval(poll)
       }
     })
 
-    // If no token in URL, stop checking immediately
-    if (!hasToken) setChecking(false)
-
-    // Safety timeout — stop spinner after 4 seconds regardless
-    const timer = setTimeout(() => setChecking(false), 4000)
-    return () => { subscription.unsubscribe(); clearTimeout(timer) }
+    return () => { clearInterval(poll); subscription.unsubscribe() }
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
