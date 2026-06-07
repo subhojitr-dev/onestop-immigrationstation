@@ -14,17 +14,16 @@ export default function ResetPasswordPage() {
   const [validSession, setValidSession] = useState(false)
 
   useEffect(() => {
-    // Check if we have a valid recovery session
     const supabase = createClient()
-    supabase.auth.onAuthStateChange((event) => {
+    // Only trust an explicit PASSWORD_RECOVERY event — never the existing
+    // session, which could belong to an admin who clicked the link while
+    // already logged in (would update the wrong account's password).
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setValidSession(true)
       }
     })
-    // Also check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setValidSession(true)
-    })
+    return () => subscription.unsubscribe()
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -54,7 +53,7 @@ export default function ResetPasswordPage() {
       setLoading(false)
     } else {
       setSuccess(true)
-      setTimeout(() => router.push('/dashboard'), 2000)
+      setTimeout(() => router.push('/login'), 2000)
     }
   }
 
@@ -66,7 +65,7 @@ export default function ResetPasswordPage() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
           <h1>Password updated!</h1>
-          <p className="auth-sub">Your password has been changed successfully. Redirecting to your dashboard…</p>
+          <p className="auth-sub">Your password has been set successfully. Redirecting to sign in…</p>
         </div>
       </div>
     )
