@@ -74,10 +74,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Account created but profile update failed: ' + profileError.message }, { status: 500 })
   }
 
-  // Step 3: Send welcome email telling them to set their password
+  // Step 3: Generate a direct password-reset link (no second email needed)
+  const { data: linkData } = await admin.auth.admin.generateLink({
+    type: 'recovery',
+    email: email.trim().toLowerCase(),
+    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/reset-password` },
+  })
+  const resetLink = linkData?.properties?.action_link ||
+    `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/forgot-password`
+
+  // Step 4: Send welcome email with the direct reset link
   const resendKey = process.env.RESEND_API_KEY
   if (resendKey) {
-    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/forgot-password`
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
