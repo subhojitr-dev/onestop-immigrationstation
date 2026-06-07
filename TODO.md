@@ -150,11 +150,24 @@
 
 ## 🟡 MEDIUM PRIORITY
 
-### 6. News/Videos Auto-Update
-- [ ] Decision: Auto-publish USCIS RSS or admin approval first?
-- [ ] Decision: Videos — curated YouTube or auto-discovered?
-- [ ] Decision: Archive threshold?
-- [ ] Once decided: Vercel cron → fetch USCIS RSS → insert to blog_posts
+### 6. News/Videos — CMS-Driven (decisions finalized)
+- [ ] Add `post_type` column to blog_posts: `article` | `youtube_video` | `uscis_news`
+- [ ] Add `youtube_url` column to blog_posts
+- [ ] Blog CMS `/admin/blog/new` — add Post Type selector:
+  - Article → publishes to `/blog`
+  - YouTube Video → admin pastes URL + summary → publishes to `/videos`
+  - USCIS News → auto-imported as draft, admin edits/publishes → `/blog`
+- [ ] `/videos` page — render posts where post_type='youtube_video' with embedded player
+- [ ] Vercel cron job — daily fetch of USCIS RSS → insert as drafts (post_type='uscis_news', is_published=false)
+- [ ] Admin notified of new USCIS drafts awaiting review
+- [ ] Archive logic: posts > 90 days → archived (visible but not prominent), > 1 year → deleted
+- [ ] Archive section on /blog and /videos (collapsible, links only)
+- **Decisions confirmed:**
+  - USCIS RSS → Draft → Admin approves only (not lawyer)
+  - Videos: on-demand from CMS (USCIS Official, Boundless Immigration, etc.)
+  - Blog and Videos stay as separate pages
+  - Post type in CMS determines which page it appears on
+  - Archive at 90 days, remove at 1 year
 
 ### 7. Blog Category/Archive Filtering
 - [ ] Wire sidebar category links on /blog to filter posts
