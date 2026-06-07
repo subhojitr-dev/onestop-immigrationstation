@@ -488,10 +488,39 @@ The old system is kept for reference only — do not modify it.
 See `TODO.md` for the full prioritized task list.  
 See `TESTING.md` for the complete test plan.
 
-**Immediate action required:**
-1. Add `RESEND_API_KEY` to Vercel environment variables (for production emails)
-2. Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel environment variables (for admin panel data reads)
-3. Test all features using `TESTING.md` as the checklist
+**Production environment variables (both now set in Vercel ✅):**
+- `RESEND_API_KEY` = `re_JHfjmV6e_3nAdSADBTXioA4xnFCjZHYXX` ✅
+- `SUPABASE_SERVICE_ROLE_KEY` = `sb_secret_IQKgcx_XtmOLv6MDiwp3ZQ_B6nbmYjA` ✅
+- Vercel redeployed after adding keys ✅
+
+**Testing:** Use both localhost AND https://onestop-immigrationstation-web.vercel.app
+Both share the same Supabase database. Vercel is preferred for testing emails and
+admin panel in production conditions.
+
+---
+
+## Step 20 — Vercel Environment Variables & Production Deployment ✅
+
+**What:** Added secret environment variables to Vercel so the live site works identically to localhost.  
+**Why:** `.env.local` only works locally. Vercel needs its own copy of secret keys.
+
+### How to add/update environment variables in Vercel
+1. Go to vercel.com → click your project **onestop-immigrationstation-web**
+2. Click **Settings** tab (top nav, inside the project — not team settings)
+3. Click **Environment Variables** in the left sidebar
+4. Click **Add Environment Variable**
+5. Enter Key + Value + check all 3 environments (Production, Preview, Development)
+6. After adding all keys → go to **Deployments** → click **...** on latest → **Redeploy**
+
+### Current Vercel Environment Variables
+| Key | Purpose |
+|-----|---------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (already there from setup) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public Supabase key for browser/RLS (already there) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Secret admin key — bypasses RLS for admin panel reads ✅ added |
+| `RESEND_API_KEY` | Resend email API — sends all notification emails ✅ added |
+
+⚠️ If you ever rotate these keys (e.g. regenerate Resend API key), update both `.env.local` AND Vercel, then redeploy.
 
 ---
 
