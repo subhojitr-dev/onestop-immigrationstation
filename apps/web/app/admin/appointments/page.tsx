@@ -51,7 +51,7 @@ export default async function AdminAppointmentsPage() {
           </div>
           <div style={{fontSize:'12px', color:'#98a0b0', marginTop:'2px'}}>
             {appt.notes && <span>{appt.notes}</span>}
-            {appt.assigned_lawyer && <span style={{marginLeft: appt.notes ? '8px' : 0}}>· Lawyer: {appt.assigned_lawyer}</span>}
+            {appt.lawyer_name && <span style={{marginLeft: appt.notes ? '8px' : 0}}>· Atty: {appt.lawyer_name}</span>}
           </div>
         </div>
         {/* Status updater */}

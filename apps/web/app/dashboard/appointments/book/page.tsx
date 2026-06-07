@@ -58,7 +58,7 @@ export default function BookAppointmentPage() {
       const today = new Date().toISOString().split('T')[0]
       const { data: slots } = await supabase
         .from('consultation_slots')
-        .select('id, slot_date, slot_time')
+        .select('id, slot_date, slot_time, lawyer_id, profiles(full_name)')
         .eq('is_booked', false)
         .gte('slot_date', today)
         .order('slot_date').order('slot_time')
@@ -78,7 +78,7 @@ export default function BookAppointmentPage() {
       const supabase = createClient()
       const { data: slots } = await supabase
         .from('consultation_slots')
-        .select('id, slot_date, slot_time')
+        .select('id, slot_date, slot_time, lawyer_id, profiles(full_name)')
         .eq('slot_date', selectedDate)
         .eq('is_booked', false)
         .order('slot_time')
@@ -97,6 +97,9 @@ export default function BookAppointmentPage() {
     const supabase = createClient()
     const isFree = freeUsed < 2
 
+    // Get lawyer name from the slot
+    const lawyerName = (selectedSlot as any).profiles?.full_name || null
+
     // Insert appointment row
     const { error: apptErr } = await supabase.from('appointments').insert({
       user_id: user.id,
@@ -106,6 +109,7 @@ export default function BookAppointmentPage() {
       is_free: isFree,
       free_session_number: isFree ? freeUsed + 1 : null,
       notes: notes || null,
+      lawyer_name: lawyerName,
     })
 
     if (apptErr) { setError('Booking failed: ' + apptErr.message); setBooking(false); return }
