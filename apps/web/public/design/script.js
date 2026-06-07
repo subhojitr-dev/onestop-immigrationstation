@@ -93,6 +93,7 @@
   /* ---------- Header shadow on scroll ---------- */
   var header = document.getElementById("header");
   function onScroll() {
+    if (!header) return;
     if (window.scrollY > 8) header.classList.add("scrolled");
     else header.classList.remove("scrolled");
   }
@@ -105,32 +106,34 @@
   var overlay = document.getElementById("mobileOverlay");
   var closeBtn = document.getElementById("mobileClose");
 
-  function openMenu() {
-    panel.classList.add("open");
-    overlay.classList.add("open");
-    hamburger.classList.add("open");
-    hamburger.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+  if (hamburger && panel && overlay && closeBtn) {
+    function openMenu() {
+      panel.classList.add("open");
+      overlay.classList.add("open");
+      hamburger.classList.add("open");
+      hamburger.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+    function closeMenu() {
+      panel.classList.remove("open");
+      overlay.classList.remove("open");
+      hamburger.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    }
+    hamburger.addEventListener("click", openMenu);
+    closeBtn.addEventListener("click", closeMenu);
+    overlay.addEventListener("click", closeMenu);
+    panel.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", closeMenu);
+    });
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeMenu();
+    });
   }
-  function closeMenu() {
-    panel.classList.remove("open");
-    overlay.classList.remove("open");
-    hamburger.classList.remove("open");
-    hamburger.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-  }
-  hamburger.addEventListener("click", openMenu);
-  closeBtn.addEventListener("click", closeMenu);
-  overlay.addEventListener("click", closeMenu);
-  panel.querySelectorAll("a").forEach(function (a) {
-    a.addEventListener("click", closeMenu);
-  });
-  window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeMenu();
-  });
 
   /* ---------- Mobile services accordion ---------- */
-  var acc = panel.querySelector(".m-acc");
+  var acc = panel && panel.querySelector(".m-acc");
   if (acc) {
     var trigger = acc.querySelector(".m-acc-trigger");
     trigger.addEventListener("click", function (e) {
