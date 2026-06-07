@@ -13,7 +13,7 @@ create table public.profiles (
   full_name     text,
   phone         text,
   role          text not null default 'beneficiary'
-                check (role in ('beneficiary','sponsor','contact','admin')),
+                check (role in ('beneficiary','sponsor','contact','admin','lawyer')),
   avatar_url    text,
   created_at    timestamptz default now(),
   updated_at    timestamptz default now()
