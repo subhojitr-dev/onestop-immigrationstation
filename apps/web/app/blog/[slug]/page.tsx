@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import BlogComments from './BlogComments'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -33,7 +34,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   if (!post) notFound()
 
-  // Fetch 3 other recent posts for the "More Articles" sidebar
+  // Fetch related posts for sidebar
   const { data: related } = await supabase
     .from('blog_posts')
     .select('id, title, slug, category, published_at')
@@ -41,6 +42,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .neq('id', post.id)
     .order('published_at', { ascending: false })
     .limit(4)
+
+  // Fetch comments for this post (server-side for initial render)
+  const { data: comments } = await supabase
+    .from('blog_comments')
+    .select('*, profiles(full_name, role)')
+    .eq('post_id', post.id)
+    .order('created_at', { ascending: true })
+
+  // Get current user for comment form
+  const { data: { user } } = await supabase.auth.getUser()
+  let currentUser = null
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles').select('full_name, role').eq('id', user.id).single()
+    currentUser = {
+      id: user.id,
+      name: profile?.full_name || user.email?.split('@')[0] || 'User',
+      role: profile?.role || 'beneficiary',
+    }
+  }
 
   return (
     <>
@@ -105,6 +126,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 Get Started Today
               </Link>
             </div>
+            {/* ── Comments ── */}
+            <BlogComments
+              postId={post.id}
+              initialComments={(comments ?? []) as any}
+              currentUser={currentUser}
+            />
           </article>
 
           {/* ── Sidebar ── */}
