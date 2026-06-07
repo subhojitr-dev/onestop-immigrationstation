@@ -12,18 +12,29 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [validSession, setValidSession] = useState(false)
+  const [checking, setChecking] = useState(true)
 
   useEffect(() => {
     const supabase = createClient()
-    // Only trust an explicit PASSWORD_RECOVERY event — never the existing
-    // session, which could belong to an admin who clicked the link while
-    // already logged in (would update the wrong account's password).
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    const hasToken = window.location.hash.includes('access_token')
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setValidSession(true)
+        setChecking(false)
+      } else if (event === 'SIGNED_IN' && session && hasToken) {
+        // Recovery links sign the user in — treat this as valid too
+        setValidSession(true)
+        setChecking(false)
       }
     })
-    return () => subscription.unsubscribe()
+
+    // If no token in URL, stop checking immediately
+    if (!hasToken) setChecking(false)
+
+    // Safety timeout — stop spinner after 4 seconds regardless
+    const timer = setTimeout(() => setChecking(false), 4000)
+    return () => { subscription.unsubscribe(); clearTimeout(timer) }
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -66,6 +77,16 @@ export default function ResetPasswordPage() {
           </div>
           <h1>Password updated!</h1>
           <p className="auth-sub">Your password has been set successfully. Redirecting to sign in…</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (checking) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card" style={{textAlign:'center'}}>
+          <p className="auth-sub">Verifying your link…</p>
         </div>
       </div>
     )
