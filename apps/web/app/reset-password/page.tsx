@@ -16,39 +16,26 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    const hasToken = window.location.hash.includes('access_token')
+    const hash = window.location.hash.substring(1)
+    const params = new URLSearchParams(hash)
+    const accessToken = params.get('access_token')
+    const refreshToken = params.get('refresh_token')
 
-    if (!hasToken) {
+    if (!accessToken) {
       setChecking(false)
       return
     }
 
-    // Poll getSession — Supabase client exchanges the hash token async
-    let attempts = 0
-    const poll = setInterval(async () => {
-      attempts++
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        setValidSession(true)
+    // Explicitly set the session from the recovery link tokens.
+    // This ensures we're acting on the LAWYER's session, not any
+    // existing admin session stored in cookies.
+    supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken || '' })
+      .then(({ data, error }) => {
+        if (!error && data.session) {
+          setValidSession(true)
+        }
         setChecking(false)
-        clearInterval(poll)
-      } else if (attempts >= 8) {
-        // Give up after 4 seconds
-        setChecking(false)
-        clearInterval(poll)
-      }
-    }, 500)
-
-    // Also listen for auth state events as a backup
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
-        setValidSession(true)
-        setChecking(false)
-        clearInterval(poll)
-      }
-    })
-
-    return () => { clearInterval(poll); subscription.unsubscribe() }
+      })
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
