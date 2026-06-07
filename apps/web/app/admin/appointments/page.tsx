@@ -49,7 +49,10 @@ export default async function AdminAppointmentsPage() {
             {appt.time_slot}
             {appt.is_free && <span style={{marginLeft:'8px', background:'#f7efd9', color:'#8a6d12', borderRadius:'20px', padding:'1px 8px', fontSize:'11px', fontWeight:600}}>Free Consultation #{appt.free_session_number}</span>}
           </div>
-          {appt.notes && <div style={{fontSize:'12px', color:'#98a0b0', marginTop:'2px'}}>{appt.notes}</div>}
+          <div style={{fontSize:'12px', color:'#98a0b0', marginTop:'2px'}}>
+            {appt.notes && <span>{appt.notes}</span>}
+            {appt.assigned_lawyer && <span style={{marginLeft: appt.notes ? '8px' : 0}}>· Lawyer: {appt.assigned_lawyer}</span>}
+          </div>
         </div>
         {/* Status updater */}
         <AppointmentStatusUpdater apptId={appt.id} currentStatus={appt.status} statusColors={statusColors} />

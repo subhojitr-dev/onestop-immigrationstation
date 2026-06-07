@@ -18,14 +18,17 @@ import Link from 'next/link'
 
 export default function AddLawyerPage() {
   const router = useRouter()
-  const [firstName, setFirstName] = useState('')
-  const [lastName,  setLastName]  = useState('')
-  const [email,     setEmail]     = useState('')
-  const [phone,     setPhone]     = useState('')
-  const [address,   setAddress]   = useState('')
-  const [saving,    setSaving]    = useState(false)
-  const [error,     setError]     = useState('')
-  const [success,   setSuccess]   = useState('')
+  const [firstName,     setFirstName]     = useState('')
+  const [lastName,      setLastName]      = useState('')
+  const [email,         setEmail]         = useState('')
+  const [phone,         setPhone]         = useState('')
+  const [address,       setAddress]       = useState('')
+  const [gender,        setGender]        = useState('')
+  const [dateOfBirth,   setDateOfBirth]   = useState('')
+  const [qualification, setQualification] = useState('')
+  const [saving,        setSaving]        = useState(false)
+  const [error,         setError]         = useState('')
+  const [success,       setSuccess]       = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -40,7 +43,7 @@ export default function AddLawyerPage() {
     const res = await fetch('/api/admin/create-lawyer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, lastName, email, phone, address }),
+      body: JSON.stringify({ firstName, lastName, email, phone, address, gender, dateOfBirth, qualification }),
     })
 
     const data = await res.json()
@@ -152,7 +155,7 @@ export default function AddLawyerPage() {
           </div>
 
           {/* Address */}
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: '18px' }}>
             <label style={labelStyle}>Office Address</label>
             <input
               value={address}
@@ -160,6 +163,43 @@ export default function AddLawyerPage() {
               placeholder="69 Station Avenue, Suite 2445, New York, NY 10001"
               style={inputStyle}
             />
+          </div>
+
+          {/* Gender + DOB row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div>
+              <label style={labelStyle}>Gender</label>
+              <select value={gender} onChange={e => setGender(e.target.value)} style={{...inputStyle, color: gender ? '#16203a' : '#98a0b0'}}>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
+              </select>
+            </div>
+            <div>
+              <label style={labelStyle}>Date of Birth</label>
+              <input
+                type="date"
+                value={dateOfBirth}
+                onChange={e => setDateOfBirth(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          {/* Qualification */}
+          <div style={{ marginBottom: '28px' }}>
+            <label style={labelStyle}>Legal Qualification</label>
+            <select value={qualification} onChange={e => setQualification(e.target.value)} style={{...inputStyle, color: qualification ? '#16203a' : '#98a0b0'}}>
+              <option value="">Select qualification</option>
+              <option value="jd">Juris Doctor (JD)</option>
+              <option value="llm">Master of Laws (LLM)</option>
+              <option value="llb">Bachelor of Laws (LLB)</option>
+              <option value="sjd">Doctor of Juridical Science (SJD)</option>
+              <option value="paralegal">Paralegal Certificate</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           {/* Info box */}

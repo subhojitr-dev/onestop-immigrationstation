@@ -58,5 +58,8 @@ export async function POST(req: NextRequest) {
     description: `${visaLabels[visaType] || visaType} case opened for ${clientName}. Intake questionnaire reviewed by ${profile?.full_name || 'attorney'}.`,
   })
 
+  // Update application status so it no longer shows as "submitted"
+  await admin.from('applications').update({ status: 'case_opened' }).eq('id', appId)
+
   return NextResponse.json({ ok: true, caseId: newCase.id, caseNumber: caseNum })
 }

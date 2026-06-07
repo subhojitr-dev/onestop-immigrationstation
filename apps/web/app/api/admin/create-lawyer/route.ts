@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Only admins can create lawyer accounts' }, { status: 403 })
   }
 
-  const { firstName, lastName, email, phone, address } = await req.json()
+  const { firstName, lastName, email, phone, address, gender, dateOfBirth, qualification } = await req.json()
 
   if (!firstName || !lastName || !email) {
     return NextResponse.json({ error: 'First name, last name, and email are required' }, { status: 400 })
@@ -71,6 +71,9 @@ export async function POST(req: NextRequest) {
     full_name: fullName,
     phone: phone?.trim() || null,
     address: address?.trim() || null,
+    gender: gender || null,
+    date_of_birth: dateOfBirth || null,
+    qualification: qualification || null,
     role: 'lawyer',
   }, { onConflict: 'id' })
 

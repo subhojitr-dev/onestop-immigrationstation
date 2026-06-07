@@ -34,6 +34,32 @@ interface Props {
   questionnaire: VisaQuestionnaire | null
 }
 
+// Format raw values into human-readable strings
+function formatValue(raw: string, fieldId: string): string {
+  // Dates: YYYY-MM-DD → Month D, YYYY
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const d = new Date(raw + 'T12:00:00')
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  }
+  // Salary / numeric fields
+  if ((fieldId.includes('salary') || fieldId.includes('wage') || fieldId.includes('pay')) && /^\d+$/.test(raw)) {
+    return `$${Number(raw).toLocaleString('en-US')}`
+  }
+  // Capitalize simple yes/no
+  if (raw === 'yes') return 'Yes'
+  if (raw === 'no') return 'No'
+  // Capitalize degree values
+  const degreeMap: Record<string,string> = {
+    bachelors: "Bachelor's Degree", masters: "Master's Degree",
+    phd: 'PhD / Doctorate', associates: "Associate's Degree",
+    highschool: 'High School Diploma', jd: 'Juris Doctor (JD)',
+    md: 'Medical Doctor (MD)', other: 'Other',
+  }
+  if (degreeMap[raw.toLowerCase()]) return degreeMap[raw.toLowerCase()]
+  // Capitalize first letter
+  return raw.charAt(0).toUpperCase() + raw.slice(1)
+}
+
 export default function DownloadPdf({ application, questionnaire }: Props) {
   const [generating, setGenerating] = useState(false)
 
@@ -115,7 +141,7 @@ export default function DownloadPdf({ application, questionnaire }: Props) {
           doc.setTextColor(26, 39, 68)
           doc.setFontSize(11)
           doc.setFont('helvetica', 'bold')
-          doc.text(`${section.icon}  ${section.title}`, marginL + 3, y + 1)
+          doc.text(`${section.title}`, marginL + 3, y + 1)
           y += 10
 
           for (const field of section.fields) {
@@ -126,8 +152,9 @@ export default function DownloadPdf({ application, questionnaire }: Props) {
 
             let valueStr: string
             if (typeof raw === 'boolean' || raw === true) valueStr = 'Yes'
+            else if (raw === false) valueStr = 'No'
             else if (Array.isArray(raw)) valueStr = raw.join(', ')
-            else valueStr = String(raw)
+            else valueStr = formatValue(String(raw), field.id)
 
             const labelText = field.label.replace(/\s*\(optional\)/i, '').replace(/\s*\(if known\)/i, '').trim()
 
