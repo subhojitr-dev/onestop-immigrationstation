@@ -41,12 +41,16 @@ export async function POST(req: NextRequest) {
 
   // Step 1: Create the Supabase auth user
   // email_confirm: true skips the confirmation email (admin-created accounts are pre-verified)
+  // Set a random temp password so Supabase doesn't treat the account as
+  // "no password" — otherwise its reuse-prevention logic errors when the
+  // lawyer tries to set their real password via the recovery link.
+  const tempPassword = crypto.randomUUID() + crypto.randomUUID()
+
   const { data: authData, error: authError } = await admin.auth.admin.createUser({
     email: email.trim().toLowerCase(),
-    email_confirm: true,  // auto-confirm — lawyer sets password via forgot-password flow
+    email_confirm: true,
+    password: tempPassword,
     user_metadata: { full_name: fullName },
-    // Note: role NOT passed here — the trigger defaults to 'beneficiary'.
-    // The upsert below immediately sets it to 'lawyer'.
   })
 
   if (authError) {
