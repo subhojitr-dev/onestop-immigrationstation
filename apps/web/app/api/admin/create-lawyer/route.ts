@@ -82,10 +82,11 @@ export async function POST(req: NextRequest) {
   }
 
   // Step 3: Generate a direct password-reset link (no second email needed)
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'
   const { data: linkData } = await admin.auth.admin.generateLink({
     type: 'recovery',
     email: email.trim().toLowerCase(),
-    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/reset-password` },
+    options: { redirectTo: `${siteUrl}/auth/callback?next=/reset-password` },
   })
   const resetLink = linkData?.properties?.action_link ||
     `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/forgot-password`
