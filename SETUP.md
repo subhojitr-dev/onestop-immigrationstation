@@ -632,3 +632,171 @@ Only `admin` role users can change roles (lawyers cannot).
 | `profiles_role_check` blocks lawyer | Constraint missing 'lawyer' | Run manual SQL to drop + recreate constraint |
 | `address` column missing | Not in original schema | Run: `alter table public.profiles add column if not exists address text` |
 | Dev server env changes ignored | Env only loads on start | Restart `npm run dev` after `.env.local` changes |
+| All lawyers see all appointments | Admin client bypasses RLS | Fixed in Step 21 — lawyer_id FK + page filter |
+| Password reset link goes to login page | PKCE code landed on wrong route | Fixed in Step 23 — reset page handles ?code= directly |
+| Reset link redirected to localhost in production | NEXT_PUBLIC_SITE_URL not set in Vercel | Fixed in Step 23 — redirect URLs added to Supabase dashboard |
+
+---
+
+## Step 21 — Lawyer Appointment Security Fix ✅
+
+**What:** Lawyers were seeing ALL appointments from all lawyers in `/admin/appointments`. Added `lawyer_id` FK to the `appointments` table so each appointment is scoped to the lawyer who owns the slot.  
+**Why:** Privacy and security issue — if two lawyers are on the platform, they should not see each other's client bookings.
+
+### Changes Made
+
+**Migration 008** (`supabase/migrations/008_appointment_lawyer_id.sql`) — run in Supabase SQL Editor:
+```sql
+alter table public.appointments
+  add column if not exists lawyer_id uuid references public.profiles(id) on delete set null;
+
+create index if not exists appointments_lawyer_id_idx on public.appointments(lawyer_id);
+
+-- Replace the old "Lawyers see all appointments" policy
+drop policy if exists "Lawyers see all appointments" on public.appointments;
+create policy "Lawyers see own appointments" on public.appointments for select
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'lawyer'
+        and (
+          public.appointments.lawyer_id = auth.uid()
+          or (public.appointments.lawyer_id is null and public.appointments.lawyer_name = profiles.full_name)
+        )
+    )
+    or
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
+```
+
+**Booking page** (`/dashboard/appointments/book/page.tsx`) — now saves `lawyer_id` from the selected consultation slot into the new appointments column.
+
+**Admin appointments page** (`/admin/appointments/page.tsx`) — server-side filter: if role is `lawyer`, query is scoped to `lawyer_id = user.id OR lawyer_name = profile.full_name` (backward compat for old rows). Admins still see all.
+
+**Backward compatibility:** Old appointments without `lawyer_id` are matched by `lawyer_name` so existing bookings are not orphaned.
+
+---
+
+## Step 22 — Resend Setup Email for Lawyers ✅
+
+**What:** Added a "Resend Setup Email" button to each lawyer row in `/admin/users`. Clicking it generates a fresh recovery link and re-sends the welcome email.  
+**Why:** Supabase recovery tokens are single-use and expire in 1 hour. If a lawyer's setup link expired or they missed it, the admin previously had no way to resend it without deleting and recreating the account.
+
+### New Files
+- `app/admin/users/ResendSetupEmailButton.tsx` — client component, shows Sending… / ✓ Sent! / Failed states
+- `app/api/admin/resend-setup-email/route.ts` — admin-only API route that:
+  1. Verifies caller is admin
+  2. Looks up the lawyer's email from Supabase Auth
+  3. Calls `admin.auth.admin.generateLink({ type: 'recovery' })` for a fresh link
+  4. Sends branded welcome email via Resend with the new link
+
+The button only appears on rows where `role === 'lawyer'`.
+
+---
+
+## Step 23 — Password Reset Flow Fix ✅
+
+**What:** Fixed the forgot-password / reset-password flow that was landing users on the login page instead of the set-password form.  
+**Why:** The `@supabase/ssr` package uses PKCE (Proof Key for Code Exchange) by default. The old reset-password page only looked for `#access_token=` in the URL hash (implicit flow). With PKCE, Supabase sends a `?code=` query parameter instead — which the page ignored, showing "Invalid or expired link."
+
+### Root Cause
+`admin.auth.admin.generateLink()` creates a link to Supabase's `/auth/v1/verify` endpoint. After verifying, Supabase redirects to the `redirect_to` URL. With PKCE enabled, the redirect carries a `?code=` param. The old page only parsed the hash fragment → found nothing → showed the error screen.
+
+### Fix Applied
+
+**`/reset-password/page.tsx`** — now handles all three flows in order:
+1. `?code=` in query string → calls `supabase.auth.exchangeCodeForSession(code)` (PKCE)
+2. `#access_token=` in hash → calls `supabase.auth.setSession(...)` (implicit/legacy)
+3. Neither → checks `supabase.auth.getSession()` for an existing session in cookies
+
+**All `generateLink` calls** (forgot-password, create-lawyer, resend-setup-email) — `redirect_to` now points directly to `/reset-password`. The reset page handles whichever token format Supabase sends.
+
+### Supabase Dashboard Configuration Required
+Go to **Supabase Dashboard → Authentication → URL Configuration** and set:
+
+| Field | Value |
+|-------|-------|
+| Site URL | `https://onestop-immigrationstation-web.vercel.app` |
+| Redirect URLs | `https://onestop-immigrationstation-web.vercel.app/**` |
+| Redirect URLs | `http://localhost:3000/**` |
+
+Without these, Supabase ignores the `redirect_to` in the recovery link and falls back to the Site URL, landing users in the wrong place. ✅ Already configured.
+
+---
+
+## Step 24 — Appointment Confirmation Email with Location/Link ✅
+
+**What:** When a lawyer confirms an appointment and sets a location (e.g. "Zoom") and meeting link, that information is now included in the confirmation email sent to the client.  
+**Why:** Clients were seeing the location and meeting link in their portal but the confirmation email only said "confirmed" with no details — they had to log back in to find the Zoom link.
+
+### Changes Made
+
+**`lib/email/resend.ts`** — `sendAppointmentStatusEmail()` now accepts two new optional fields:
+- `location?: string | null` — e.g. "Zoom", "Office Visit", "Phone Call"
+- `meetingLink?: string | null` — meeting URL
+
+When `status === 'confirmed'` and location is provided, the email body includes a styled block:
+```
+📍 Zoom
+https://zoom.us/j/...
+```
+
+**`app/api/admin/update-appointment/route.ts`** — now sends an email to the client whenever status changes to `confirmed` or `cancelled`. Previously no email was sent from this route at all. Fetches the client's profile (name + email) from the appointment row and calls `sendAppointmentStatusEmail` with location and meeting link included.
+
+---
+
+## Step 25 — Create Case Directly from Admin ✅
+
+**What:** Added a "+ New Case" button to `/admin/cases` that lets lawyers create a case without requiring a submitted intake application.  
+**Why:** Walk-in and phone clients don't submit online questionnaires. Lawyers needed a way to open cases for these clients directly from the admin panel.
+
+### New Files
+- `app/admin/cases/NewCaseForm.tsx` — client component with inline expand/collapse form
+- `app/api/admin/create-case/route.ts` — creates case, generates `OSIS-YYYY-NNN` number, adds "Case Opened" timeline event
+
+### Form Fields
+| Field | Notes |
+|-------|-------|
+| Client | Dropdown of all beneficiary/sponsor/contact users |
+| Visa Type | 14 options (H-1B, L-1, Green Card, K-1, etc.) |
+| Assigned Attorney | Pre-filled with logged-in user's name, editable |
+| Description / Notes | Free text, optional |
+
+On submit → creates case row → adds timeline event → navigates to new case detail page.
+
+### SQL Required
+```sql
+-- Allow all 7 status values on the cases table
+alter table public.cases drop constraint if exists cases_status_check;
+alter table public.cases add constraint cases_status_check
+  check (status in ('open','in_progress','pending_documents','submitted','approved','denied','closed'));
+```
+✅ Already run in Supabase.
+
+---
+
+## Step 26 — Case Status Update from Admin ✅
+
+**What:** Built a new admin case detail page at `/admin/cases/[id]` with a status updater that emails the client on every change.  
+**Why:** Cases were created but stuck at "open" forever — there was no way for a lawyer to update the status or communicate progress to the client through the portal.
+
+### New Files
+- `app/admin/cases/[id]/page.tsx` — admin case detail: client info card, description, full timeline
+- `app/admin/cases/[id]/CaseStatusUpdater.tsx` — client component: status dropdown + optional note field + Save button
+- `app/api/admin/update-case-status/route.ts` — updates status, inserts timeline event, emails client
+
+### Status Progression
+```
+open → in_progress → pending_documents → submitted → approved / denied → closed
+```
+
+### How It Works
+1. Lawyer opens `/admin/cases/[id]`
+2. Right panel shows current status in a colour-coded dropdown
+3. Lawyer changes status + optionally types a note to the client
+4. Clicks **"Save & Notify Client"**
+5. API: updates `cases.status`, inserts timeline event with attorney name + note, sends `sendCaseStatusEmail` via Resend
+6. Client receives email with new status + attorney note; timeline updates in their portal
+
+### Email Sent
+Uses existing `sendCaseStatusEmail()` in `lib/email/resend.ts` — already wired, no changes needed there.
