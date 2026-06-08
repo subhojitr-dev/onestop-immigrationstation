@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
   const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
     type: 'recovery',
     email,
-    options: { redirectTo: `${siteUrl}/auth/callback?next=/reset-password` },
+    options: { redirectTo: `${siteUrl}/reset-password` },
   })
   if (linkErr || !linkData?.properties?.action_link) {
     return NextResponse.json({ error: 'Failed to generate reset link: ' + linkErr?.message }, { status: 500 })

@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
   const { data: linkData } = await admin.auth.admin.generateLink({
     type: 'recovery',
     email: email.trim().toLowerCase(),
-    options: { redirectTo: `${siteUrl}/auth/callback?next=/reset-password` },
+    options: { redirectTo: `${siteUrl}/reset-password` },
   })
   const resetLink = linkData?.properties?.action_link ||
     `${process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'}/forgot-password`

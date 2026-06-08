@@ -14,9 +14,9 @@ export async function POST(req: NextRequest) {
   const admin = createAdminClient()
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'
 
-  // redirect_to goes through /auth/callback which handles PKCE code exchange,
-  // then forwards to /reset-password. This works for both PKCE and implicit flow.
-  const redirectTo = `${siteUrl}/auth/callback?next=/reset-password`
+  // Point directly to /reset-password — the page handles both PKCE (?code=)
+  // and implicit flow (#access_token=) so no intermediate callback needed.
+  const redirectTo = `${siteUrl}/reset-password`
 
   // Generate a direct recovery link — no email sent by Supabase
   const { data, error } = await admin.auth.admin.generateLink({
