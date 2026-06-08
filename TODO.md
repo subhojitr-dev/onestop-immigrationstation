@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-08 (Session 4)
+**Last updated:** 2026-06-08 (Session 4 — Web Sessions 1 + 2 complete)
 
 ---
 
@@ -134,16 +134,16 @@
 - [ ] Extend to I-130, I-129F, I-140
 - **Why:** Reduces attorney prep time from hours to minutes
 
-### 4. Create Case directly from Admin Cases page
-- [ ] "+ New Case" button on `/admin/cases`
-- [ ] Form: client dropdown, visa type, description
-- [ ] No application required
-- **Why:** Lawyer may need to create cases for walk-in/phone clients
+### 4. Create Case directly from Admin Cases page ✅ DONE (Session 4)
+- [x] "+ New Case" button on `/admin/cases` — inline form expands inline
+- [x] Form: client dropdown, visa type, description, assigned attorney
+- [x] Auto case number OSIS-YYYY-NNN, initial "Case Opened" timeline event
+- [x] SQL: cases_status_check constraint updated ✅ run in Supabase
 
-### 5. Case Status Update from Admin
-- [ ] Lawyer can change case status from case detail page
-- [ ] Email client when status changes
-- **Why:** Cases are created but status stuck at "open"
+### 5. Case Status Update from Admin ✅ DONE (Session 4)
+- [x] `/admin/cases/[id]` — new admin case detail page with timeline
+- [x] Status dropdown: open → in_progress → pending_documents → submitted → approved → denied → closed
+- [x] Optional note to client, Save & Notify button emails client via Resend
 
 ---
 
