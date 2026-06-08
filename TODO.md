@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-07 (Session 3)
+**Last updated:** 2026-06-08 (Session 4)
 
 ---
 
@@ -116,17 +116,16 @@
 
 ## 🔴 HIGH PRIORITY — Next Build Phase
 
-### 1. Fix lawyer appointment visibility (security gap)
-- [ ] Lawyers should only see THEIR OWN appointments in `/admin/appointments`
-- [ ] Admin sees ALL appointments
-- [ ] Filter by `lawyer_name` matching logged-in lawyer's name (or better: add `lawyer_id` to appointments)
-- **Why:** Currently all lawyers see all other lawyers' appointments — privacy/security issue
+### 1. Fix lawyer appointment visibility (security gap) ✅ DONE (Session 4)
+- [x] Migration 008: `lawyer_id` FK added to appointments + updated RLS policy
+- [x] Booking page saves `lawyer_id` from consultation slot
+- [x] `/admin/appointments` filters by `lawyer_id` (+ `lawyer_name` fallback) for lawyers; admins see all
+- **⚠️ Requires running migration 008 in Supabase SQL editor**
 
-### 2. Fix lawyer login flow (session isolation)
-- [ ] Recovery link set-password flow still has issues when admin is logged in same browser
-- [ ] Consider: add "Resend Setup Email" button to /admin/users for existing lawyers
-- [ ] Consider: store `lawyer_id` on appointments for more robust filtering
-- **Workaround:** Lawyer uses forgot-password while logged out as admin
+### 2. Fix lawyer login flow (session isolation) ✅ DONE (Session 4)
+- [x] "Resend Setup Email" button added to `/admin/users` for each lawyer row
+- [x] `/api/admin/resend-setup-email` route: generates fresh recovery link + resends welcome email
+- **Remaining:** Core session-isolation bug (same browser) still exists — workaround: use /forgot-password logged out
 
 ### 3. Pre-Filled USCIS PDF Forms (Phase 2)
 - [ ] Install `pdf-lib`
@@ -178,9 +177,9 @@
 - [ ] Mark as read functionality
 - [ ] Triggers: case update, appointment confirmed, ticket reply
 
-### 9. Appointment location/meeting link on confirmation email
-- [ ] When lawyer confirms + adds location/link, include in the confirmation email to client
-- **Currently:** Client sees location in portal but email doesn't include it
+### 9. Appointment location/meeting link on confirmation email ✅ DONE (Session 4)
+- [x] `update-appointment` API now sends confirmation/cancellation email to client on status change
+- [x] Email includes location + meeting link block when present
 
 ---
 

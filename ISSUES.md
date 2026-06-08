@@ -1,23 +1,17 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-07 (Session 3)
+**Last updated:** 2026-06-08 (Session 4)
 
 ---
 
 ## 🔴 OPEN ISSUES
 
-### 1. Lawyer appointment visibility (security gap)
-- **Symptom:** All lawyers can see ALL appointments in `/admin/appointments`, including other lawyers' bookings
-- **Root cause:** Page uses `createAdminClient()` which bypasses RLS and returns everything
-- **Fix needed:** Filter by logged-in lawyer's ID — either via `lawyer_name` match or by adding `lawyer_id` FK to appointments table
-- **Impact:** Privacy concern if multiple lawyers are on the platform
-
-### 2. Lawyer set-password flow — session isolation
+### 1. Lawyer set-password flow — session isolation (PARTIAL FIX)
 - **Symptom:** After admin creates a lawyer and sends welcome email, lawyer clicks "Set My Password" but password doesn't save correctly if admin is logged in same browser
 - **Root cause:** `setSession()` call conflicts with admin's existing cookie session
-- **Current fix:** `reset-password` page calls `setSession({ access_token, refresh_token })` from URL hash — partially works
+- **Partial fix (Session 4):** "Resend Setup Email" button added to `/admin/users` — admin can re-generate a fresh link anytime. New route: `/api/admin/resend-setup-email`
 - **Workaround:** Lawyer uses `/forgot-password` while admin is logged out — this works reliably
-- **Better fix needed:** Add "Resend Setup Email" button in `/admin/users` to regenerate link on demand; or force logout before redirect
+- **Remaining:** Session isolation root cause not fixed; browser conflict still possible
 
 ### 3. middleware.ts deprecation warning
 - **Symptom:** Dev console shows `⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.`
@@ -79,10 +73,10 @@
 
 | # | Item | Notes |
 |---|------|-------|
-| 1 | All lawyers see all appointments | See Open Issue #1 |
-| 2 | Lawyer set-password in same browser as admin | See Open Issue #2 |
+| 1 | All lawyers see all appointments | Fixed in Session 4 — migration 008 must be run in Supabase |
+| 2 | Lawyer set-password in same browser as admin | Partial fix: Resend Setup Email button added. Root cause persists. |
 | 3 | middleware.ts deprecation | See Open Issue #3 |
 | 4 | Existing appointments show no lawyer name | Only NEW bookings capture lawyer_name — pre-fix appointments show blank |
-| 5 | Appointment confirmation email lacks location/link | Client sees it in portal but email doesn't include it yet |
+| 5 | Appointment confirmation email lacks location/link | Fixed in Session 4 — email now sent on confirm/cancel with location + link |
 | 6 | Chrome extension errors in dev overlay | React #299 from `oihbmmeelledioenpfcfehdjhdnlfibj` extension — not our code |
 | 7 | Supabase free tier email rate limit | 30 emails/hour — fine for now |
