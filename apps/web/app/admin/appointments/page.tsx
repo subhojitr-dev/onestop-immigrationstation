@@ -8,13 +8,23 @@ export default async function AdminAppointmentsPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Admin client bypasses RLS — reads ALL users' data
+  const { data: callerProfile } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single()
+  const isAdmin = callerProfile?.role === 'admin'
+
+  // Admin client bypasses RLS so we can control filtering ourselves
   const admin = createAdminClient()
 
-  const { data: appointments } = await admin
+  let query = admin
     .from('appointments')
     .select('*, profiles(full_name, email)')
     .order('date', { ascending: true })
+
+  // Lawyers only see their own appointments; admins see all
+  if (!isAdmin) {
+    query = query.or(`lawyer_id.eq.${user.id},lawyer_name.eq.${callerProfile?.full_name ?? '__none__'}`)
+  }
+
+  const { data: appointments } = await query
 
   const upcoming = appointments?.filter(a => new Date(a.date) >= new Date()) ?? []
   const past     = appointments?.filter(a => new Date(a.date) < new Date()) ?? []

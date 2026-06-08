@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendAppointmentStatusEmail } from '@/lib/email/resend'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -30,5 +31,28 @@ export async function POST(req: NextRequest) {
   const { error } = await admin.from('appointments').update(updates).eq('id', apptId)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Send email to client when status changes to confirmed or cancelled
+  if (status === 'confirmed' || status === 'cancelled') {
+    const { data: appt } = await admin
+      .from('appointments')
+      .select('user_id, date, time_slot, profiles(full_name, email)')
+      .eq('id', apptId)
+      .single()
+
+    if (appt) {
+      const clientProfile = appt.profiles as any
+      sendAppointmentStatusEmail({
+        clientName: clientProfile?.full_name || clientProfile?.email?.split('@')[0] || 'Client',
+        clientEmail: clientProfile?.email,
+        date: appt.date,
+        timeSlot: appt.time_slot,
+        status,
+        location: location || null,
+        meetingLink: meeting_link || null,
+      }).catch(() => {}) // don't block on email failure
+    }
+  }
+
   return NextResponse.json({ ok: true })
 }
