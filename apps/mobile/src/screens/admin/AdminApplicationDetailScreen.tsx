@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
 
 const STATUSES = ['submitted', 'under_review', 'info_requested', 'approved', 'rejected']
@@ -15,11 +16,13 @@ const VISA_LABELS: Record<string, string> = {
 
 export default function AdminApplicationDetailScreen({ route, navigation }: any) {
   const { appId } = route.params
+  const { profile } = useAuth()
   const [app, setApp] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [status, setStatus] = useState('')
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
+  const [openingCase, setOpeningCase] = useState(false)
 
   useEffect(() => { fetchApp() }, [appId])
 
@@ -46,8 +49,93 @@ export default function AdminApplicationDetailScreen({ route, navigation }: any)
       Alert.alert('Error', 'Could not save. Run migration 009 in Supabase SQL Editor first.')
     } else {
       Alert.alert('Saved', 'Application updated successfully.')
-      navigation.goBack()
     }
+  }
+
+  async function handleOpenCase() {
+    if (app?.case_id) {
+      Alert.alert('Already Opened', `A case already exists for this application.`)
+      return
+    }
+
+    Alert.alert(
+      'Open Case',
+      `Open a case for ${(app?.profiles as any)?.full_name ?? 'this client'}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Open Case',
+          onPress: async () => {
+            setOpeningCase(true)
+
+            // Generate case number OSIS-YYYY-NNN
+            const year = new Date().getFullYear()
+            const { count } = await supabase
+              .from('cases')
+              .select('*', { count: 'exact', head: true })
+            const caseNum = `OSIS-${year}-${String((count ?? 0) + 1).padStart(3, '0')}`
+
+            const visaLabel = VISA_LABELS[app.visa_type] ?? app.visa_type
+            const clientName = (app?.profiles as any)?.full_name ?? 'Client'
+
+            // Create the case
+            const { data: newCase, error: caseError } = await supabase
+              .from('cases')
+              .insert({
+                case_number: caseNum,
+                user_id: app.user_id,
+                visa_type: visaLabel,
+                status: 'open',
+                description: `${visaLabel} case opened from intake application.${notes ? ' Attorney notes: ' + notes : ''}`.trim(),
+                assigned_attorney: profile?.full_name ?? null,
+                opened_date: new Date().toISOString(),
+              })
+              .select('id')
+              .single()
+
+            if (caseError || !newCase) {
+              setOpeningCase(false)
+              Alert.alert('Error', caseError?.message ?? 'Failed to create case. Run migration 011 first.')
+              return
+            }
+
+            // Add timeline event
+            await supabase.from('case_timeline').insert({
+              case_id: newCase.id,
+              event: 'Case Opened',
+              description: `${visaLabel} case opened for ${clientName}. Reviewed by ${profile?.full_name ?? 'attorney'}.`,
+            })
+
+            // Update application
+            await supabase
+              .from('applications')
+              .update({ status: 'case_opened', case_id: newCase.id })
+              .eq('id', appId)
+
+            // Send push notification to client
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL
+            fetch(`${apiUrl}/api/email`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'case_status',
+                clientUserId: app.user_id,
+                caseId: newCase.id,
+                event: `Case ${caseNum} opened for your ${visaLabel} application.`,
+              }),
+            }).catch(() => {})
+
+            setOpeningCase(false)
+            await fetchApp()
+            Alert.alert(
+              '✅ Case Opened',
+              `Case ${caseNum} has been created successfully.`,
+              [{ text: 'OK' }]
+            )
+          },
+        },
+      ]
+    )
   }
 
   if (loading) return (
@@ -58,6 +146,7 @@ export default function AdminApplicationDetailScreen({ route, navigation }: any)
 
   const answers = app?.data ?? {}
   const answerEntries = Object.entries(answers).filter(([k]) => !k.startsWith('__'))
+  const caseAlreadyOpened = !!app?.case_id || app?.status === 'case_opened'
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -73,7 +162,26 @@ export default function AdminApplicationDetailScreen({ route, navigation }: any)
           <Text style={styles.clientName}>{(app?.profiles as any)?.full_name ?? 'Unknown'}</Text>
           <Text style={styles.visaType}>{VISA_LABELS[app?.visa_type] ?? app?.visa_type}</Text>
           <Text style={styles.date}>Submitted: {new Date(app?.updated_at).toLocaleDateString()}</Text>
+          {caseAlreadyOpened && app?.case_id && (
+            <View style={styles.caseOpenedBadge}>
+              <Text style={styles.caseOpenedText}>✅ Case Already Opened</Text>
+            </View>
+          )}
         </View>
+
+        {/* Open Case button */}
+        {!caseAlreadyOpened && (
+          <TouchableOpacity
+            style={styles.openCaseBtn}
+            onPress={handleOpenCase}
+            disabled={openingCase}
+          >
+            {openingCase
+              ? <ActivityIndicator color={Colors.white} />
+              : <Text style={styles.openCaseBtnText}>⚖️ Open Case</Text>
+            }
+          </TouchableOpacity>
+        )}
 
         {/* Status update */}
         <Text style={styles.sectionTitle}>Update Status</Text>
@@ -131,10 +239,14 @@ const styles = StyleSheet.create({
   backText: { color: Colors.gold, ...Typography.body },
   topTitle: { ...Typography.h3, color: Colors.white },
   container: { padding: Spacing.lg, paddingBottom: Spacing.xxl },
-  infoCard: { backgroundColor: Colors.white, borderRadius: Radius.md, padding: Spacing.md, marginBottom: Spacing.lg, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
+  infoCard: { backgroundColor: Colors.white, borderRadius: Radius.md, padding: Spacing.md, marginBottom: Spacing.md, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
   clientName: { ...Typography.h3, color: Colors.navy },
   visaType: { ...Typography.body, color: Colors.gray, marginTop: 2 },
   date: { ...Typography.small, color: Colors.gray, marginTop: 2 },
+  caseOpenedBadge: { marginTop: Spacing.sm, backgroundColor: Colors.success + '22', borderRadius: Radius.sm, padding: Spacing.xs, alignSelf: 'flex-start' },
+  caseOpenedText: { ...Typography.small, color: Colors.success, fontWeight: '600' },
+  openCaseBtn: { backgroundColor: Colors.navy, borderRadius: Radius.md, padding: Spacing.md, alignItems: 'center', marginBottom: Spacing.lg, borderWidth: 2, borderColor: Colors.gold },
+  openCaseBtnText: { ...Typography.h3, color: Colors.gold },
   sectionTitle: { ...Typography.h3, color: Colors.navy, marginBottom: Spacing.md },
   statusGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg },
   statusChip: { borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs, borderWidth: 1, borderColor: Colors.lightGray, backgroundColor: Colors.white },

@@ -1,18 +1,22 @@
-'use client'
 import React, { useState } from 'react'
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert,
 } from 'react-native'
 import { SafeAreaView } from 'react-native'
+import * as WebBrowser from 'expo-web-browser'
+import * as AuthSession from 'expo-auth-session'
 import { supabase } from '../../lib/supabase'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
+
+WebBrowser.maybeCompleteAuthSession()
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleLogin() {
     if (!email.trim() || !password.trim()) {
@@ -23,6 +27,50 @@ export default function LoginScreen({ navigation }: any) {
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
     setLoading(false)
     if (error) Alert.alert('Login Failed', error.message)
+  }
+
+  async function handleGoogleLogin() {
+    setGoogleLoading(true)
+    try {
+      const redirectUri = AuthSession.makeRedirectUri({ scheme: 'onestop-immigration' })
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUri,
+          skipBrowserRedirect: true,
+        },
+      })
+
+      if (error || !data.url) {
+        Alert.alert('Error', error?.message ?? 'Could not start Google sign-in.')
+        setGoogleLoading(false)
+        return
+      }
+
+      const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUri)
+
+      if (result.type === 'success' && result.url) {
+        // Extract tokens from the URL fragment
+        const url = result.url
+        const params = new URLSearchParams(url.split('#')[1] ?? url.split('?')[1] ?? '')
+        const accessToken = params.get('access_token')
+        const refreshToken = params.get('refresh_token')
+
+        if (accessToken && refreshToken) {
+          await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+        } else {
+          // Try PKCE code exchange
+          const code = params.get('code')
+          if (code) {
+            await supabase.auth.exchangeCodeForSession(code)
+          }
+        }
+      }
+    } catch (e) {
+      Alert.alert('Error', 'Google sign-in failed. Please try email/password instead.')
+    }
+    setGoogleLoading(false)
   }
 
   async function handleForgotPassword() {
@@ -73,9 +121,7 @@ export default function LoginScreen({ navigation }: any) {
               textContentType="emailAddress"
             />
             {email.length > 0 && (
-              <Text style={{ fontSize: 11, color: Colors.gray, marginBottom: 4 }}>
-                Signing in as: {email}
-              </Text>
+              <Text style={styles.emailPreview}>Signing in as: {email}</Text>
             )}
 
             <Text style={[styles.label, { marginTop: Spacing.md }]}>Password</Text>
@@ -104,6 +150,24 @@ export default function LoginScreen({ navigation }: any) {
                 : <Text style={styles.loginBtnText}>Sign In</Text>
               }
             </TouchableOpacity>
+
+            {/* Divider */}
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            {/* Google Sign In */}
+            <TouchableOpacity style={styles.googleBtn} onPress={handleGoogleLogin} disabled={googleLoading}>
+              {googleLoading
+                ? <ActivityIndicator color={Colors.darkGray} />
+                : <>
+                    <Text style={styles.googleIcon}>G</Text>
+                    <Text style={styles.googleBtnText}>Continue with Google</Text>
+                  </>
+              }
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>
@@ -122,43 +186,33 @@ const styles = StyleSheet.create({
   container: { flexGrow: 1, padding: Spacing.lg, justifyContent: 'center' },
   header: { alignItems: 'center', marginBottom: Spacing.xl },
   logo: { fontSize: 48, marginBottom: Spacing.sm },
-  title: {
-    ...Typography.h1,
-    color: Colors.white,
-    textAlign: 'center',
-    lineHeight: 36,
-    marginBottom: Spacing.sm,
-  },
+  title: { ...Typography.h1, color: Colors.white, textAlign: 'center', lineHeight: 36, marginBottom: Spacing.sm },
   subtitle: { ...Typography.body, color: Colors.gold },
-  card: {
-    backgroundColor: Colors.white,
-    borderRadius: Radius.lg,
-    padding: Spacing.lg,
-    marginBottom: Spacing.lg,
-  },
+  card: { backgroundColor: Colors.white, borderRadius: Radius.lg, padding: Spacing.lg, marginBottom: Spacing.lg },
   label: { ...Typography.label, color: Colors.darkGray, marginBottom: Spacing.xs },
+  emailPreview: { ...Typography.small, color: Colors.gray, marginBottom: Spacing.xs, fontStyle: 'italic' },
   input: {
-    borderWidth: 1,
-    borderColor: Colors.lightGray,
-    borderRadius: Radius.sm,
-    padding: Spacing.md,
-    fontSize: 15,
-    color: Colors.darkGray,
-    marginBottom: Spacing.sm,
-    backgroundColor: Colors.offWhite,
+    borderWidth: 1, borderColor: Colors.lightGray, borderRadius: Radius.sm,
+    padding: Spacing.md, fontSize: 15, color: Colors.darkGray,
+    marginBottom: Spacing.sm, backgroundColor: Colors.offWhite,
   },
   passwordRow: { flexDirection: 'row', alignItems: 'center', marginBottom: Spacing.sm },
   eyeBtn: { padding: Spacing.sm, marginLeft: Spacing.xs },
   eyeText: { fontSize: 18 },
   forgotLink: { alignSelf: 'flex-end', marginBottom: Spacing.lg },
   forgotText: { ...Typography.small, color: Colors.gold },
-  loginBtn: {
-    backgroundColor: Colors.gold,
-    borderRadius: Radius.md,
-    padding: Spacing.md,
-    alignItems: 'center',
-  },
+  loginBtn: { backgroundColor: Colors.gold, borderRadius: Radius.md, padding: Spacing.md, alignItems: 'center' },
   loginBtnText: { ...Typography.h3, color: Colors.navy },
+  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: Spacing.lg, gap: Spacing.sm },
+  dividerLine: { flex: 1, height: 1, backgroundColor: Colors.lightGray },
+  dividerText: { ...Typography.small, color: Colors.gray },
+  googleBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: Spacing.sm, borderWidth: 1, borderColor: Colors.lightGray,
+    borderRadius: Radius.md, padding: Spacing.md, backgroundColor: Colors.white,
+  },
+  googleIcon: { fontSize: 18, fontWeight: '700', color: '#4285f4' },
+  googleBtnText: { ...Typography.body, color: Colors.darkGray },
   signupLink: { alignItems: 'center' },
   signupText: { ...Typography.body, color: Colors.white },
 })
