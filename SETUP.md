@@ -800,3 +800,59 @@ open → in_progress → pending_documents → submitted → approved / denied �
 
 ### Email Sent
 Uses existing `sendCaseStatusEmail()` in `lib/email/resend.ts` — already wired, no changes needed there.
+
+---
+
+## Step 27 — USCIS Pre-Fill PDF Forms (pdf-lib) ✅
+
+**What:** Added a server-side PDF generator that creates a "USCIS Pre-Fill Data Sheet" for each supported visa type. A lawyer can click one button on any application detail page and download a professionally formatted PDF with all client data pre-organized by the USCIS form's Part and Item numbers.
+
+**Why:** Before this feature, a lawyer had to manually copy data from the intake questionnaire into the official USCIS form — looking up each field, cross-referencing answers, and typing everything in. This took 1–2 hours per application. With the pre-fill PDF, that time drops to ~15 minutes. The lawyer downloads the data sheet, sets it alongside the blank official USCIS form, and transfers values field-by-field.
+
+### Forms Supported
+
+| Visa Type | USCIS Form | Parts Covered |
+|-----------|-----------|---------------|
+| H-1B | I-129 + H Classification Supplement | Parts 1–7 (Employer, Classification, Beneficiary, Processing, Employment, Education, Immigration History) |
+| Family Petition | I-130 | Parts 1–4 (Petitioner, Relationship, Beneficiary, Additional Info) |
+| K-1 Fiancé(e) | I-129F | Parts 1–3 (US Petitioner, Fiancé(e), Relationship History) |
+| Green Card (EB) | I-140 | Parts 1–5 (Petition Type, Employer, Beneficiary, Qualifications, Immigration History) |
+| L-1 | — | Not yet mapped — button hidden for L-1 applications |
+
+### How It Works (Technical)
+
+1. **`lib/uscis/formMaps.ts`** — Data-driven field mapping file. Each form is defined as an array of Parts, each containing Fields. Every field knows its USCIS item number, label, and either which questionnaire answer field to read (`sourceField`) or a `compute()` function to derive/combine values. Fields marked `attorneyCompletes: true` are rendered with an amber background and "ATTORNEY COMPLETES" label.
+
+2. **`lib/uscis/generatePdf.ts`** — The pdf-lib PDF builder (server-side Node.js). Creates a Letter-size PDF with:
+   - Navy/gold firm header on every page with page numbers
+   - Cover block with form number, client name, generation date
+   - Amber disclaimer banner (attorney working document, do not file)
+   - Legend explaining colour coding
+   - Each Part as a navy header bar
+   - Fields in a two-column layout (short fields) or full width (long text like duties/history)
+   - White/blue = pre-filled from client data; Amber = attorney completes
+
+3. **`GET /api/admin/uscis-form/[appId]`** — Server-side Next.js route. Auth-checks that caller is lawyer/admin, fetches the application + client profile from Supabase (admin client), calls `generateUscisFormPdf()`, returns the PDF bytes as `application/pdf` with a `Content-Disposition: attachment` header. The filename is e.g. `i129-prefill-maria-garcia.pdf`.
+
+4. **`DownloadUscisForm.tsx`** — Client component button in the application detail sidebar. On click, fetches the API route, creates a blob URL, triggers a native browser download. Shows "Generating…" spinner and inline error if something fails. Only renders for visa types that have a mapping (hides automatically for L-1).
+
+### Where It Appears
+
+Admin application detail page (`/admin/applications/[id]`) → right sidebar → below "Download Summary PDF":
+
+```
+[ Download Summary PDF ]          ← existing jspdf button (all answers)
+[ I-129 H-1B Pre-Fill ]           ← new pdf-lib button (USCIS form format)
+```
+
+### No Setup Required
+
+This feature requires no database changes, no environment variables, and no external downloads. `pdf-lib` is installed as a Node.js package and generates PDFs entirely in memory on the server. The generated PDF is NOT filed with USCIS — it is an attorney working document.
+
+### Adding L-1 Support (Future)
+
+To add L-1 pre-fill support:
+1. Open `lib/uscis/formMaps.ts`
+2. Add an `l1` entry to `formsByVisaType` — the I-129 form is the same as H-1B but with the L Classification Supplement instead of H Classification Supplement
+3. Map fields from the L-1 questionnaire (`lib/questionnaire/l1.ts`) to I-129 Parts 1–5 + L Supplement
+4. The `DownloadUscisForm.tsx` button will automatically appear for L-1 applications once `formsByVisaType['l1']` is defined

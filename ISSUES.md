@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-08 (Session 4)
+**Last updated:** 2026-06-08 (Session 4 — Web Sessions 1, 2, 3 complete)
 
 ---
 
@@ -73,7 +73,8 @@
 
 | # | Item | Notes |
 |---|------|-------|
-| 1 | All lawyers see all appointments | Fixed in Session 4 — migration 008 must be run in Supabase |
+| 1 | All lawyers see all appointments | Fixed in Session 4 — migration 008 run ✅ |
+| 8 | L-1 visa has no USCIS pre-fill PDF | L-1 uses same I-129 form as H-1B but needs separate supplement mapping — not yet built |
 | 2 | Lawyer set-password in same browser as admin | Partial fix: Resend Setup Email button added. Root cause persists. |
 | 3 | middleware.ts deprecation | See Open Issue #3 |
 | 4 | Existing appointments show no lawyer name | Only NEW bookings capture lawyer_name — pre-fix appointments show blank |
