@@ -22,12 +22,17 @@ import TicketDetailScreen from '../screens/dashboard/TicketDetailScreen'
 import NewTicketScreen from '../screens/dashboard/NewTicketScreen'
 import ProfileScreen from '../screens/dashboard/ProfileScreen'
 
+// Apply screens (Phase 3)
+import VisaSelectionScreen from '../screens/apply/VisaSelectionScreen'
+import QuestionnaireScreen from '../screens/apply/QuestionnaireScreen'
+import ApplicationStatusScreen from '../screens/apply/ApplicationStatusScreen'
+
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   const icons: Record<string, string> = {
-    Home: '🏠', Cases: '📁', Appointments: '📅', Documents: '📄', Profile: '👤',
+    Home: '🏠', Cases: '📁', Appointments: '📅', Apply: '📝', Profile: '👤',
   }
   return (
     <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.5 }}>{icons[name] ?? '•'}</Text>
@@ -53,8 +58,8 @@ function DashboardTabs() {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Cases" component={CasesStack} />
+      <Tab.Screen name="Apply" component={ApplyStack} />
       <Tab.Screen name="Appointments" component={AppointmentsStack} />
-      <Tab.Screen name="Documents" component={DocumentsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   )
@@ -64,6 +69,7 @@ function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen name="Documents" component={DocumentsScreen} />
     </Stack.Navigator>
   )
 }
@@ -73,6 +79,16 @@ function CasesStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="CasesList" component={CasesScreen} />
       <Stack.Screen name="CaseDetail" component={CaseDetailScreen} />
+    </Stack.Navigator>
+  )
+}
+
+function ApplyStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="VisaSelection" component={VisaSelectionScreen} />
+      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
+      <Stack.Screen name="ApplicationStatus" component={ApplicationStatusScreen} />
     </Stack.Navigator>
   )
 }
@@ -100,8 +116,9 @@ function AuthStack() {
 
 function LoadingScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.navy }}>
-      <ActivityIndicator size="large" color={Colors.gold} />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#1a2744' }}>
+      <ActivityIndicator size="large" color="#cfa94a" />
+      <Text style={{ color: '#cfa94a', marginTop: 16, fontSize: 16 }}>Loading...</Text>
     </View>
   )
 }

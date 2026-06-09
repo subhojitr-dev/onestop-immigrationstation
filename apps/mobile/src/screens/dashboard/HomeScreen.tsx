@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import { useAuth } from '../../lib/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
@@ -61,15 +61,15 @@ export default function HomeScreen({ navigation }: any) {
         ) : (
           <View style={styles.statsGrid}>
             {[
-              { label: 'Active Cases', value: stats.activeCases, icon: '📁', nav: 'Cases' },
-              { label: 'Upcoming Appts', value: stats.upcomingAppointments, icon: '📅', nav: 'Appointments' },
-              { label: 'Open Tickets', value: stats.openTickets, icon: '🎫', nav: 'Appointments' },
-              { label: 'Documents', value: stats.documents, icon: '📄', nav: 'Documents' },
+              { label: 'Active Cases', value: stats.activeCases, icon: '📁', onPress: () => navigation.navigate('Cases') },
+              { label: 'Upcoming Appts', value: stats.upcomingAppointments, icon: '📅', onPress: () => navigation.navigate('Appointments') },
+              { label: 'Open Tickets', value: stats.openTickets, icon: '🎫', onPress: () => navigation.navigate('Appointments', { screen: 'Tickets' }) },
+              { label: 'Documents', value: stats.documents, icon: '📄', onPress: () => navigation.navigate('Documents') },
             ].map(s => (
               <TouchableOpacity
                 key={s.label}
                 style={styles.statCard}
-                onPress={() => navigation.navigate(s.nav)}
+                onPress={s.onPress}
               >
                 <Text style={styles.statIcon}>{s.icon}</Text>
                 <Text style={styles.statValue}>{s.value}</Text>
@@ -83,8 +83,8 @@ export default function HomeScreen({ navigation }: any) {
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.actionsGrid}>
           {[
+            { label: 'Apply for Visa', icon: '📝', onPress: () => navigation.navigate('Apply') },
             { label: 'Book Appointment', icon: '📅', onPress: () => navigation.navigate('Appointments', { screen: 'BookAppointment' }) },
-            { label: 'View Cases', icon: '📁', onPress: () => navigation.navigate('Cases') },
             { label: 'Upload Document', icon: '📤', onPress: () => navigation.navigate('Documents') },
             { label: 'Support Ticket', icon: '🎫', onPress: () => navigation.navigate('Appointments', { screen: 'Tickets' }) },
           ].map(a => (

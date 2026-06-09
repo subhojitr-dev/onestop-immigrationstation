@@ -3,9 +3,10 @@ import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
   ActivityIndicator, Alert, Linking,
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import * as DocumentPicker from 'expo-document-picker'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
 
 interface Document {
@@ -21,19 +22,20 @@ export default function DocumentsScreen() {
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const { user } = useAuth()
 
   useEffect(() => {
-    fetchDocuments()
-  }, [])
+    if (user) fetchDocuments()
+  }, [user])
 
   async function fetchDocuments() {
-    const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('documents')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
+    if (error) Alert.alert('Error loading documents', error.message)
     setDocuments(data ?? [])
     setLoading(false)
   }
@@ -45,7 +47,6 @@ export default function DocumentsScreen() {
     const file = result.assets[0]
     setUploading(true)
 
-    const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setUploading(false); return }
 
     const fileExt = file.name.split('.').pop()
@@ -64,13 +65,19 @@ export default function DocumentsScreen() {
       return
     }
 
-    await supabase.from('documents').insert({
+    const { error: insertError } = await supabase.from('documents').insert({
       user_id: user.id,
       name: file.name,
       file_path: filePath,
       file_type: file.mimeType,
       file_size: file.size,
     })
+
+    if (insertError) {
+      setUploading(false)
+      Alert.alert('Upload Failed', `File saved but record failed: ${insertError.message}`)
+      return
+    }
 
     await fetchDocuments()
     setUploading(false)

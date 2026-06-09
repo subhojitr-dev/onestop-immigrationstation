@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Linking } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
 
 interface Appointment {
@@ -25,6 +26,8 @@ const STATUS_COLORS: Record<string, string> = {
 export default function AppointmentsScreen({ navigation }: any) {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
+  const { profile } = useAuth()
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'lawyer'
 
   useEffect(() => {
     fetchAppointments()
@@ -33,11 +36,15 @@ export default function AppointmentsScreen({ navigation }: any) {
   async function fetchAppointments() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
-    const { data } = await supabase
+
+    let query = supabase
       .from('appointments')
       .select('*')
-      .eq('user_id', user.id)
       .order('date', { ascending: true })
+
+    if (!isAdmin) query = query.eq('user_id', user.id)
+
+    const { data } = await query
     setAppointments(data ?? [])
     setLoading(false)
   }
@@ -87,12 +94,12 @@ export default function AppointmentsScreen({ navigation }: any) {
           keyExtractor={item => item.id}
           renderItem={renderAppointment}
           contentContainerStyle={styles.list}
-          ListHeaderComponent={upcoming.length > 0 ? <Text style={styles.sectionLabel}>Upcoming</Text> : null}
-          ListFooterComponent={past.length > 0 ? (
+          ListHeaderComponent={
             <View>
-              <Text style={[styles.sectionLabel, { marginTop: Spacing.lg }]}>Past</Text>
+              {upcoming.length > 0 && <Text style={styles.sectionLabel}>Upcoming</Text>}
+              {upcoming.length === 0 && past.length > 0 && <Text style={styles.sectionLabel}>Past Appointments</Text>}
             </View>
-          ) : null}
+          }
           ListEmptyComponent={
             <View style={styles.empty}>
               <Text style={styles.emptyIcon}>📅</Text>

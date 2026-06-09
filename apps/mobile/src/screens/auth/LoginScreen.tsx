@@ -4,7 +4,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert,
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
 
@@ -63,13 +63,20 @@ export default function LoginScreen({ navigation }: any) {
             <TextInput
               style={styles.input}
               value={email}
-              onChangeText={setEmail}
+              onChangeText={text => setEmail(text.toLowerCase().trim())}
               placeholder="you@example.com"
               placeholderTextColor={Colors.gray}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              spellCheck={false}
+              textContentType="emailAddress"
             />
+            {email.length > 0 && (
+              <Text style={{ fontSize: 11, color: Colors.gray, marginBottom: 4 }}>
+                Signing in as: {email}
+              </Text>
+            )}
 
             <Text style={[styles.label, { marginTop: Spacing.md }]}>Password</Text>
             <View style={styles.passwordRow}>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
 import { Colors, Typography, Spacing, Radius } from '../../theme'
 
 interface Case {
@@ -26,6 +27,8 @@ const STATUS_COLORS: Record<string, string> = {
 export default function CasesScreen({ navigation }: any) {
   const [cases, setCases] = useState<Case[]>([])
   const [loading, setLoading] = useState(true)
+  const { profile } = useAuth()
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'lawyer'
 
   useEffect(() => {
     fetchCases()
@@ -35,11 +38,14 @@ export default function CasesScreen({ navigation }: any) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    const { data } = await supabase
+    let query = supabase
       .from('cases')
       .select('id, case_number, visa_type, status, opened_date, assigned_attorney')
-      .eq('user_id', user.id)
       .order('opened_date', { ascending: false })
+
+    if (!isAdmin) query = query.eq('user_id', user.id)
+
+    const { data } = await query
 
     setCases(data ?? [])
     setLoading(false)
