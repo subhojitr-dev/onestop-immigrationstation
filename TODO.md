@@ -127,12 +127,13 @@
 - [x] `/api/admin/resend-setup-email` route: generates fresh recovery link + resends welcome email
 - **Remaining:** Core session-isolation bug (same browser) still exists — workaround: use /forgot-password logged out
 
-### 3. Pre-Filled USCIS PDF Forms (Phase 2)
-- [ ] Install `pdf-lib`
-- [ ] Map H-1B questionnaire answers to I-129 field names
-- [ ] Generate pre-filled I-129 downloadable from admin panel
-- [ ] Extend to I-130, I-129F, I-140
-- **Why:** Reduces attorney prep time from hours to minutes
+### 3. Pre-Filled USCIS PDF Forms ✅ DONE (Session 4)
+- [x] Installed `pdf-lib`
+- [x] Field mappings for all 4 forms: I-129 (H-1B), I-130 (Family), I-129F (K-1), I-140 (Green Card)
+- [x] Server-side PDF generator — organized by Part & Item number, attorney fields highlighted
+- [x] GET /api/admin/uscis-form/[appId] — streams PDF download
+- [x] "I-129 Pre-Fill" button added to application detail page sidebar
+- ⬜ L-1 → I-129 (L classification) mapping not yet added
 
 ### 4. Create Case directly from Admin Cases page ✅ DONE (Session 4)
 - [x] "+ New Case" button on `/admin/cases` — inline form expands inline
