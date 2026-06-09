@@ -94,6 +94,9 @@ Note: Web mode doesn't fully replicate mobile behaviour.
 | `apps/mobile/src/screens/dashboard/` | All client-facing screens |
 | `apps/mobile/src/screens/apply/` | Visa application questionnaire screens |
 | `apps/mobile/src/screens/admin/` | Lawyer/admin management screens |
+| `apps/mobile/src/screens/notifications/` | In-app notification centre |
+| `apps/mobile/src/lib/notifications.ts` | Push token registration + badge helpers |
+| `apps/web/lib/push/sendPush.ts` | Server-side Expo push notification sender |
 
 ---
 
@@ -108,6 +111,7 @@ Note: Web mode doesn't fully replicate mobile behaviour.
 | Auth + Database | Supabase (`@supabase/supabase-js` v2) |
 | Session storage | AsyncStorage |
 | File upload | expo-document-picker |
+| Push notifications | expo-notifications (foreground in Expo Go, background needs EAS build) |
 | Secure storage | expo-secure-store |
 | Env vars | Expo public env vars (EXPO_PUBLIC_*) |
 
@@ -146,12 +150,17 @@ Bottom Tabs: Admin | Cases | Appointments | Apply | Profile
 |-----------|------|--------|
 | 001–008 | `supabase/migrations/` | ✅ Already run |
 | 009 | `009_mobile_lawyer_rls.sql` | ✅ Run 2026-06-09 |
+| 010 | `010_push_notifications.sql` | ✅ Run 2026-06-09 |
 
 Migration 009 adds RLS policies so lawyers can directly update:
 - `applications` (status + notes)
 - `appointments` (status + location + meeting link)
 - `case_timeline` (insert timeline events)
 - `consultation_slots` (manage own slots)
+
+Migration 010 creates:
+- `push_tokens` table — stores Expo push tokens per user/device
+- `notifications` table — stores in-app notification history with read/unread status
 
 ---
 

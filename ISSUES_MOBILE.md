@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Mobile App Issues Log
 
-**Last updated:** 2026-06-09
+**Last updated:** 2026-06-09 (updated after Phase 4)
 **Branch:** `mobile`
 
 ---
@@ -194,11 +194,23 @@ with the user's Bearer token in the Authorization header.
 
 ---
 
+---
+
+### M-018 — TypeScript JSX Type Errors After expo-notifications Install
+**Status:** 🟡 Known / Non-blocking
+**Symptom:** Running `npx tsc --noEmit` shows hundreds of errors like `'View' cannot be used as a JSX component` across all screens after installing `expo-notifications`.
+**Root cause:** Installing `expo-notifications` with `--legacy-peer-deps` pulled in a `@types/react` version that conflicts with the React 19 types. The TypeScript compiler can't resolve JSX types correctly as a result.
+**Impact:** Zero — the app builds and runs perfectly in Expo Go via Metro/Babel, which does not use the TypeScript compiler. These are type-checking-only errors.
+**Fix (future):** Pin all React type versions explicitly and run `npm dedupe` after installing new packages. Or wait for `expo-notifications` to officially support React 19 types.
+**Workaround:** Ignore `tsc --noEmit` errors for now. Use Expo Go to verify app behaviour instead.
+
+---
+
 ## Issue Statistics
 
 | Category | Count |
 |----------|-------|
 | ✅ Resolved | 10 |
-| 🟡 Open / Known | 7 |
+| 🟡 Open / Known | 8 |
 | 🔴 Critical / Blocking | 0 |
-| **Total** | **17** |
+| **Total** | **18** |

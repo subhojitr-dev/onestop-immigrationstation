@@ -197,24 +197,34 @@ git pull
 
 ---
 
-## Phase 4 — Push Notifications ⬜ NOT STARTED
+## Phase 4 — Push Notifications ✅ COMPLETE
 **Goal:** Real-time alerts for key events
 
-- [ ] **4.1** Setup Expo Notifications
-  - Request permissions on first launch
-  - Register device push token in Supabase (new `push_tokens` table)
+- [x] **4.1** Setup Expo Notifications
+  - `expo-notifications` installed
+  - Requests permission on first login
+  - Registers Expo push token in Supabase `push_tokens` table
+  - Removes token on sign out
+  - Migration 010 run in Supabase ✅
 
-- [ ] **4.2** Notification triggers (server-side)
-  - Case timeline updated → push to client
+- [x] **4.2** Notification triggers (server-side)
+  - Case opened → push notification to client
   - Appointment confirmed/cancelled → push to client
-  - Ticket reply received → push to client
-  - New case opened → push to client
+  - Ticket reply from staff → push to client
+  - Case timeline/status updated → push to client
+  - Application status changed → push to client
+  - All triggers in web API routes (`/api/admin/open-case`, `/api/admin/update-appointment`, `/api/email`)
+  - Helper: `apps/web/lib/push/sendPush.ts`
 
-- [ ] **4.3** In-app notification centre
-  - Bell icon in header
-  - List of recent notifications
-  - Mark as read
-  - Tap → navigate to relevant screen
+- [x] **4.3** In-app notification centre
+  - 🔔 Bell icon in Home screen header with red unread count badge
+  - NotificationsScreen: full list, unread highlighted in gold with left border
+  - Mark as read (individual tap) + Mark All Read button
+  - Tap notification → navigates to relevant screen (case, appointment, ticket)
+  - Badge count cleared when notifications screen is opened
+
+  ⚠️ **Testing note:** Foreground notifications (app open) work in Expo Go.
+  Background notifications (app closed) require EAS Development Build (Phase 6).
 
 ---
 
@@ -307,7 +317,7 @@ git pull
 | Visa Type Selection | 3 | ✅ | /dashboard/apply |
 | Questionnaire | 3 | ✅ | /dashboard/apply/[visaType] |
 | Application Status | 3 | ✅ | (new) |
-| Push Notifications | 4 | ⬜ | (new) |
+| Notifications Centre | 4 | ✅ | (new) |
 | Admin Home | 5 | ✅ | /admin |
 | Admin Applications | 5 | ✅ | /admin/applications |
 | Admin App Detail | 5 | ✅ | /admin/applications/[id] |
@@ -351,6 +361,6 @@ git pull
 | Phase 1 — Setup & Auth | Done | ✅ |
 | Phase 2 — Client Features | Done | ✅ |
 | Phase 3 — Questionnaire | Done | ✅ |
-| Phase 4 — Push Notifications | 3-4 days | ⬜ |
+| Phase 4 — Push Notifications | Done | ✅ |
 | Phase 5 — Admin Screens | Done | ✅ |
 | Phase 6 — Polish & App Store | 1 week | ⬜ |
