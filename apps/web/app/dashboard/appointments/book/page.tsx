@@ -97,8 +97,9 @@ export default function BookAppointmentPage() {
     const supabase = createClient()
     const isFree = freeUsed < 2
 
-    // Get lawyer name from the slot
+    // Get lawyer info from the slot
     const lawyerName = (selectedSlot as any).profiles?.full_name || null
+    const lawyerId   = (selectedSlot as any).lawyer_id || null
 
     // Insert appointment row
     const { error: apptErr } = await supabase.from('appointments').insert({
@@ -110,6 +111,7 @@ export default function BookAppointmentPage() {
       free_session_number: isFree ? freeUsed + 1 : null,
       notes: notes || null,
       lawyer_name: lawyerName,
+      lawyer_id: lawyerId,
     })
 
     if (apptErr) { setError('Booking failed: ' + apptErr.message); setBooking(false); return }

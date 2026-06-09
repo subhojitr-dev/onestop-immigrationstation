@@ -632,3 +632,299 @@ Only `admin` role users can change roles (lawyers cannot).
 | `profiles_role_check` blocks lawyer | Constraint missing 'lawyer' | Run manual SQL to drop + recreate constraint |
 | `address` column missing | Not in original schema | Run: `alter table public.profiles add column if not exists address text` |
 | Dev server env changes ignored | Env only loads on start | Restart `npm run dev` after `.env.local` changes |
+| All lawyers see all appointments | Admin client bypasses RLS | Fixed in Step 21 — lawyer_id FK + page filter |
+| Password reset link goes to login page | PKCE code landed on wrong route | Fixed in Step 23 — reset page handles ?code= directly |
+| Reset link redirected to localhost in production | NEXT_PUBLIC_SITE_URL not set in Vercel | Fixed in Step 23 — redirect URLs added to Supabase dashboard |
+
+---
+
+## Step 21 — Lawyer Appointment Security Fix ✅
+
+**What:** Lawyers were seeing ALL appointments from all lawyers in `/admin/appointments`. Added `lawyer_id` FK to the `appointments` table so each appointment is scoped to the lawyer who owns the slot.  
+**Why:** Privacy and security issue — if two lawyers are on the platform, they should not see each other's client bookings.
+
+### Changes Made
+
+**Migration 008** (`supabase/migrations/008_appointment_lawyer_id.sql`) — run in Supabase SQL Editor:
+```sql
+alter table public.appointments
+  add column if not exists lawyer_id uuid references public.profiles(id) on delete set null;
+
+create index if not exists appointments_lawyer_id_idx on public.appointments(lawyer_id);
+
+-- Replace the old "Lawyers see all appointments" policy
+drop policy if exists "Lawyers see all appointments" on public.appointments;
+create policy "Lawyers see own appointments" on public.appointments for select
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'lawyer'
+        and (
+          public.appointments.lawyer_id = auth.uid()
+          or (public.appointments.lawyer_id is null and public.appointments.lawyer_name = profiles.full_name)
+        )
+    )
+    or
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
+```
+
+**Booking page** (`/dashboard/appointments/book/page.tsx`) — now saves `lawyer_id` from the selected consultation slot into the new appointments column.
+
+**Admin appointments page** (`/admin/appointments/page.tsx`) — server-side filter: if role is `lawyer`, query is scoped to `lawyer_id = user.id OR lawyer_name = profile.full_name` (backward compat for old rows). Admins still see all.
+
+**Backward compatibility:** Old appointments without `lawyer_id` are matched by `lawyer_name` so existing bookings are not orphaned.
+
+---
+
+## Step 22 — Resend Setup Email for Lawyers ✅
+
+**What:** Added a "Resend Setup Email" button to each lawyer row in `/admin/users`. Clicking it generates a fresh recovery link and re-sends the welcome email.  
+**Why:** Supabase recovery tokens are single-use and expire in 1 hour. If a lawyer's setup link expired or they missed it, the admin previously had no way to resend it without deleting and recreating the account.
+
+### New Files
+- `app/admin/users/ResendSetupEmailButton.tsx` — client component, shows Sending… / ✓ Sent! / Failed states
+- `app/api/admin/resend-setup-email/route.ts` — admin-only API route that:
+  1. Verifies caller is admin
+  2. Looks up the lawyer's email from Supabase Auth
+  3. Calls `admin.auth.admin.generateLink({ type: 'recovery' })` for a fresh link
+  4. Sends branded welcome email via Resend with the new link
+
+The button only appears on rows where `role === 'lawyer'`.
+
+---
+
+## Step 23 — Password Reset Flow Fix ✅
+
+**What:** Fixed the forgot-password / reset-password flow that was landing users on the login page instead of the set-password form.  
+**Why:** The `@supabase/ssr` package uses PKCE (Proof Key for Code Exchange) by default. The old reset-password page only looked for `#access_token=` in the URL hash (implicit flow). With PKCE, Supabase sends a `?code=` query parameter instead — which the page ignored, showing "Invalid or expired link."
+
+### Root Cause
+`admin.auth.admin.generateLink()` creates a link to Supabase's `/auth/v1/verify` endpoint. After verifying, Supabase redirects to the `redirect_to` URL. With PKCE enabled, the redirect carries a `?code=` param. The old page only parsed the hash fragment → found nothing → showed the error screen.
+
+### Fix Applied
+
+**`/reset-password/page.tsx`** — now handles all three flows in order:
+1. `?code=` in query string → calls `supabase.auth.exchangeCodeForSession(code)` (PKCE)
+2. `#access_token=` in hash → calls `supabase.auth.setSession(...)` (implicit/legacy)
+3. Neither → checks `supabase.auth.getSession()` for an existing session in cookies
+
+**All `generateLink` calls** (forgot-password, create-lawyer, resend-setup-email) — `redirect_to` now points directly to `/reset-password`. The reset page handles whichever token format Supabase sends.
+
+### Supabase Dashboard Configuration Required
+Go to **Supabase Dashboard → Authentication → URL Configuration** and set:
+
+| Field | Value |
+|-------|-------|
+| Site URL | `https://onestop-immigrationstation-web.vercel.app` |
+| Redirect URLs | `https://onestop-immigrationstation-web.vercel.app/**` |
+| Redirect URLs | `http://localhost:3000/**` |
+
+Without these, Supabase ignores the `redirect_to` in the recovery link and falls back to the Site URL, landing users in the wrong place. ✅ Already configured.
+
+---
+
+## Step 24 — Appointment Confirmation Email with Location/Link ✅
+
+**What:** When a lawyer confirms an appointment and sets a location (e.g. "Zoom") and meeting link, that information is now included in the confirmation email sent to the client.  
+**Why:** Clients were seeing the location and meeting link in their portal but the confirmation email only said "confirmed" with no details — they had to log back in to find the Zoom link.
+
+### Changes Made
+
+**`lib/email/resend.ts`** — `sendAppointmentStatusEmail()` now accepts two new optional fields:
+- `location?: string | null` — e.g. "Zoom", "Office Visit", "Phone Call"
+- `meetingLink?: string | null` — meeting URL
+
+When `status === 'confirmed'` and location is provided, the email body includes a styled block:
+```
+📍 Zoom
+https://zoom.us/j/...
+```
+
+**`app/api/admin/update-appointment/route.ts`** — now sends an email to the client whenever status changes to `confirmed` or `cancelled`. Previously no email was sent from this route at all. Fetches the client's profile (name + email) from the appointment row and calls `sendAppointmentStatusEmail` with location and meeting link included.
+
+---
+
+## Step 25 — Create Case Directly from Admin ✅
+
+**What:** Added a "+ New Case" button to `/admin/cases` that lets lawyers create a case without requiring a submitted intake application.  
+**Why:** Walk-in and phone clients don't submit online questionnaires. Lawyers needed a way to open cases for these clients directly from the admin panel.
+
+### New Files
+- `app/admin/cases/NewCaseForm.tsx` — client component with inline expand/collapse form
+- `app/api/admin/create-case/route.ts` — creates case, generates `OSIS-YYYY-NNN` number, adds "Case Opened" timeline event
+
+### Form Fields
+| Field | Notes |
+|-------|-------|
+| Client | Dropdown of all beneficiary/sponsor/contact users |
+| Visa Type | 14 options (H-1B, L-1, Green Card, K-1, etc.) |
+| Assigned Attorney | Pre-filled with logged-in user's name, editable |
+| Description / Notes | Free text, optional |
+
+On submit → creates case row → adds timeline event → navigates to new case detail page.
+
+### SQL Required
+```sql
+-- Allow all 7 status values on the cases table
+alter table public.cases drop constraint if exists cases_status_check;
+alter table public.cases add constraint cases_status_check
+  check (status in ('open','in_progress','pending_documents','submitted','approved','denied','closed'));
+```
+✅ Already run in Supabase.
+
+---
+
+## Step 26 — Case Status Update from Admin ✅
+
+**What:** Built a new admin case detail page at `/admin/cases/[id]` with a status updater that emails the client on every change.  
+**Why:** Cases were created but stuck at "open" forever — there was no way for a lawyer to update the status or communicate progress to the client through the portal.
+
+### New Files
+- `app/admin/cases/[id]/page.tsx` — admin case detail: client info card, description, full timeline
+- `app/admin/cases/[id]/CaseStatusUpdater.tsx` — client component: status dropdown + optional note field + Save button
+- `app/api/admin/update-case-status/route.ts` — updates status, inserts timeline event, emails client
+
+### Status Progression
+```
+open → in_progress → pending_documents → submitted → approved / denied → closed
+```
+
+### How It Works
+1. Lawyer opens `/admin/cases/[id]`
+2. Right panel shows current status in a colour-coded dropdown
+3. Lawyer changes status + optionally types a note to the client
+4. Clicks **"Save & Notify Client"**
+5. API: updates `cases.status`, inserts timeline event with attorney name + note, sends `sendCaseStatusEmail` via Resend
+6. Client receives email with new status + attorney note; timeline updates in their portal
+
+### Email Sent
+Uses existing `sendCaseStatusEmail()` in `lib/email/resend.ts` — already wired, no changes needed there.
+
+---
+
+## Step 27 — USCIS Pre-Fill PDF Forms (pdf-lib) ✅
+
+**What:** Added a server-side PDF generator that creates a "USCIS Pre-Fill Data Sheet" for each supported visa type. A lawyer can click one button on any application detail page and download a professionally formatted PDF with all client data pre-organized by the USCIS form's Part and Item numbers.
+
+**Why:** Before this feature, a lawyer had to manually copy data from the intake questionnaire into the official USCIS form — looking up each field, cross-referencing answers, and typing everything in. This took 1–2 hours per application. With the pre-fill PDF, that time drops to ~15 minutes. The lawyer downloads the data sheet, sets it alongside the blank official USCIS form, and transfers values field-by-field.
+
+### Forms Supported
+
+| Visa Type | USCIS Form | Parts Covered |
+|-----------|-----------|---------------|
+| H-1B | I-129 + H Classification Supplement | Parts 1–7 (Employer, Classification, Beneficiary, Processing, Employment, Education, Immigration History) |
+| Family Petition | I-130 | Parts 1–4 (Petitioner, Relationship, Beneficiary, Additional Info) |
+| K-1 Fiancé(e) | I-129F | Parts 1–3 (US Petitioner, Fiancé(e), Relationship History) |
+| Green Card (EB) | I-140 | Parts 1–5 (Petition Type, Employer, Beneficiary, Qualifications, Immigration History) |
+| L-1 | — | Not yet mapped — button hidden for L-1 applications |
+
+### How It Works (Technical)
+
+1. **`lib/uscis/formMaps.ts`** — Data-driven field mapping file. Each form is defined as an array of Parts, each containing Fields. Every field knows its USCIS item number, label, and either which questionnaire answer field to read (`sourceField`) or a `compute()` function to derive/combine values. Fields marked `attorneyCompletes: true` are rendered with an amber background and "ATTORNEY COMPLETES" label.
+
+2. **`lib/uscis/generatePdf.ts`** — The pdf-lib PDF builder (server-side Node.js). Creates a Letter-size PDF with:
+   - Navy/gold firm header on every page with page numbers
+   - Cover block with form number, client name, generation date
+   - Amber disclaimer banner (attorney working document, do not file)
+   - Legend explaining colour coding
+   - Each Part as a navy header bar
+   - Fields in a two-column layout (short fields) or full width (long text like duties/history)
+   - White/blue = pre-filled from client data; Amber = attorney completes
+
+3. **`GET /api/admin/uscis-form/[appId]`** — Server-side Next.js route. Auth-checks that caller is lawyer/admin, fetches the application + client profile from Supabase (admin client), calls `generateUscisFormPdf()`, returns the PDF bytes as `application/pdf` with a `Content-Disposition: attachment` header. The filename is e.g. `i129-prefill-maria-garcia.pdf`.
+
+4. **`DownloadUscisForm.tsx`** — Client component button in the application detail sidebar. On click, fetches the API route, creates a blob URL, triggers a native browser download. Shows "Generating…" spinner and inline error if something fails. Only renders for visa types that have a mapping (hides automatically for L-1).
+
+### Where It Appears
+
+Admin application detail page (`/admin/applications/[id]`) → right sidebar → below "Download Summary PDF":
+
+```
+[ Download Summary PDF ]          ← existing jspdf button (all answers)
+[ I-129 H-1B Pre-Fill ]           ← new pdf-lib button (USCIS form format)
+```
+
+### No Setup Required
+
+This feature requires no database changes, no environment variables, and no external downloads. `pdf-lib` is installed as a Node.js package and generates PDFs entirely in memory on the server. The generated PDF is NOT filed with USCIS — it is an attorney working document.
+
+### Adding L-1 Support (Future)
+
+To add L-1 pre-fill support:
+1. Open `lib/uscis/formMaps.ts`
+2. Add an `l1` entry to `formsByVisaType` — the I-129 form is the same as H-1B but with the L Classification Supplement instead of H Classification Supplement
+3. Map fields from the L-1 questionnaire (`lib/questionnaire/l1.ts`) to I-129 Parts 1–5 + L Supplement
+4. The `DownloadUscisForm.tsx` button will automatically appear for L-1 applications once `formsByVisaType['l1']` is defined
+
+---
+
+## Step 28 — News/Videos CMS + USCIS RSS Cron ✅
+
+**What:** Added a full post_type system to the blog CMS, a live /videos page with YouTube embeds, and a daily Vercel cron job that auto-imports USCIS news as drafts.
+
+**Why:** The firm needed a way to publish educational videos and stay current with USCIS news without manual data entry. The CMS now supports three distinct content types managed from one admin interface.
+
+### Database Migration Required
+Run `supabase/migrations/012_blog_post_type.sql` in Supabase SQL Editor — adds `post_type`, `youtube_url`, `source_url` columns and indexes.
+
+### Post Types
+| Type | Where it appears | Created by |
+|------|-----------------|------------|
+| `article` | `/blog` | Admin/lawyer via CMS |
+| `youtube_video` | `/videos` with embedded player | Admin via CMS (paste YouTube URL) |
+| `uscis_news` | `/blog` | Auto-imported from USCIS RSS as drafts |
+
+### Archive Logic
+- Posts 0–90 days old → shown in main list
+- Posts 91–365 days old → shown in collapsible Archive section
+- Posts > 1 year → auto-deleted by the cron job
+
+### USCIS RSS Cron
+- **Route:** `GET /api/cron/uscis-rss`
+- **Schedule:** Daily at 06:00 UTC (`apps/web/vercel.json`)
+- **Feeds:** USCIS Newsroom + USCIS Alerts (2 feeds as specified)
+- **Deduplication:** Uses `source_url` — same article never imported twice
+- **Protection:** Set `CRON_SECRET` in Vercel env vars — Vercel sends `Authorization: Bearer <CRON_SECRET>` header
+
+### Vercel Setup Required
+Add `CRON_SECRET` to **Vercel → Project Settings → Environment Variables** (any UUID/random string).
+
+---
+
+## Step 29 — Blog Category Filtering + In-Portal Notification Bell ✅
+
+**What:** Wired the blog sidebar categories to actually filter posts, added pagination, and built a real-time notification bell into both portal topbars.
+
+**Why:** The blog sidebar had hardcoded dead links. Users needed a way to filter by topic. The notification bell was previously a static icon — now it shows real unread counts and live updates.
+
+### Blog Category Filtering
+- `/blog?category=H-1B` filters posts by that category
+- `/blog?category=H-1B&page=2` — combined category + page
+- Sidebar shows live counts from DB; active category highlighted
+- 8 posts per page; Prev/Next buttons with page X of Y
+- Empty state shown when no posts exist for a category
+
+### Notification Bell (`components/NotificationBell.tsx`)
+A client component that:
+1. Fetches the last 15 notifications for the logged-in user on mount
+2. Subscribes to Supabase Realtime for instant push on new rows
+3. Shows unread count badge (red dot with number) on the bell icon
+4. Click → dropdown with notification list (icon, title, body, time ago)
+5. Click a notification → marks as read + navigates to the relevant portal page
+6. "Mark all read" button clears badge immediately
+
+### Where the Bell Appears
+- **Client portal** (`/dashboard/*`) — replaces the old static bell button in the topbar
+- **Admin panel** (`/admin/*`) — new sticky topbar added at the top of the main content area
+
+### Notification Triggers
+| Event | How notification is created |
+|---|---|
+| Case status changed | `update-case-status` API → `sendPushToUser()` |
+| Timeline event added | New `add-timeline-event` API → `sendPushToUser()` |
+| Appointment confirmed/cancelled | `update-appointment` API → `sendPushToUser()` |
+| Ticket reply | ⬜ Not yet wired (known limitation) |
+
+### New API Route
+`POST /api/admin/add-timeline-event` — replaces the direct Supabase insert in `LawyerActions.tsx`. Uses the service role key to insert both the timeline event AND the in-portal notification in one call.

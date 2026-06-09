@@ -10,6 +10,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendAppointmentStatusEmail } from '@/lib/email/resend'
+import { sendPushToUser } from '@/lib/push/sendPush'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -30,5 +32,39 @@ export async function POST(req: NextRequest) {
   const { error } = await admin.from('appointments').update(updates).eq('id', apptId)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Send email to client when status changes to confirmed or cancelled
+  if (status === 'confirmed' || status === 'cancelled') {
+    const { data: appt } = await admin
+      .from('appointments')
+      .select('user_id, date, time_slot, profiles(full_name, email)')
+      .eq('id', apptId)
+      .single()
+
+    if (appt) {
+      const clientProfile = appt.profiles as any
+      sendAppointmentStatusEmail({
+        clientName: clientProfile?.full_name || clientProfile?.email?.split('@')[0] || 'Client',
+        clientEmail: clientProfile?.email,
+        date: appt.date,
+        timeSlot: appt.time_slot,
+        status,
+        location: location || null,
+        meetingLink: meeting_link || null,
+      }).catch(() => {})
+
+      // Send push notification
+      const pushBody = status === 'confirmed'
+        ? `Your appointment on ${appt.date} at ${appt.time_slot} has been confirmed.${location ? ` Location: ${location}` : ''}`
+        : `Your appointment on ${appt.date} at ${appt.time_slot} has been cancelled.`
+      sendPushToUser(admin, appt.user_id, {
+        title: status === 'confirmed' ? '📅 Appointment Confirmed' : '📅 Appointment Cancelled',
+        body: pushBody,
+        type: 'appointment',
+        data: { appointmentId: apptId, status },
+      }).catch(() => {})
+    }
+  }
+
   return NextResponse.json({ ok: true })
 }

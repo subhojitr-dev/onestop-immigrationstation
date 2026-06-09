@@ -20,7 +20,7 @@ export default async function AdminBlogPage() {
 
   const { data: posts } = await admin
     .from('blog_posts')
-    .select('id, title, slug, category, is_published, published_at, author_name, created_at')
+    .select('id, title, slug, category, is_published, published_at, author_name, created_at, post_type')
     .order('created_at', { ascending: false })
 
   return (
@@ -47,7 +47,7 @@ export default async function AdminBlogPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #e7e9f0' }}>
-                {['Title', 'Category', 'Author', 'Status', 'Date', 'Actions'].map(h => (
+                {['Title', 'Type', 'Category', 'Author', 'Status', 'Date', 'Actions'].map(h => (
                   <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.06em', color: '#98a0b0' }}>{h}</th>
                 ))}
               </tr>
@@ -60,6 +60,18 @@ export default async function AdminBlogPage() {
                       {post.title}
                     </div>
                     <div style={{ fontSize: '12px', color: '#98a0b0', marginTop: '2px' }}>/blog/{post.slug}</div>
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    {(() => {
+                      const t = post.post_type || 'article'
+                      const cfg: Record<string,{bg:string;color:string;label:string}> = {
+                        article:       { bg:'#e8effe', color:'#1d4ed8', label:'Article' },
+                        youtube_video: { bg:'#fdeceb', color:'#b42318', label:'▶ Video' },
+                        uscis_news:    { bg:'#e6f6ef', color:'#047857', label:'🏛 USCIS' },
+                      }
+                      const c = cfg[t] || cfg.article
+                      return <span style={{ background: c.bg, color: c.color, borderRadius: '20px', padding: '3px 10px', fontSize: '12px', fontWeight: 600 }}>{c.label}</span>
+                    })()}
                   </td>
                   <td style={{ padding: '14px 16px' }}>
                     <span style={{ background: '#e8effe', color: '#1d4ed8', borderRadius: '20px', padding: '3px 10px', fontSize: '12px', fontWeight: 600 }}>

@@ -1,7 +1,8 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import NewCaseForm from './NewCaseForm'
 
 const statusColors: Record<string,{bg:string;color:string;label:string}> = {
   open:               { bg:'#e8effe', color:'#1d4ed8', label:'Open' },
@@ -18,6 +19,8 @@ export default async function AdminCasesPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const { data: callerProfile } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single()
+
   // Admin client bypasses RLS — reads ALL users' data
   const admin = createAdminClient()
 
@@ -26,19 +29,29 @@ export default async function AdminCasesPage() {
     .select('*, profiles!cases_user_id_fkey(full_name, email)')
     .order('opened_date', { ascending: false })
 
+  // Fetch all clients (non-lawyer/admin) for the New Case form
+  const { data: clients } = await admin
+    .from('profiles')
+    .select('id, full_name, email')
+    .in('role', ['beneficiary', 'sponsor', 'contact'])
+    .order('full_name')
+
   return (
     <div style={{padding:'32px'}}>
-      <div style={{marginBottom:'28px', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
+      <div style={{marginBottom:'24px', display:'flex', alignItems:'flex-start', justifyContent:'space-between', flexWrap:'wrap', gap:'16px'}}>
         <div>
           <h1 style={{fontFamily:'Lora, serif', fontSize:'28px', color:'#1a2744', margin:'0 0 6px'}}>Cases</h1>
           <p style={{color:'#586176', fontSize:'15px', margin:0}}>All immigration cases — {cases?.length ?? 0} total</p>
         </div>
-        <div style={{display:'flex', gap:'8px', flexWrap:'wrap'}}>
-          {Object.entries(statusColors).map(([key, val]) => {
-            const count = cases?.filter(c => c.status === key).length ?? 0
-            if (!count) return null
-            return <span key={key} style={{background:val.bg, color:val.color, borderRadius:'20px', padding:'4px 12px', fontSize:'12px', fontWeight:600}}>{val.label} ({count})</span>
-          })}
+        <div style={{display:'flex', alignItems:'center', gap:'12px', flexWrap:'wrap'}}>
+          <div style={{display:'flex', gap:'8px', flexWrap:'wrap'}}>
+            {Object.entries(statusColors).map(([key, val]) => {
+              const count = cases?.filter(c => c.status === key).length ?? 0
+              if (!count) return null
+              return <span key={key} style={{background:val.bg, color:val.color, borderRadius:'20px', padding:'4px 12px', fontSize:'12px', fontWeight:600}}>{val.label} ({count})</span>
+            })}
+          </div>
+          <NewCaseForm clients={clients ?? []} lawyerName={callerProfile?.full_name || ''} />
         </div>
       </div>
 
@@ -58,7 +71,7 @@ export default async function AdminCasesPage() {
               return (
                 <tr key={c.id} style={{borderBottom:'1px solid #eef1f7'}}>
                   <td style={{padding:'13px 16px'}}>
-                    <Link href={`/dashboard/cases/${c.id}`} style={{fontFamily:'monospace', fontWeight:700, color:'#1a2744', textDecoration:'none', fontSize:'13px'}}>
+                    <Link href={`/admin/cases/${c.id}`} style={{fontFamily:'monospace', fontWeight:700, color:'#1a2744', textDecoration:'none', fontSize:'13px'}}>
                       {c.case_number}
                     </Link>
                   </td>
@@ -87,7 +100,7 @@ export default async function AdminCasesPage() {
         </table>
         {(!cases || cases.length === 0) && (
           <div style={{textAlign:'center', padding:'40px', color:'#98a0b0', fontSize:'14px'}}>
-            No cases yet — cases are created by attorneys after reviewing intake applications
+            No cases yet — use "+ New Case" to create one, or open a case from an application.
           </div>
         )}
       </div>

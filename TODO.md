@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-07 (Session 3)
+**Last updated:** 2026-06-09 (Web Sessions 1–5 complete)
 
 ---
 
@@ -116,71 +116,67 @@
 
 ## 🔴 HIGH PRIORITY — Next Build Phase
 
-### 1. Fix lawyer appointment visibility (security gap)
-- [ ] Lawyers should only see THEIR OWN appointments in `/admin/appointments`
-- [ ] Admin sees ALL appointments
-- [ ] Filter by `lawyer_name` matching logged-in lawyer's name (or better: add `lawyer_id` to appointments)
-- **Why:** Currently all lawyers see all other lawyers' appointments — privacy/security issue
+### 1. Fix lawyer appointment visibility (security gap) ✅ DONE (Session 4)
+- [x] Migration 008: `lawyer_id` FK added to appointments + updated RLS policy
+- [x] Booking page saves `lawyer_id` from consultation slot
+- [x] `/admin/appointments` filters by `lawyer_id` (+ `lawyer_name` fallback) for lawyers; admins see all
+- **⚠️ Requires running migration 008 in Supabase SQL editor**
 
-### 2. Fix lawyer login flow (session isolation)
-- [ ] Recovery link set-password flow still has issues when admin is logged in same browser
-- [ ] Consider: add "Resend Setup Email" button to /admin/users for existing lawyers
-- [ ] Consider: store `lawyer_id` on appointments for more robust filtering
-- **Workaround:** Lawyer uses forgot-password while logged out as admin
+### 2. Fix lawyer login flow (session isolation) ✅ DONE (Session 4)
+- [x] "Resend Setup Email" button added to `/admin/users` for each lawyer row
+- [x] `/api/admin/resend-setup-email` route: generates fresh recovery link + resends welcome email
+- **Remaining:** Core session-isolation bug (same browser) still exists — workaround: use /forgot-password logged out
 
-### 3. Pre-Filled USCIS PDF Forms (Phase 2)
-- [ ] Install `pdf-lib`
-- [ ] Map H-1B questionnaire answers to I-129 field names
-- [ ] Generate pre-filled I-129 downloadable from admin panel
-- [ ] Extend to I-130, I-129F, I-140
-- **Why:** Reduces attorney prep time from hours to minutes
+### 3. Pre-Filled USCIS PDF Forms ✅ DONE (Session 4)
+- [x] Installed `pdf-lib`
+- [x] Field mappings for all 4 forms: I-129 (H-1B), I-130 (Family), I-129F (K-1), I-140 (Green Card)
+- [x] Server-side PDF generator — organized by Part & Item number, attorney fields highlighted
+- [x] GET /api/admin/uscis-form/[appId] — streams PDF download
+- [x] "I-129 Pre-Fill" button added to application detail page sidebar
+- ⬜ L-1 → I-129 (L classification) mapping not yet added
 
-### 4. Create Case directly from Admin Cases page
-- [ ] "+ New Case" button on `/admin/cases`
-- [ ] Form: client dropdown, visa type, description
-- [ ] No application required
-- **Why:** Lawyer may need to create cases for walk-in/phone clients
+### 4. Create Case directly from Admin Cases page ✅ DONE (Session 4)
+- [x] "+ New Case" button on `/admin/cases` — inline form expands inline
+- [x] Form: client dropdown, visa type, description, assigned attorney
+- [x] Auto case number OSIS-YYYY-NNN, initial "Case Opened" timeline event
+- [x] SQL: cases_status_check constraint updated ✅ run in Supabase
 
-### 5. Case Status Update from Admin
-- [ ] Lawyer can change case status from case detail page
-- [ ] Email client when status changes
-- **Why:** Cases are created but status stuck at "open"
+### 5. Case Status Update from Admin ✅ DONE (Session 4)
+- [x] `/admin/cases/[id]` — new admin case detail page with timeline
+- [x] Status dropdown: open → in_progress → pending_documents → submitted → approved → denied → closed
+- [x] Optional note to client, Save & Notify button emails client via Resend
 
 ---
 
 ## 🟡 MEDIUM PRIORITY
 
-### 6. News/Videos — CMS-Driven (decisions finalized)
-- [ ] Add `post_type` column to blog_posts: `article` | `youtube_video` | `uscis_news`
-- [ ] Add `youtube_url` column to blog_posts
-- [ ] Blog CMS `/admin/blog/new` — add Post Type selector:
-  - Article → publishes to `/blog`
-  - YouTube Video → admin pastes URL + summary → publishes to `/videos`
-  - USCIS News → auto-imported as draft, admin edits/publishes → `/blog`
-- [ ] `/videos` page — render posts where post_type='youtube_video' with embedded player
-- [ ] Vercel cron job — daily fetch of USCIS RSS → insert as drafts (post_type='uscis_news', is_published=false)
-- [ ] Admin notified of new USCIS drafts awaiting review
-- [ ] Archive logic: posts > 90 days → archived (visible but not prominent), > 1 year → deleted
-- [ ] Archive section on /blog and /videos (collapsible, links only)
-- **Decisions confirmed:**
-  - USCIS RSS → Draft → Admin approves only (not lawyer)
-  - Videos: on-demand from CMS (USCIS Official, Boundless Immigration, etc.)
-  - Blog and Videos stay as separate pages
-  - Post type in CMS determines which page it appears on
-  - Archive at 90 days, remove at 1 year
+### 6. News/Videos CMS ✅ DONE (Web Session 4)
+- [x] Migration 012: post_type, youtube_url, source_url columns on blog_posts
+- [x] Blog CMS: Post Type selector (Article / YouTube Video / USCIS News)
+- [x] /videos page: live YouTube embeds from Supabase, archive section, fallback placeholder
+- [x] USCIS RSS cron: daily at 06:00 UTC, 2 feeds, drafts only, deduplication, auto-delete > 1yr
+- [x] Admin email notification on new USCIS drafts
+- [x] Archive sections on /blog and /videos (collapsible <details>)
+- ⚠️ Add CRON_SECRET to Vercel env vars to protect the cron endpoint
 
-### 7. Blog Category/Archive Filtering
-- [ ] Wire sidebar category links on /blog to filter posts
-- [ ] Pagination (currently loads 20 max)
+### 7. Blog Category/Archive Filtering ✅ DONE (Web Session 5)
+- [x] Sidebar category links wired to ?category= query param
+- [x] Live category counts from DB
+- [x] Pagination: 8 posts/page, Prev/Next buttons, Page X of Y
+- [x] Active filter indicator + Clear filter link
+- [x] Empty state when no posts in selected category
 
-### 8. Real-Time In-Portal Notifications
-- [ ] Bell icon in topbar wired to `notifications` table
-- [ ] Mark as read functionality
-- [ ] Triggers: case update, appointment confirmed, ticket reply
+### 8. Real-Time In-Portal Notifications ✅ DONE (Web Session 5)
+- [x] NotificationBell component: bell icon + unread badge in both portal topbars
+- [x] Supabase Realtime subscription for instant updates
+- [x] Dropdown: last 15 notifications, type icons, timestamps, unread indicator
+- [x] Mark as read (single + all)
+- [x] Notification triggers: case status update, timeline event, appointment confirmed/cancelled
+- [x] New API route: /api/admin/add-timeline-event (inserts timeline + notification)
 
-### 9. Appointment location/meeting link on confirmation email
-- [ ] When lawyer confirms + adds location/link, include in the confirmation email to client
-- **Currently:** Client sees location in portal but email doesn't include it
+### 9. Appointment location/meeting link on confirmation email ✅ DONE (Session 4)
+- [x] `update-appointment` API now sends confirmation/cancellation email to client on status change
+- [x] Email includes location + meeting link block when present
 
 ---
 

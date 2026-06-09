@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendPushToUser } from '@/lib/push/sendPush'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -69,6 +70,14 @@ export async function POST(req: NextRequest) {
   await admin.from('applications')
     .update({ status: 'case_opened', case_id: newCase.id })
     .eq('id', appId)
+
+  // Send push notification to client
+  await sendPushToUser(admin, clientUserId, {
+    title: '⚖️ Your Case Has Been Opened',
+    body: `Case ${caseNum} has been opened for your ${visaLabels[visaType] || visaType} application.`,
+    type: 'case_opened',
+    data: { caseId: newCase.id, caseNumber: caseNum },
+  })
 
   return NextResponse.json({ ok: true, caseId: newCase.id, caseNumber: caseNum })
 }

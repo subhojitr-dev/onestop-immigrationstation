@@ -14,15 +14,20 @@ export async function POST(req: NextRequest) {
   const admin = createAdminClient()
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://onestop-immigrationstation-web.vercel.app'
 
+  // Point directly to /reset-password — the page handles both PKCE (?code=)
+  // and implicit flow (#access_token=) so no intermediate callback needed.
+  const redirectTo = `${siteUrl}/reset-password`
+
   // Generate a direct recovery link — no email sent by Supabase
   const { data, error } = await admin.auth.admin.generateLink({
     type: 'recovery',
     email: email.trim().toLowerCase(),
-    options: { redirectTo: `${siteUrl}/reset-password` },
+    options: { redirectTo },
   })
 
   if (error) {
     // Don't reveal whether the email exists — just return success
+    console.error('[forgot-password] generateLink error:', error.message)
     return NextResponse.json({ ok: true })
   }
 

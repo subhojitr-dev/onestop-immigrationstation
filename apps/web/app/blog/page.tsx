@@ -227,17 +227,78 @@ const FALLBACK_POSTS = [
   { id:'3', slug:'#', title:'H-1B Cap Season: What Employers Need to Know', excerpt:'As the H-1B cap season approaches, employers must prepare their petitions well in advance of the April filing window.', category:'H-1B', author_name:'OSIS Team', published_at:'2024-01-15', featured_image:'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=450&q=80' },
 ]
 
-export default async function BlogPage() {
-  // Fetch published posts from Supabase — falls back to hardcoded posts if table is empty
-  const supabase = await createClient()
-  const { data: dbPosts } = await supabase
-    .from('blog_posts')
-    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image')
-    .eq('is_published', true)
-    .order('published_at', { ascending: false })
-    .limit(20)
+/** Split a date into active (<90 days) vs archived (90d–1yr) */
+function splitByAge(posts: any[]) {
+  const now   = Date.now()
+  const d90   = 90 * 24 * 60 * 60 * 1000
+  const active: any[] = []
+  const archived: any[] = []
+  for (const p of posts) {
+    const age = p.published_at ? now - new Date(p.published_at).getTime() : 0
+    if (age > d90) archived.push(p)
+    else active.push(p)
+  }
+  return { active, archived }
+}
 
-  const posts = (dbPosts && dbPosts.length > 0) ? dbPosts : FALLBACK_POSTS
+const PAGE_SIZE = 8
+
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; page?: string }>
+}) {
+  const { category: rawCategory, page: rawPage } = await searchParams
+  const activeCategory = rawCategory || ''
+  const page = Math.max(1, parseInt(rawPage || '1', 10))
+  const offset = (page - 1) * PAGE_SIZE
+
+  const supabase = await createClient()
+
+  // Build the main query with optional category filter
+  let query = supabase
+    .from('blog_posts')
+    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type', { count: 'exact' })
+    .eq('is_published', true)
+    .in('post_type', ['article', 'uscis_news'])
+    .order('published_at', { ascending: false })
+
+  if (activeCategory) query = query.eq('category', activeCategory)
+
+  const { data: dbPosts, count: totalCount } = await query
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  // Legacy posts (pre-migration, null post_type) — only on page 1, no category filter
+  let legacyPosts: any[] = []
+  if (!activeCategory && page === 1) {
+    const { data } = await supabase
+      .from('blog_posts')
+      .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
+      .eq('is_published', true)
+      .is('post_type', null)
+      .order('published_at', { ascending: false })
+      .limit(10)
+    legacyPosts = data ?? []
+  }
+
+  // Fetch category counts for sidebar (only article + uscis_news)
+  const { data: categoryData } = await supabase
+    .from('blog_posts')
+    .select('category')
+    .eq('is_published', true)
+    .in('post_type', ['article', 'uscis_news'])
+
+  const categoryCounts: Record<string, number> = {}
+  for (const row of categoryData ?? []) {
+    if (row.category) categoryCounts[row.category] = (categoryCounts[row.category] || 0) + 1
+  }
+  const sortedCategories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])
+
+  const allPosts = [...(dbPosts ?? []), ...legacyPosts]
+  const totalPages = Math.ceil((totalCount ?? 0) / PAGE_SIZE)
+
+  const { active, archived } = splitByAge(allPosts.length > 0 ? allPosts : (page === 1 && !activeCategory ? FALLBACK_POSTS : []))
+  const posts = active.length > 0 ? active : (page === 1 && !activeCategory ? FALLBACK_POSTS : [])
 
   return (
     <>
@@ -260,6 +321,12 @@ export default async function BlogPage() {
         <section className="section">
           <div className="container blog-layout">
             <div className="post-list">
+              {/* USCIS News banner if any uscis_news posts are in the active list */}
+              {posts.some((p: any) => p.post_type === 'uscis_news') && (
+                <div style={{ background: '#e6f6ef', border: '1px solid #047857', borderRadius: '12px', padding: '12px 18px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#047857' }}>
+                  🏛️ <strong>USCIS Updates</strong> — Official news imported from USCIS.gov
+                </div>
+              )}
               {posts.map((post: any) => {
                 const date = post.published_at ? new Date(post.published_at) : null
                 const day  = date ? date.getDate().toString().padStart(2,'0') : ''
@@ -293,30 +360,95 @@ export default async function BlogPage() {
                   </article>
                 )
               })}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '24px 0 8px', borderTop: '1px solid #e7e9f0', marginTop: '24px' }}>
+                  <Link
+                    href={page > 1 ? `/blog?${activeCategory ? `category=${encodeURIComponent(activeCategory)}&` : ''}page=${page - 1}` : '#'}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 18px', borderRadius: '9px', border: '1.5px solid', borderColor: page > 1 ? '#1a2744' : '#e7e9f0', background: '#fff', color: page > 1 ? '#1a2744' : '#98a0b0', fontWeight: 600, fontSize: '14px', textDecoration: 'none', pointerEvents: page > 1 ? 'auto' : 'none' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    Previous
+                  </Link>
+                  <span style={{ fontSize: '13px', color: '#586176' }}>Page {page} of {totalPages}</span>
+                  <Link
+                    href={page < totalPages ? `/blog?${activeCategory ? `category=${encodeURIComponent(activeCategory)}&` : ''}page=${page + 1}` : '#'}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 18px', borderRadius: '9px', border: '1.5px solid', borderColor: page < totalPages ? '#1a2744' : '#e7e9f0', background: page < totalPages ? '#1a2744' : '#fff', color: page < totalPages ? '#fff' : '#98a0b0', fontWeight: 600, fontSize: '14px', textDecoration: 'none', pointerEvents: page < totalPages ? 'auto' : 'none' }}>
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </Link>
+                </div>
+              )}
+
+              {/* Empty state for filtered view */}
+              {posts.length === 0 && activeCategory && (
+                <div style={{ textAlign: 'center', padding: '40px 20px', color: '#98a0b0' }}>
+                  <div style={{ fontSize: '32px', marginBottom: '12px' }}>📭</div>
+                  <p style={{ fontSize: '15px' }}>No posts in <strong style={{ color: '#1a2744' }}>{activeCategory}</strong> yet.</p>
+                  <Link href="/blog" style={{ color: '#b8952a', fontWeight: 600, textDecoration: 'none', fontSize: '14px' }}>View all posts →</Link>
+                </div>
+              )}
+
+              {/* Archive section — posts 90–365 days old */}
+              {archived.length > 0 && (
+                <details style={{ marginTop: '24px' }}>
+                  <summary style={{ cursor: 'pointer', padding: '12px 18px', background: '#f5f6fa', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: '#586176', listStyle: 'none', display: 'flex', alignItems: 'center', gap: '8px', userSelect: 'none' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Archive ({archived.length} older {archived.length === 1 ? 'post' : 'posts'})
+                  </summary>
+                  <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {archived.map((post: any) => (
+                      <a key={post.id} href={`/blog/${post.slug}`}
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f9fafb', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', color: '#1a2744', gap: '12px' }}>
+                        <span style={{ fontWeight: 500 }}>{post.title}</span>
+                        <span style={{ fontSize: '12px', color: '#98a0b0', flexShrink: 0 }}>
+                          {post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
 
             <aside className="sidebar">
               <div className="widget reveal">
                 <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg><span>Categories</span></h3>
                 <div className="cat-list">
-                  <a href="#"><span>Workplace</span><span className="count">8</span></a>
-                  <a href="#"><span>USCIS Updates</span><span className="count">12</span></a>
-                  <a href="#"><span>Court Decisions</span><span className="count">5</span></a>
-                  <a href="#"><span>Policy</span><span className="count">9</span></a>
-                  <a href="#"><span>Employer Compliance</span><span className="count">6</span></a>
-                  <a href="#"><span>Family Immigration</span><span className="count">7</span></a>
+                  {/* All Categories link */}
+                  <Link href="/blog"
+                    style={{ fontWeight: activeCategory === '' ? 700 : 400, color: activeCategory === '' ? '#1a2744' : undefined }}>
+                    <span>All Categories</span>
+                    <span className="count">{(totalCount ?? 0) + legacyPosts.length}</span>
+                  </Link>
+                  {sortedCategories.length > 0
+                    ? sortedCategories.map(([cat, cnt]) => (
+                        <Link key={cat} href={`/blog?category=${encodeURIComponent(cat)}`}
+                          style={{ fontWeight: activeCategory === cat ? 700 : 400, color: activeCategory === cat ? '#1a2744' : undefined }}>
+                          <span>{cat}</span>
+                          <span className="count">{cnt}</span>
+                        </Link>
+                      ))
+                    : /* fallback when DB is empty */
+                      ['Policy & News','USCIS Updates','H-1B','Green Card','Family Immigration','Workplace'].map(cat => (
+                        <Link key={cat} href={`/blog?category=${encodeURIComponent(cat)}`}>
+                          <span>{cat}</span>
+                        </Link>
+                      ))
+                  }
                 </div>
               </div>
-              <div className="widget reveal">
-                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Archives</span></h3>
-                <div className="archive-list">
-                  <a href="#"><span>February 2022</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>June 2020</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>July 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>March 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>November 2017</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+
+              {/* Active filter indicator */}
+              {activeCategory && (
+                <div className="widget reveal" style={{ background: '#f0f4ff', border: '1px solid #1a2744' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#1a2744' }}>
+                      Filtered: {activeCategory}
+                    </span>
+                    <Link href="/blog" style={{ fontSize: '12px', color: '#b42318', textDecoration: 'none', fontWeight: 600 }}>✕ Clear</Link>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="help-card reveal">
                 <div className="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
                 <h3>Need Help?</h3>

@@ -206,14 +206,25 @@ export async function sendAppointmentStatusEmail(opts: {
   date: string
   timeSlot: string
   status: 'confirmed' | 'cancelled'
+  location?: string | null
+  meetingLink?: string | null
 }) {
-  const { clientName, clientEmail, date, timeSlot, status } = opts
+  const { clientName, clientEmail, date, timeSlot, status, location, meetingLink } = opts
   const isConfirmed = status === 'confirmed'
+
+  const locationBlock = isConfirmed && location
+    ? `<div style="background:#f0f4ff;border-radius:10px;padding:14px 16px;margin:16px 0;font-size:14px;color:#1a2744">
+         <div style="font-weight:700;margin-bottom:4px">📍 ${location}</div>
+         ${meetingLink ? `<a href="${meetingLink}" style="color:#b8952a;font-size:13px;word-break:break-all">${meetingLink}</a>` : ''}
+       </div>`
+    : ''
+
   const html = emailShell(
     isConfirmed ? 'Appointment Confirmed by Attorney' : 'Appointment Cancelled',
     `<p>Hi ${clientName},</p>
      <p>Your appointment on <strong>${date}</strong> at <strong>${timeSlot}</strong> has been <strong>${isConfirmed ? 'confirmed' : 'cancelled'}</strong>.</p>
-     ${isConfirmed ? '<p>We look forward to speaking with you. Our team will reach out if any further information is needed beforehand.</p>' : '<p>Please book a new time at your convenience.</p>'}`,
+     ${locationBlock}
+     ${isConfirmed ? '<p>We look forward to speaking with you. Please reach out if you have any questions beforehand.</p>' : '<p>Please book a new time at your convenience.</p>'}`,
     isConfirmed ? 'View Appointments' : 'Book New Appointment',
     `https://onestop-immigrationstation-web.vercel.app/dashboard/appointments${isConfirmed ? '' : '/book'}`
   )

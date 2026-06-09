@@ -18,26 +18,41 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    const hash = window.location.hash.substring(1)
-    const params = new URLSearchParams(hash)
-    const accessToken = params.get('access_token')
-    const refreshToken = params.get('refresh_token')
 
-    if (!accessToken) {
+    async function establishSession() {
+      // ── PKCE flow: Supabase sends ?code= in the query string (default for @supabase/ssr)
+      const searchParams = new URLSearchParams(window.location.search)
+      const code = searchParams.get('code')
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code)
+        setValidSession(!error)
+        setChecking(false)
+        return
+      }
+
+      // ── Implicit flow: older links send #access_token= in the hash
+      const hash = window.location.hash.substring(1)
+      const hashParams = new URLSearchParams(hash)
+      const accessToken = hashParams.get('access_token')
+      const refreshToken = hashParams.get('refresh_token')
+      if (accessToken) {
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || '',
+        })
+        setValidSession(!error && !!data.session)
+        setChecking(false)
+        return
+      }
+
+      // ── No token in URL — check if there's already a valid recovery session
+      // (e.g. user navigated back after auth/callback exchanged the code)
+      const { data: { session } } = await supabase.auth.getSession()
+      setValidSession(!!session)
       setChecking(false)
-      return
     }
 
-    // Explicitly set the session from the recovery link tokens.
-    // This ensures we're acting on the LAWYER's session, not any
-    // existing admin session stored in cookies.
-    supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken || '' })
-      .then(({ data, error }) => {
-        if (!error && data.session) {
-          setValidSession(true)
-        }
-        setChecking(false)
-      })
+    establishSession()
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {

@@ -44,30 +44,15 @@ export default function LawyerActions({ caseId, caseNumber, clientUserId }: Prop
     if (!tlEvent.trim()) { setTlError('Event name is required'); return }
     setTlSaving(true)
     setTlError('')
-    const supabase = createClient()
 
-    const { error } = await supabase.from('case_timeline').insert({
-      case_id: caseId,
-      event: tlEvent.trim(),
-      description: tlDesc.trim() || null,
-    })
-
-    if (error) { setTlError(error.message); setTlSaving(false); return }
-
-    // Email notification to client
-    fetch('/api/email', {
+    // Use API route so we can send notification via service role without exposing key
+    const res = await fetch('/api/admin/add-timeline-event', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'case_status',
-        clientName: 'Client',
-        clientEmail: '', // will be empty — server resolves from user_id if needed
-        caseNumber,
-        visaType: '',
-        newStatus: tlEvent.trim(),
-        lawyerNote: tlDesc.trim() || undefined,
-      }),
-    }).catch(() => {})
+      body: JSON.stringify({ caseId, caseNumber, clientUserId, event: tlEvent.trim(), description: tlDesc.trim() || null }),
+    })
+    const result = await res.json()
+    if (!res.ok) { setTlError(result.error || 'Failed to add event'); setTlSaving(false); return }
 
     setTlEvent('')
     setTlDesc('')

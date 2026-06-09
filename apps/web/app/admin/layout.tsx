@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import NotificationBell from '@/components/NotificationBell'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -99,6 +100,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
       {/* Main */}
       <div style={{flex:1, marginLeft:256, display:'flex', flexDirection:'column'}}>
+        {/* Admin topbar */}
+        <div style={{position:'sticky', top:0, zIndex:50, background:'#eef0f5', borderBottom:'1px solid #e7e9f0', padding:'10px 28px', display:'flex', alignItems:'center', justifyContent:'flex-end', gap:'12px'}}>
+          <NotificationBell userId={user.id} />
+          <div style={{width:34, height:34, borderRadius:'50%', background:'linear-gradient(150deg,#2b3c60,#1a2744)', border:'1px solid rgba(184,149,42,.4)', display:'grid', placeItems:'center', fontFamily:'Lora, serif', fontWeight:700, color:'#cfa94a', fontSize:'14px'}}>
+            {initial}
+          </div>
+        </div>
         {children}
       </div>
     </div>
