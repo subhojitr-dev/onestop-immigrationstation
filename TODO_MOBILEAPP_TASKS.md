@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Mobile App Tasks
 
-**Last updated:** 2026-06-09
+**Last updated:** 2026-06-09 (all phases complete except Phase 6)
 **Branch:** `mobile`
 **Location:** `apps/mobile/`
 **Test method:** Expo Go app on iPhone or Android (free, no developer account needed)
@@ -117,9 +117,11 @@ git pull
   - Auto-login on app reopen via `supabase.auth.getSession()`
   - Unauthenticated users redirected to Login screen
 
-- [ ] **1.7** Google OAuth *(not yet built)*
-  - Requires `expo-auth-session` setup
-  - Lower priority — email/password works fine
+- [x] **1.7** Google OAuth ✅
+  - "Continue with Google" button on LoginScreen
+  - Uses `expo-web-browser` + `expo-auth-session`
+  - URL scheme `onestop-immigration://` added to `app.json`
+  - Requires: add `onestop-immigration://` to Supabase redirect URLs
 
 ---
 
@@ -262,9 +264,13 @@ git pull
   - Modal to add event title + description
   - Saves directly to case_timeline table
 
-- [ ] **5.7** Open Case from application *(not yet built)*
-  - Button on Application Detail to open a case directly from mobile
-  - Equivalent to web's "Open Case" button
+- [x] **5.7** Open Case from application ✅
+  - "⚖️ Open Case" button on AdminApplicationDetailScreen
+  - Generates OSIS-YYYY-NNN case number
+  - Creates case, adds timeline event, updates application status
+  - Sends push notification to client
+  - Shows "✅ Case Already Opened" badge if already done
+  - Requires: migration 011 run in Supabase
 
 ---
 
@@ -323,8 +329,8 @@ git pull
 | Admin App Detail | 5 | ✅ | /admin/applications/[id] |
 | Admin Appointments | 5 | ✅ | /admin/appointments |
 | Admin Availability | 5 | ✅ | /admin/slots |
-| Open Case (mobile) | 5 | ⬜ | /admin/applications/[id] |
-| Google OAuth | 1 | ⬜ | /login (Google button) |
+| Open Case (mobile) | 5 | ✅ | /admin/applications/[id] |
+| Google OAuth | 1 | ✅ | /login (Google button) |
 
 ---
 
@@ -358,9 +364,9 @@ git pull
 
 | Phase | Effort | Status |
 |-------|--------|--------|
-| Phase 1 — Setup & Auth | Done | ✅ |
+| Phase 1 — Setup & Auth (incl. Google OAuth) | Done | ✅ |
 | Phase 2 — Client Features | Done | ✅ |
 | Phase 3 — Questionnaire | Done | ✅ |
 | Phase 4 — Push Notifications | Done | ✅ |
-| Phase 5 — Admin Screens | Done | ✅ |
+| Phase 5 — Admin Screens (incl. Open Case) | Done | ✅ |
 | Phase 6 — Polish & App Store | 1 week | ⬜ |

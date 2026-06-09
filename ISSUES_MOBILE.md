@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Mobile App Issues Log
 
-**Last updated:** 2026-06-09 (updated after Phase 4)
+**Last updated:** 2026-06-09 (updated after Phase 4 + remaining tasks 5.7 + 1.7)
 **Branch:** `mobile`
 
 ---
@@ -206,11 +206,31 @@ with the user's Bearer token in the Authorization header.
 
 ---
 
+---
+
+### M-019 — Google OAuth Requires Supabase Redirect URL Setup
+**Status:** 🟡 Setup required (not a code bug)
+**Symptom:** Google sign-in opens browser but redirects fail to return to the app.
+**Root cause:** Supabase doesn't know `onestop-immigration://` is a valid redirect URL until manually added.
+**Fix:** Go to **Supabase Dashboard → Authentication → URL Configuration → Redirect URLs** and add `onestop-immigration://`
+**Priority:** Required for Google OAuth to work.
+
+---
+
+### M-020 — Open Case Requires Migration 011
+**Status:** 🟡 Setup required (not a code bug)
+**Symptom:** Tapping "Open Case" on mobile fails with error about cases table.
+**Root cause:** Migration 011 adds the RLS policy allowing lawyers to INSERT into the cases table. Without it, the insert is blocked.
+**Fix:** Run `supabase/migrations/011_lawyer_create_cases.sql` in Supabase SQL Editor.
+**Status:** ✅ Migration already run 2026-06-09.
+
+---
+
 ## Issue Statistics
 
 | Category | Count |
 |----------|-------|
 | ✅ Resolved | 10 |
-| 🟡 Open / Known | 8 |
+| 🟡 Open / Known | 10 |
 | 🔴 Critical / Blocking | 0 |
-| **Total** | **18** |
+| **Total** | **20** |

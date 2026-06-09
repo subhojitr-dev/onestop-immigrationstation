@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Mobile App Setup Guide
 
-**Last updated:** 2026-06-09
+**Last updated:** 2026-06-09 (all phases complete except Phase 6)
 **Branch:** `mobile`
 **Location:** `apps/mobile/`
 **Framework:** React Native + Expo SDK 54
@@ -43,11 +43,20 @@ EXPO_PUBLIC_API_URL=https://onestop-immigrationstation-web.vercel.app
 ```
 ⚠️ Never commit secret keys. The anon key is safe to expose (it's public).
 
-### Step 4 — Run Supabase migration 009
-Go to **Supabase Dashboard → SQL Editor** and run:
-`supabase/migrations/009_mobile_lawyer_rls.sql`
+### Step 4 — Run Supabase migrations
+Go to **Supabase Dashboard → SQL Editor** and run each file in order:
 
-This allows lawyers/admins to update records directly from mobile.
+| File | Purpose | Status |
+|------|---------|--------|
+| `009_mobile_lawyer_rls.sql` | Lawyers can update apps/appointments/timeline/slots | ✅ Run |
+| `010_push_notifications.sql` | push_tokens + notifications tables | ✅ Run |
+| `011_lawyer_create_cases.sql` | Lawyers can create/update cases directly | ✅ Run |
+
+### Step 5 — Configure Google OAuth redirect (for Google login)
+Go to **Supabase Dashboard → Authentication → URL Configuration → Redirect URLs**
+Add: `onestop-immigration://`
+
+This allows the mobile app to redirect back after Google sign-in.
 
 ---
 
@@ -151,6 +160,7 @@ Bottom Tabs: Admin | Cases | Appointments | Apply | Profile
 | 001–008 | `supabase/migrations/` | ✅ Already run |
 | 009 | `009_mobile_lawyer_rls.sql` | ✅ Run 2026-06-09 |
 | 010 | `010_push_notifications.sql` | ✅ Run 2026-06-09 |
+| 011 | `011_lawyer_create_cases.sql` | ✅ Run 2026-06-09 |
 
 Migration 009 adds RLS policies so lawyers can directly update:
 - `applications` (status + notes)
@@ -161,6 +171,10 @@ Migration 009 adds RLS policies so lawyers can directly update:
 Migration 010 creates:
 - `push_tokens` table — stores Expo push tokens per user/device
 - `notifications` table — stores in-app notification history with read/unread status
+
+Migration 011 adds:
+- RLS policy: lawyers can INSERT new cases
+- RLS policy: lawyers can UPDATE case status
 
 ---
 
@@ -251,5 +265,7 @@ git add . && git commit -m "your message" && git push origin mobile
 - The duplicate React error (monorepo issue) is fixed by `metro.config.js` — don't delete it
 - Document download opens in browser (not native download) — this is intentional
 - API calls to web backend use `EXPO_PUBLIC_API_URL` pointing to Vercel
-- Lawyers/admins need migration 009 run before admin features work on mobile
+- Lawyers/admins need migrations 009, 010, 011 run before all features work on mobile
 - Login: email field uses `.toLowerCase().trim()` to handle iOS keyboard autocorrect
+- Google OAuth: requires `onestop-immigration://` added to Supabase redirect URLs
+- Google OAuth: background redirect only works in Expo Go if URL scheme is registered in app.json
