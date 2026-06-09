@@ -1,6 +1,20 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-09 (Web Sessions 1–5 complete)
+**Last updated:** 2026-06-09 (Web Sessions 1–5 complete + production deployed)
+
+---
+
+## ✅ RESOLVED THIS SESSION
+
+### R15. DownloadPdf.tsx TypeScript error blocking Vercel build
+- **Symptom:** `Property 'jsPDF' does not exist on type '{ default: typeof jsPDF; ... }'` — production build failed
+- **Root cause:** jspdf dynamic import returns `{ default: jsPDF }` but code destructured `{ jsPDF }` directly
+- **Fix:** Changed to `const jspdfModule = await import('jspdf'); const JsPDF = jspdfModule.default || jspdfModule.jsPDF`
+
+### R16. All web app code was only on `mobile` branch, not `main`
+- **Symptom:** Vercel (deploying from `main`) was building old code — all Sessions 1–5 features missing from production
+- **Root cause:** All development work was committed to `mobile` branch; `main` was never updated
+- **Fix:** Merged `mobile` into `main` and pushed — all 24 new commits now on main, production deployed
 
 ---
 
