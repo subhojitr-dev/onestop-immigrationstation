@@ -241,29 +241,64 @@ function splitByAge(posts: any[]) {
   return { active, archived }
 }
 
-export default async function BlogPage() {
-  // Fetch published article + uscis_news posts — exclude youtube_video (those go to /videos)
+const PAGE_SIZE = 8
+
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; page?: string }>
+}) {
+  const { category: rawCategory, page: rawPage } = await searchParams
+  const activeCategory = rawCategory || ''
+  const page = Math.max(1, parseInt(rawPage || '1', 10))
+  const offset = (page - 1) * PAGE_SIZE
+
   const supabase = await createClient()
-  const { data: dbPosts } = await supabase
+
+  // Build the main query with optional category filter
+  let query = supabase
     .from('blog_posts')
-    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
+    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type', { count: 'exact' })
     .eq('is_published', true)
     .in('post_type', ['article', 'uscis_news'])
     .order('published_at', { ascending: false })
-    .limit(50)
 
-  // For very old posts (null post_type = pre-migration articles), also include them
-  const { data: legacyPosts } = await supabase
+  if (activeCategory) query = query.eq('category', activeCategory)
+
+  const { data: dbPosts, count: totalCount } = await query
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  // Legacy posts (pre-migration, null post_type) — only on page 1, no category filter
+  let legacyPosts: any[] = []
+  if (!activeCategory && page === 1) {
+    const { data } = await supabase
+      .from('blog_posts')
+      .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
+      .eq('is_published', true)
+      .is('post_type', null)
+      .order('published_at', { ascending: false })
+      .limit(10)
+    legacyPosts = data ?? []
+  }
+
+  // Fetch category counts for sidebar (only article + uscis_news)
+  const { data: categoryData } = await supabase
     .from('blog_posts')
-    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
+    .select('category')
     .eq('is_published', true)
-    .is('post_type', null)
-    .order('published_at', { ascending: false })
-    .limit(20)
+    .in('post_type', ['article', 'uscis_news'])
 
-  const allPosts = [...(dbPosts ?? []), ...(legacyPosts ?? [])]
-  const { active, archived } = splitByAge(allPosts.length > 0 ? allPosts : FALLBACK_POSTS)
-  const posts = active.length > 0 ? active : FALLBACK_POSTS
+  const categoryCounts: Record<string, number> = {}
+  for (const row of categoryData ?? []) {
+    if (row.category) categoryCounts[row.category] = (categoryCounts[row.category] || 0) + 1
+  }
+  const sortedCategories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])
+
+  const allPosts = [...(dbPosts ?? []), ...legacyPosts]
+  const totalPages = Math.ceil((totalCount ?? 0) / PAGE_SIZE)
+
+  const { active, archived } = splitByAge(allPosts.length > 0 ? allPosts : (page === 1 && !activeCategory ? FALLBACK_POSTS : []))
+  const posts = active.length > 0 ? active : (page === 1 && !activeCategory ? FALLBACK_POSTS : [])
 
   return (
     <>
@@ -325,6 +360,34 @@ export default async function BlogPage() {
                   </article>
                 )
               })}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '24px 0 8px', borderTop: '1px solid #e7e9f0', marginTop: '24px' }}>
+                  <Link
+                    href={page > 1 ? `/blog?${activeCategory ? `category=${encodeURIComponent(activeCategory)}&` : ''}page=${page - 1}` : '#'}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 18px', borderRadius: '9px', border: '1.5px solid', borderColor: page > 1 ? '#1a2744' : '#e7e9f0', background: '#fff', color: page > 1 ? '#1a2744' : '#98a0b0', fontWeight: 600, fontSize: '14px', textDecoration: 'none', pointerEvents: page > 1 ? 'auto' : 'none' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    Previous
+                  </Link>
+                  <span style={{ fontSize: '13px', color: '#586176' }}>Page {page} of {totalPages}</span>
+                  <Link
+                    href={page < totalPages ? `/blog?${activeCategory ? `category=${encodeURIComponent(activeCategory)}&` : ''}page=${page + 1}` : '#'}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 18px', borderRadius: '9px', border: '1.5px solid', borderColor: page < totalPages ? '#1a2744' : '#e7e9f0', background: page < totalPages ? '#1a2744' : '#fff', color: page < totalPages ? '#fff' : '#98a0b0', fontWeight: 600, fontSize: '14px', textDecoration: 'none', pointerEvents: page < totalPages ? 'auto' : 'none' }}>
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </Link>
+                </div>
+              )}
+
+              {/* Empty state for filtered view */}
+              {posts.length === 0 && activeCategory && (
+                <div style={{ textAlign: 'center', padding: '40px 20px', color: '#98a0b0' }}>
+                  <div style={{ fontSize: '32px', marginBottom: '12px' }}>📭</div>
+                  <p style={{ fontSize: '15px' }}>No posts in <strong style={{ color: '#1a2744' }}>{activeCategory}</strong> yet.</p>
+                  <Link href="/blog" style={{ color: '#b8952a', fontWeight: 600, textDecoration: 'none', fontSize: '14px' }}>View all posts →</Link>
+                </div>
+              )}
+
               {/* Archive section — posts 90–365 days old */}
               {archived.length > 0 && (
                 <details style={{ marginTop: '24px' }}>
@@ -351,24 +414,41 @@ export default async function BlogPage() {
               <div className="widget reveal">
                 <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg><span>Categories</span></h3>
                 <div className="cat-list">
-                  <a href="#"><span>Workplace</span><span className="count">8</span></a>
-                  <a href="#"><span>USCIS Updates</span><span className="count">12</span></a>
-                  <a href="#"><span>Court Decisions</span><span className="count">5</span></a>
-                  <a href="#"><span>Policy</span><span className="count">9</span></a>
-                  <a href="#"><span>Employer Compliance</span><span className="count">6</span></a>
-                  <a href="#"><span>Family Immigration</span><span className="count">7</span></a>
+                  {/* All Categories link */}
+                  <Link href="/blog"
+                    style={{ fontWeight: activeCategory === '' ? 700 : 400, color: activeCategory === '' ? '#1a2744' : undefined }}>
+                    <span>All Categories</span>
+                    <span className="count">{(totalCount ?? 0) + legacyPosts.length}</span>
+                  </Link>
+                  {sortedCategories.length > 0
+                    ? sortedCategories.map(([cat, cnt]) => (
+                        <Link key={cat} href={`/blog?category=${encodeURIComponent(cat)}`}
+                          style={{ fontWeight: activeCategory === cat ? 700 : 400, color: activeCategory === cat ? '#1a2744' : undefined }}>
+                          <span>{cat}</span>
+                          <span className="count">{cnt}</span>
+                        </Link>
+                      ))
+                    : /* fallback when DB is empty */
+                      ['Policy & News','USCIS Updates','H-1B','Green Card','Family Immigration','Workplace'].map(cat => (
+                        <Link key={cat} href={`/blog?category=${encodeURIComponent(cat)}`}>
+                          <span>{cat}</span>
+                        </Link>
+                      ))
+                  }
                 </div>
               </div>
-              <div className="widget reveal">
-                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Archives</span></h3>
-                <div className="archive-list">
-                  <a href="#"><span>February 2022</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>June 2020</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>July 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>March 2018</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-                  <a href="#"><span>November 2017</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+
+              {/* Active filter indicator */}
+              {activeCategory && (
+                <div className="widget reveal" style={{ background: '#f0f4ff', border: '1px solid #1a2744' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#1a2744' }}>
+                      Filtered: {activeCategory}
+                    </span>
+                    <Link href="/blog" style={{ fontSize: '12px', color: '#b42318', textDecoration: 'none', fontWeight: 600 }}>✕ Clear</Link>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="help-card reveal">
                 <div className="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
                 <h3>Need Help?</h3>

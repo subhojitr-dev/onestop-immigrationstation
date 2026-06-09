@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendCaseStatusEmail } from '@/lib/email/resend'
+import { sendPushToUser } from '@/lib/push/sendPush'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -50,9 +51,17 @@ export async function POST(req: NextRequest) {
       : `Status changed to "${statusLabels[status] || status}" by ${callerProfile.full_name}.`,
   })
 
-  // Email the client
+  // Notify + email the client
   const clientProfile = caseRow.profiles as any
   if (clientProfile?.email) {
+    // In-portal notification
+    sendPushToUser(admin, caseRow.user_id, {
+      title: `Case Update: ${statusLabels[status] || status}`,
+      body: note ? `${statusLabels[status] || status} — ${note}` : `Your case ${caseRow.case_number} status has been updated.`,
+      type: 'case_update',
+      data: { caseId },
+    }).catch(() => {})
+
     sendCaseStatusEmail({
       clientName: clientProfile.full_name || clientProfile.email.split('@')[0],
       clientEmail: clientProfile.email,
