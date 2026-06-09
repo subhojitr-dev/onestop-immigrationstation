@@ -27,6 +27,9 @@ import VisaSelectionScreen from '../screens/apply/VisaSelectionScreen'
 import QuestionnaireScreen from '../screens/apply/QuestionnaireScreen'
 import ApplicationStatusScreen from '../screens/apply/ApplicationStatusScreen'
 
+// Notifications screen (Phase 4)
+import NotificationsScreen from '../screens/notifications/NotificationsScreen'
+
 // Admin screens (Phase 5)
 import AdminHomeScreen from '../screens/admin/AdminHomeScreen'
 import AdminApplicationsScreen from '../screens/admin/AdminApplicationsScreen'
@@ -93,6 +96,7 @@ function HomeStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={HomeScreen} />
       <Stack.Screen name="Documents" component={DocumentsScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   )
 }

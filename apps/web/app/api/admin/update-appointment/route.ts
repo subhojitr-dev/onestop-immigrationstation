@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendAppointmentStatusEmail } from '@/lib/email/resend'
+import { sendPushToUser } from '@/lib/push/sendPush'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -50,7 +51,18 @@ export async function POST(req: NextRequest) {
         status,
         location: location || null,
         meetingLink: meeting_link || null,
-      }).catch(() => {}) // don't block on email failure
+      }).catch(() => {})
+
+      // Send push notification
+      const pushBody = status === 'confirmed'
+        ? `Your appointment on ${appt.date} at ${appt.time_slot} has been confirmed.${location ? ` Location: ${location}` : ''}`
+        : `Your appointment on ${appt.date} at ${appt.time_slot} has been cancelled.`
+      sendPushToUser(admin, appt.user_id, {
+        title: status === 'confirmed' ? '📅 Appointment Confirmed' : '📅 Appointment Cancelled',
+        body: pushBody,
+        type: 'appointment',
+        data: { appointmentId: apptId, status },
+      }).catch(() => {})
     }
   }
 

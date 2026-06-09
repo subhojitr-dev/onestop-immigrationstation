@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Session, User } from '@supabase/supabase-js'
 import { supabase } from './supabase'
+import { registerForPushNotifications, unregisterPushToken } from './notifications'
 
 type UserRole = 'beneficiary' | 'sponsor' | 'contact' | 'admin' | 'lawyer'
 
@@ -51,14 +52,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
-      if (session?.user) fetchProfile(session.user.id)
+      if (session?.user) {
+        fetchProfile(session.user.id)
+        // Register push token silently in background
+        registerForPushNotifications(session.user.id).catch(() => {})
+      }
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session)
       if (session?.user) {
         fetchProfile(session.user.id)
+        // Register on new sign-in
+        if (event === 'SIGNED_IN') {
+          registerForPushNotifications(session.user.id).catch(() => {})
+        }
       } else {
         setProfile(null)
       }
@@ -68,6 +77,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function signOut() {
+    // Remove push token before signing out
+    if (session?.user) {
+      await unregisterPushToken(session.user.id)
+    }
     await supabase.auth.signOut()
   }
 
