@@ -67,8 +67,9 @@ export default function DownloadPdf({ application, questionnaire }: Props) {
     setGenerating(true)
     try {
       // Dynamic import — jspdf is large, only load when user clicks
-      const { jsPDF } = await import('jspdf')
-      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+      const jspdfModule = await import('jspdf')
+      const JsPDF = jspdfModule.default || (jspdfModule as any).jsPDF
+      const doc = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
 
       const pageW = 210
       const marginL = 18
