@@ -27,19 +27,26 @@ import VisaSelectionScreen from '../screens/apply/VisaSelectionScreen'
 import QuestionnaireScreen from '../screens/apply/QuestionnaireScreen'
 import ApplicationStatusScreen from '../screens/apply/ApplicationStatusScreen'
 
+// Admin screens (Phase 5)
+import AdminHomeScreen from '../screens/admin/AdminHomeScreen'
+import AdminApplicationsScreen from '../screens/admin/AdminApplicationsScreen'
+import AdminApplicationDetailScreen from '../screens/admin/AdminApplicationDetailScreen'
+import AdminAppointmentsScreen from '../screens/admin/AdminAppointmentsScreen'
+import AdminAvailabilityScreen from '../screens/admin/AdminAvailabilityScreen'
+
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   const icons: Record<string, string> = {
-    Home: '🏠', Cases: '📁', Appointments: '📅', Apply: '📝', Profile: '👤',
+    Home: '🏠', Cases: '📁', Apply: '📝', Appointments: '📅', Profile: '👤', Admin: '⚖️',
   }
   return (
     <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.5 }}>{icons[name] ?? '•'}</Text>
   )
 }
 
-function DashboardTabs() {
+function ClientTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -47,12 +54,7 @@ function DashboardTabs() {
         tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
         tabBarActiveTintColor: Colors.gold,
         tabBarInactiveTintColor: Colors.gray,
-        tabBarStyle: {
-          backgroundColor: Colors.navy,
-          borderTopColor: Colors.navyMid,
-          paddingBottom: 4,
-          height: 60,
-        },
+        tabBarStyle: { backgroundColor: Colors.navy, borderTopColor: Colors.navyMid, paddingBottom: 4, height: 60 },
         tabBarLabelStyle: { fontSize: 11, marginBottom: 4 },
       })}
     >
@@ -60,6 +62,27 @@ function DashboardTabs() {
       <Tab.Screen name="Cases" component={CasesStack} />
       <Tab.Screen name="Apply" component={ApplyStack} />
       <Tab.Screen name="Appointments" component={AppointmentsStack} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  )
+}
+
+function AdminTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
+        tabBarActiveTintColor: Colors.gold,
+        tabBarInactiveTintColor: Colors.gray,
+        tabBarStyle: { backgroundColor: Colors.navy, borderTopColor: Colors.navyMid, paddingBottom: 4, height: 60 },
+        tabBarLabelStyle: { fontSize: 11, marginBottom: 4 },
+      })}
+    >
+      <Tab.Screen name="Admin" component={AdminStack} />
+      <Tab.Screen name="Cases" component={CasesStack} />
+      <Tab.Screen name="Appointments" component={AppointmentsStack} />
+      <Tab.Screen name="Apply" component={ApplyStack} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   )
@@ -105,6 +128,18 @@ function AppointmentsStack() {
   )
 }
 
+function AdminStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
+      <Stack.Screen name="AdminApplications" component={AdminApplicationsScreen} />
+      <Stack.Screen name="AdminApplicationDetail" component={AdminApplicationDetailScreen} />
+      <Stack.Screen name="AdminAppointments" component={AdminAppointmentsScreen} />
+      <Stack.Screen name="AdminAvailability" component={AdminAvailabilityScreen} />
+    </Stack.Navigator>
+  )
+}
+
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -124,13 +159,21 @@ function LoadingScreen() {
 }
 
 export default function AppNavigator() {
-  const { session, loading } = useAuth()
+  const { session, profile, loading } = useAuth()
 
   if (loading) return <LoadingScreen />
 
+  if (!session) return (
+    <NavigationContainer>
+      <AuthStack />
+    </NavigationContainer>
+  )
+
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'lawyer'
+
   return (
     <NavigationContainer>
-      {session ? <DashboardTabs /> : <AuthStack />}
+      {isAdmin ? <AdminTabs /> : <ClientTabs />}
     </NavigationContainer>
   )
 }
