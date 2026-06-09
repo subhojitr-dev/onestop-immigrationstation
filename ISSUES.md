@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-08 (Session 4 — Web Sessions 1, 2, 3 complete)
+**Last updated:** 2026-06-09 (Web Sessions 1–5 complete)
 
 ---
 
@@ -75,6 +75,8 @@
 |---|------|-------|
 | 1 | All lawyers see all appointments | Fixed in Session 4 — migration 008 run ✅ |
 | 8 | L-1 visa has no USCIS pre-fill PDF | L-1 uses same I-129 form as H-1B but needs separate supplement mapping — not yet built |
+| 9 | USCIS RSS cron unprotected without CRON_SECRET | Add CRON_SECRET to Vercel env vars to prevent unauthorized calls |
+| 10 | Ticket reply does not create in-portal notification | ticket reply route does not call sendPushToUser — client gets email but no bell notification |
 | 2 | Lawyer set-password in same browser as admin | Partial fix: Resend Setup Email button added. Root cause persists. |
 | 3 | middleware.ts deprecation | See Open Issue #3 |
 | 4 | Existing appointments show no lawyer name | Only NEW bookings capture lawyer_name — pre-fix appointments show blank |

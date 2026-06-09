@@ -856,3 +856,75 @@ To add L-1 pre-fill support:
 2. Add an `l1` entry to `formsByVisaType` — the I-129 form is the same as H-1B but with the L Classification Supplement instead of H Classification Supplement
 3. Map fields from the L-1 questionnaire (`lib/questionnaire/l1.ts`) to I-129 Parts 1–5 + L Supplement
 4. The `DownloadUscisForm.tsx` button will automatically appear for L-1 applications once `formsByVisaType['l1']` is defined
+
+---
+
+## Step 28 — News/Videos CMS + USCIS RSS Cron ✅
+
+**What:** Added a full post_type system to the blog CMS, a live /videos page with YouTube embeds, and a daily Vercel cron job that auto-imports USCIS news as drafts.
+
+**Why:** The firm needed a way to publish educational videos and stay current with USCIS news without manual data entry. The CMS now supports three distinct content types managed from one admin interface.
+
+### Database Migration Required
+Run `supabase/migrations/012_blog_post_type.sql` in Supabase SQL Editor — adds `post_type`, `youtube_url`, `source_url` columns and indexes.
+
+### Post Types
+| Type | Where it appears | Created by |
+|------|-----------------|------------|
+| `article` | `/blog` | Admin/lawyer via CMS |
+| `youtube_video` | `/videos` with embedded player | Admin via CMS (paste YouTube URL) |
+| `uscis_news` | `/blog` | Auto-imported from USCIS RSS as drafts |
+
+### Archive Logic
+- Posts 0–90 days old → shown in main list
+- Posts 91–365 days old → shown in collapsible Archive section
+- Posts > 1 year → auto-deleted by the cron job
+
+### USCIS RSS Cron
+- **Route:** `GET /api/cron/uscis-rss`
+- **Schedule:** Daily at 06:00 UTC (`apps/web/vercel.json`)
+- **Feeds:** USCIS Newsroom + USCIS Alerts (2 feeds as specified)
+- **Deduplication:** Uses `source_url` — same article never imported twice
+- **Protection:** Set `CRON_SECRET` in Vercel env vars — Vercel sends `Authorization: Bearer <CRON_SECRET>` header
+
+### Vercel Setup Required
+Add `CRON_SECRET` to **Vercel → Project Settings → Environment Variables** (any UUID/random string).
+
+---
+
+## Step 29 — Blog Category Filtering + In-Portal Notification Bell ✅
+
+**What:** Wired the blog sidebar categories to actually filter posts, added pagination, and built a real-time notification bell into both portal topbars.
+
+**Why:** The blog sidebar had hardcoded dead links. Users needed a way to filter by topic. The notification bell was previously a static icon — now it shows real unread counts and live updates.
+
+### Blog Category Filtering
+- `/blog?category=H-1B` filters posts by that category
+- `/blog?category=H-1B&page=2` — combined category + page
+- Sidebar shows live counts from DB; active category highlighted
+- 8 posts per page; Prev/Next buttons with page X of Y
+- Empty state shown when no posts exist for a category
+
+### Notification Bell (`components/NotificationBell.tsx`)
+A client component that:
+1. Fetches the last 15 notifications for the logged-in user on mount
+2. Subscribes to Supabase Realtime for instant push on new rows
+3. Shows unread count badge (red dot with number) on the bell icon
+4. Click → dropdown with notification list (icon, title, body, time ago)
+5. Click a notification → marks as read + navigates to the relevant portal page
+6. "Mark all read" button clears badge immediately
+
+### Where the Bell Appears
+- **Client portal** (`/dashboard/*`) — replaces the old static bell button in the topbar
+- **Admin panel** (`/admin/*`) — new sticky topbar added at the top of the main content area
+
+### Notification Triggers
+| Event | How notification is created |
+|---|---|
+| Case status changed | `update-case-status` API → `sendPushToUser()` |
+| Timeline event added | New `add-timeline-event` API → `sendPushToUser()` |
+| Appointment confirmed/cancelled | `update-appointment` API → `sendPushToUser()` |
+| Ticket reply | ⬜ Not yet wired (known limitation) |
+
+### New API Route
+`POST /api/admin/add-timeline-event` — replaces the direct Supabase insert in `LawyerActions.tsx`. Uses the service role key to insert both the timeline event AND the in-portal notification in one call.

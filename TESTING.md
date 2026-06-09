@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master Test Plan
 
-**Last updated:** 2026-06-06  
+**Last updated:** 2026-06-09 (updated for Web Sessions 3–5)  
 **Purpose:** Complete test checklist for every feature — both implemented and planned.  
 **Update this file** as new features are built and test results are recorded.
 
@@ -25,6 +25,10 @@ Before running any tests, confirm:
 - [ ] Supabase dashboard open: https://xrhmnyyrufahqaintmvt.supabase.co
 - [ ] `.env.local` has `RESEND_API_KEY=re_JHfjmV6e...` (your full key)
 - [ ] Migration 003 run in Supabase SQL Editor (consultation_slots table created)
+- [ ] Migration 008 run (lawyer_id on appointments + RLS policy)
+- [ ] Migration 010 run (push_tokens + notifications table — mobile session)
+- [ ] Migration 012 run (blog post_type, youtube_url, source_url columns)
+- [ ] CRON_SECRET set in Vercel env vars (protects /api/cron/uscis-rss)
 - [ ] Test email inbox ready (subhojitr@gmail.com)
 - [ ] Have two browser tabs ready: one logged in as **client**, one as **lawyer/admin**
 
@@ -41,22 +45,39 @@ Before running any tests, confirm:
 | 1.1.4 | Click nav links (Blog, Videos, etc.) | Each page loads correctly | ⬜ |
 | 1.1.5 | Test on mobile width (375px) | Mobile nav hamburger works | ⬜ |
 
-### 1.2 Blog ( /blog )
+### 1.2 Blog ( /blog ) — Category Filtering + Pagination
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 1.2.1 | Visit /blog | Shows posts from Supabase (or fallback hardcoded posts if DB empty) | ⬜ |
-| 1.2.2 | Create a post via /admin/blog → visit /blog | New post appears in list | ⬜ |
-| 1.2.3 | Click a post with a real slug | Navigates to /blog/[slug] with full content | ⬜ |
-| 1.2.4 | Visit /blog/[slug] | Full article renders with sidebar + related posts | ⬜ |
-| 1.2.5 | Visit /blog/nonexistent-slug | 404 page shown | ⬜ |
+| 1.2.1 | Visit /blog | Shows posts from Supabase (or fallback if DB empty) | ⬜ |
+| 1.2.2 | Create article post via /admin/blog → visit /blog | New post appears in list | ⬜ |
+| 1.2.3 | Click a post slug | Navigates to /blog/[slug] with full content | ⬜ |
+| 1.2.4 | Click a category link in sidebar | URL becomes /blog?category=X, only that category shown | ⬜ |
+| 1.2.5 | Click "All Categories" link | Returns to unfiltered /blog | ⬜ |
+| 1.2.6 | Sidebar shows live counts | Each category has a number next to it from DB | ⬜ |
+| 1.2.7 | Active category highlighted | Selected category link appears bold/highlighted | ⬜ |
+| 1.2.8 | Category with no posts | Empty state message + "View all posts" link shown | ⬜ |
+| 1.2.9 | More than 8 posts exist | Pagination buttons appear: Prev / Page X of Y / Next | ⬜ |
+| 1.2.10 | Click Next page | URL becomes ?page=2, different posts shown | ⬜ |
+| 1.2.11 | Category + pagination | /blog?category=H-1B&page=2 works correctly | ⬜ |
+| 1.2.12 | Visit /blog/nonexistent-slug | 404 page shown | ⬜ |
+| 1.2.13 | Posts > 90 days old | Appear in collapsible Archive section at bottom | ⬜ |
+| 1.2.14 | USCIS News posts | Show with "🏛️ USCIS Updates" banner above list | ⬜ |
 
-### 1.3 Other Public Pages
+### 1.3 Videos ( /videos )
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 1.3.1 | /success-stories | Page loads, testimonials visible | ⬜ |
-| 1.3.2 | /videos | Page loads, video cards visible | ⬜ |
-| 1.3.3 | /press-media | Page loads, press items visible | ⬜ |
-| 1.3.4 | /contact | Contact form renders, submit works | ⬜ |
+| 1.3.1 | Visit /videos with no videos in DB | "Coming Soon" placeholder and preview cards shown | ⬜ |
+| 1.3.2 | Create YouTube Video post in CMS | Paste YouTube URL → embed preview appears in form | ⬜ |
+| 1.3.3 | Publish video post → visit /videos | YouTube iframe embedded on page, plays in browser | ⬜ |
+| 1.3.4 | Invalid YouTube URL in form | Red error shown below URL field | ⬜ |
+| 1.3.5 | Videos > 90 days | Appear in collapsible Archive section | ⬜ |
+
+### 1.4 Other Public Pages
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 1.4.1 | /success-stories | Page loads, testimonials visible | ⬜ |
+| 1.4.2 | /press-media | Page loads, press items visible | ⬜ |
+| 1.4.3 | /contact | Contact form renders, submit works | ⬜ |
 
 ---
 
@@ -299,47 +320,141 @@ Before running any tests, confirm:
 
 ---
 
-## Section 8 — 🔜 Features Not Yet Built (Test Cases Pre-Written)
+---
 
-### 8.1 Pre-Filled USCIS PDF Forms (Phase 2)
+## Section 8 — Blog CMS Post Types (Web Session 4)
+
+### 8.1 Article Posts
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 8.1.1 | Download pre-filled I-129 from H-1B application | Official I-129 PDF downloads with client data in correct fields | 🔜 |
-| 8.1.2 | I-129 Part 1 — Employer Name field | Matches employer_legal_name from questionnaire | 🔜 |
-| 8.1.3 | I-129 Part 2 — Beneficiary Last Name | Matches ben_last_name | 🔜 |
-| 8.1.4 | Blank fields | Fields with no answer left blank (not "undefined") | 🔜 |
+| 8.1.1 | Open /admin/blog/new | Three post type buttons shown: Article, YouTube Video, USCIS News | ⬜ |
+| 8.1.2 | Select Article → fill + publish | Appears on /blog, NOT on /videos | ⬜ |
+| 8.1.3 | Article has all fields | Title, slug, category, excerpt, content, image, tags all save | ⬜ |
 
-### 8.2 Auto-Updating News / USCIS RSS (Phase 2)
+### 8.2 YouTube Video Posts
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 8.2.1 | Cron job runs | New USCIS.gov news appears in blog_posts as draft | 🔜 |
-| 8.2.2 | Admin approves news post | Appears on /blog | 🔜 |
-| 8.2.3 | Duplicate detection | Same article not imported twice | 🔜 |
+| 8.2.1 | Select YouTube Video type | YouTube URL field appears, Content field hidden | ⬜ |
+| 8.2.2 | Paste valid YouTube URL | Live embed preview appears in the form | ⬜ |
+| 8.2.3 | Paste youtu.be short URL | Also parsed correctly | ⬜ |
+| 8.2.4 | Paste invalid URL | Red error shown, save blocked | ⬜ |
+| 8.2.5 | Publish video → visit /videos | Video embedded with iframe, title + description shown | ⬜ |
+| 8.2.6 | Video post does NOT appear on /blog | /blog filters it out | ⬜ |
 
-### 8.3 Community Blog (Phase 2)
+### 8.3 USCIS News Posts
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 8.3.1 | Logged-in user visits /blog/[slug] | Comment box visible | 🔜 |
-| 8.3.2 | Post a comment | Comment appears below article | 🔜 |
-| 8.3.3 | Reply to a comment | Threaded reply appears indented | 🔜 |
+| 8.3.1 | Select USCIS News type | Publish toggle disabled, locked as draft | ⬜ |
+| 8.3.2 | Save USCIS News post | Saved as draft (is_published=false) | ⬜ |
+| 8.3.3 | Admin manually publishes draft | Appears on /blog | ⬜ |
+| 8.3.4 | Published USCIS News on /blog | Shows "🏛️ USCIS Updates" banner | ⬜ |
 
-### 8.4 Custom Domain
+### 8.4 USCIS RSS Auto-Import
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 8.4.1 | Visit https://onestopimmigrationstation.com | Site loads (not Vercel preview URL) | 🔜 |
-| 8.4.2 | www redirect | https://www.onestopimmigrationstation.com → redirects to apex domain | 🔜 |
-| 8.4.3 | SSL certificate | Padlock shown, no browser warnings | 🔜 |
-| 8.4.4 | All pages work | No broken links after domain switch | 🔜 |
+| 8.4.1 | Call GET /api/cron/uscis-rss manually | Returns JSON: {ok:true, inserted:N, deleted:N} | ⬜ |
+| 8.4.2 | After cron call → /admin/blog | New USCIS drafts appear with 🏛 USCIS type badge | ⬜ |
+| 8.4.3 | Admin email inbox | Notification email received: "N new USCIS drafts" | ⬜ |
+| 8.4.4 | Run cron again immediately | inserted:0 — same articles not re-imported | ⬜ |
 
-### 8.5 React Native Mobile App (Phase 3)
+---
+
+## Section 9 — USCIS Pre-Fill PDF (Web Session 3)
+
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 8.5.1 | App launches on iOS simulator | Splash screen + login screen shown | 🔜 |
-| 8.5.2 | Login with email | Authenticated, dashboard screen loads | 🔜 |
-| 8.5.3 | Login with Google | OAuth completes in browser, returns to app | 🔜 |
-| 8.5.4 | View cases list | Same data as web portal | 🔜 |
-| 8.5.5 | Book appointment | Real slots appear, booking completes | 🔜 |
-| 8.5.6 | Push notification | Case update triggers push notification | 🔜 |
+| 9.1 | Open H-1B application in admin | "I-129 H-1B Pre-Fill" button visible below Summary PDF | ⬜ |
+| 9.2 | Click pre-fill button | PDF downloads as i129-prefill-[clientname].pdf | ⬜ |
+| 9.3 | Open PDF — cover block | Shows form number, client name, generation date | ⬜ |
+| 9.4 | PDF — navy header on each page | "One Stop Immigration Station" + page X of Y | ⬜ |
+| 9.5 | PDF — Part 1 (Employer) | employer_legal_name, employer_street, etc. pre-filled | ⬜ |
+| 9.6 | PDF — Part 3 (Beneficiary) | ben_last_name, ben_dob, passport details pre-filled | ⬜ |
+| 9.7 | PDF — amber fields | Fields like EIN, Prevailing Wage shown as "ATTORNEY COMPLETES" | ⬜ |
+| 9.8 | Family Petition application | "I-130 Family Petition Pre-Fill" button appears | ⬜ |
+| 9.9 | K-1 application | "I-129F K-1 Fiancé(e) Pre-Fill" button appears | ⬜ |
+| 9.10 | Green Card application | "I-140 Green Card Pre-Fill" button appears | ⬜ |
+| 9.11 | L-1 application | NO pre-fill button (not yet mapped) | ⬜ |
+
+---
+
+## Section 10 — In-Portal Notification Bell (Web Session 5)
+
+### 10.1 Bell UI
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 10.1.1 | Login as client → dashboard | Bell icon visible in topbar | ⬜ |
+| 10.1.2 | Login as lawyer → admin panel | Bell icon visible in admin topbar | ⬜ |
+| 10.1.3 | No notifications | Bell shown with no badge | ⬜ |
+| 10.1.4 | Click bell | Dropdown opens with "No notifications yet" or list | ⬜ |
+| 10.1.5 | Click outside dropdown | Dropdown closes | ⬜ |
+
+### 10.2 Notification Triggers
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 10.2.1 | Lawyer changes case status → check client portal | Bell shows red badge with unread count | ⬜ |
+| 10.2.2 | Lawyer adds timeline event → check client portal | New notification in bell dropdown | ⬜ |
+| 10.2.3 | Lawyer confirms appointment → check client portal | Appointment notification in bell | ⬜ |
+| 10.2.4 | New notification received without refresh | Bell updates in real time (Supabase Realtime) | ⬜ |
+
+### 10.3 Mark as Read
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 10.3.1 | Unread notification shown | Bold text + navy dot on right | ⬜ |
+| 10.3.2 | Click notification | Marks as read (dot disappears), navigates to case/appointment | ⬜ |
+| 10.3.3 | Click "Mark all read" | All notifications marked read, badge disappears | ⬜ |
+| 10.3.4 | Re-open dropdown after marking all read | All notifications shown without bold/dot | ⬜ |
+
+---
+
+## Section 11 — Case Management (Web Sessions 2)
+
+### 11.1 Create Case Directly
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 11.1.1 | Visit /admin/cases | "+ New Case" gold button visible | ⬜ |
+| 11.1.2 | Click "+ New Case" | Inline form expands with client dropdown, visa type, etc. | ⬜ |
+| 11.1.3 | Select client + visa type → Create Case | Creates case with auto case number OSIS-YYYY-NNN | ⬜ |
+| 11.1.4 | After creation | Navigates to new case detail page | ⬜ |
+| 11.1.5 | New case in DB | status='open', initial timeline event "Case Opened" present | ⬜ |
+| 11.1.6 | Client's /dashboard/cases | New case visible | ⬜ |
+
+### 11.2 Case Status Update
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 11.2.1 | Open /admin/cases/[id] | Status dropdown on right with all 7 options | ⬜ |
+| 11.2.2 | Change status → Save | Status updates in DB + timeline event added | ⬜ |
+| 11.2.3 | Client email | Receives case status update email | ⬜ |
+| 11.2.4 | Client portal notification | Bell badge appears with case update notification | ⬜ |
+| 11.2.5 | With attorney note | Note appears in both email and timeline | ⬜ |
+
+---
+
+## Section 12 — 🔜 Features Not Yet Built
+
+### 12.1 Pre-Filled USCIS PDF Forms — L-1 (not yet mapped)
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.1.1 | L-1 application detail page | No pre-fill button shown | 🔜 |
+| 12.1.2 | After L-1 mapping added | "I-129 L-1 Pre-Fill" button appears | 🔜 |
+
+### 12.2 Ticket Reply Notification (not yet wired)
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.2.1 | Lawyer replies to ticket | Client bell does NOT show notification (known gap) | 🔜 |
+| 12.2.2 | After fix | Ticket reply creates in-portal notification | 🔜 |
+
+### 12.3 Custom Domain
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.3.1 | Visit https://onestopimmigrationstation.com | Site loads (not Vercel preview URL) | 🔜 |
+| 12.3.2 | www redirect | https://www.onestopimmigrationstation.com → redirects to apex | 🔜 |
+| 12.3.3 | SSL certificate | Padlock shown, no browser warnings | 🔜 |
+
+### 12.4 React Native Mobile App
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.4.1 | App launches on iOS | Splash screen + login screen shown | ✅ Built (see TESTING_MOBILE.md) |
+| 12.4.2 | Push notification | Case update triggers push on mobile | ✅ Built |
 
 ---
 

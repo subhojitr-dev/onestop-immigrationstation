@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-08 (Session 4 — Web Sessions 1 + 2 complete)
+**Last updated:** 2026-06-09 (Web Sessions 1–5 complete)
 
 ---
 
@@ -150,33 +150,29 @@
 
 ## 🟡 MEDIUM PRIORITY
 
-### 6. News/Videos — CMS-Driven (decisions finalized)
-- [ ] Add `post_type` column to blog_posts: `article` | `youtube_video` | `uscis_news`
-- [ ] Add `youtube_url` column to blog_posts
-- [ ] Blog CMS `/admin/blog/new` — add Post Type selector:
-  - Article → publishes to `/blog`
-  - YouTube Video → admin pastes URL + summary → publishes to `/videos`
-  - USCIS News → auto-imported as draft, admin edits/publishes → `/blog`
-- [ ] `/videos` page — render posts where post_type='youtube_video' with embedded player
-- [ ] Vercel cron job — daily fetch of USCIS RSS → insert as drafts (post_type='uscis_news', is_published=false)
-- [ ] Admin notified of new USCIS drafts awaiting review
-- [ ] Archive logic: posts > 90 days → archived (visible but not prominent), > 1 year → deleted
-- [ ] Archive section on /blog and /videos (collapsible, links only)
-- **Decisions confirmed:**
-  - USCIS RSS → Draft → Admin approves only (not lawyer)
-  - Videos: on-demand from CMS (USCIS Official, Boundless Immigration, etc.)
-  - Blog and Videos stay as separate pages
-  - Post type in CMS determines which page it appears on
-  - Archive at 90 days, remove at 1 year
+### 6. News/Videos CMS ✅ DONE (Web Session 4)
+- [x] Migration 012: post_type, youtube_url, source_url columns on blog_posts
+- [x] Blog CMS: Post Type selector (Article / YouTube Video / USCIS News)
+- [x] /videos page: live YouTube embeds from Supabase, archive section, fallback placeholder
+- [x] USCIS RSS cron: daily at 06:00 UTC, 2 feeds, drafts only, deduplication, auto-delete > 1yr
+- [x] Admin email notification on new USCIS drafts
+- [x] Archive sections on /blog and /videos (collapsible <details>)
+- ⚠️ Add CRON_SECRET to Vercel env vars to protect the cron endpoint
 
-### 7. Blog Category/Archive Filtering
-- [ ] Wire sidebar category links on /blog to filter posts
-- [ ] Pagination (currently loads 20 max)
+### 7. Blog Category/Archive Filtering ✅ DONE (Web Session 5)
+- [x] Sidebar category links wired to ?category= query param
+- [x] Live category counts from DB
+- [x] Pagination: 8 posts/page, Prev/Next buttons, Page X of Y
+- [x] Active filter indicator + Clear filter link
+- [x] Empty state when no posts in selected category
 
-### 8. Real-Time In-Portal Notifications
-- [ ] Bell icon in topbar wired to `notifications` table
-- [ ] Mark as read functionality
-- [ ] Triggers: case update, appointment confirmed, ticket reply
+### 8. Real-Time In-Portal Notifications ✅ DONE (Web Session 5)
+- [x] NotificationBell component: bell icon + unread badge in both portal topbars
+- [x] Supabase Realtime subscription for instant updates
+- [x] Dropdown: last 15 notifications, type icons, timestamps, unread indicator
+- [x] Mark as read (single + all)
+- [x] Notification triggers: case status update, timeline event, appointment confirmed/cancelled
+- [x] New API route: /api/admin/add-timeline-event (inserts timeline + notification)
 
 ### 9. Appointment location/meeting link on confirmation email ✅ DONE (Session 4)
 - [x] `update-appointment` API now sends confirmation/cancellation email to client on status change
