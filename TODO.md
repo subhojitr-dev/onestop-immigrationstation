@@ -15,6 +15,10 @@
 - [x] Custom email domain — `noreply@onestopimmigrationstation.com` (Resend + GoDaddy DNS)
 - [x] Google OAuth — Google Cloud project "OnestopImmigration" wired to Supabase
 - [x] `RESEND_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` + Vercel env vars ✅
+- [x] `CRON_SECRET` added to Vercel env vars (protects /api/cron/uscis-rss) ✅
+- [x] Supabase redirect URLs configured (localhost:3000 + vercel.app) ✅
+- [x] `mobile` branch merged into `main` — all Sessions 1–5 now live on production ✅
+- [x] DownloadPdf.tsx TypeScript build error fixed ✅
 
 ### Database Migrations (all run in Supabase)
 - [x] `001_initial_schema.sql` — tables, RLS, storage, auth trigger
@@ -24,6 +28,8 @@
 - [x] `005_lawyer_profile_fields.sql` — gender, date_of_birth, qualification on profiles
 - [x] `006_appointment_location.sql` — location, meeting_link on appointments
 - [x] `007_appointment_lawyer_name.sql` — lawyer_name on appointments
+- [x] `008_appointment_lawyer_id.sql` — lawyer_id FK + RLS policy (security fix)
+- [x] `012_blog_post_type.sql` — post_type, youtube_url, source_url on blog_posts
 - [x] Manual: `address` column on profiles
 - [x] Manual: `lawyer` added to profiles role check constraint
 - [x] Manual: `case_id` column on applications + `case_opened` status constraint

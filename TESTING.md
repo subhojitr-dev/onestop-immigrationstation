@@ -28,7 +28,9 @@ Before running any tests, confirm:
 - [ ] Migration 008 run (lawyer_id on appointments + RLS policy)
 - [ ] Migration 010 run (push_tokens + notifications table — mobile session)
 - [ ] Migration 012 run (blog post_type, youtube_url, source_url columns)
-- [ ] CRON_SECRET set in Vercel env vars (protects /api/cron/uscis-rss)
+- [x] CRON_SECRET set in Vercel env vars ✅
+- [ ] Before pushing to main: run `cd apps/web && npx tsc --noEmit` with NO filters to catch all TypeScript errors
+- [ ] After merging mobile → main: confirm Vercel deployment shows "Ready" before testing live site
 - [ ] Test email inbox ready (subhojitr@gmail.com)
 - [ ] Have two browser tabs ready: one logged in as **client**, one as **lawyer/admin**
 
