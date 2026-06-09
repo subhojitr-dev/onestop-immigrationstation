@@ -227,17 +227,43 @@ const FALLBACK_POSTS = [
   { id:'3', slug:'#', title:'H-1B Cap Season: What Employers Need to Know', excerpt:'As the H-1B cap season approaches, employers must prepare their petitions well in advance of the April filing window.', category:'H-1B', author_name:'OSIS Team', published_at:'2024-01-15', featured_image:'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&h=450&q=80' },
 ]
 
+/** Split a date into active (<90 days) vs archived (90d–1yr) */
+function splitByAge(posts: any[]) {
+  const now   = Date.now()
+  const d90   = 90 * 24 * 60 * 60 * 1000
+  const active: any[] = []
+  const archived: any[] = []
+  for (const p of posts) {
+    const age = p.published_at ? now - new Date(p.published_at).getTime() : 0
+    if (age > d90) archived.push(p)
+    else active.push(p)
+  }
+  return { active, archived }
+}
+
 export default async function BlogPage() {
-  // Fetch published posts from Supabase — falls back to hardcoded posts if table is empty
+  // Fetch published article + uscis_news posts — exclude youtube_video (those go to /videos)
   const supabase = await createClient()
   const { data: dbPosts } = await supabase
     .from('blog_posts')
-    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image')
+    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
     .eq('is_published', true)
+    .in('post_type', ['article', 'uscis_news'])
+    .order('published_at', { ascending: false })
+    .limit(50)
+
+  // For very old posts (null post_type = pre-migration articles), also include them
+  const { data: legacyPosts } = await supabase
+    .from('blog_posts')
+    .select('id, title, slug, excerpt, category, author_name, published_at, featured_image, post_type')
+    .eq('is_published', true)
+    .is('post_type', null)
     .order('published_at', { ascending: false })
     .limit(20)
 
-  const posts = (dbPosts && dbPosts.length > 0) ? dbPosts : FALLBACK_POSTS
+  const allPosts = [...(dbPosts ?? []), ...(legacyPosts ?? [])]
+  const { active, archived } = splitByAge(allPosts.length > 0 ? allPosts : FALLBACK_POSTS)
+  const posts = active.length > 0 ? active : FALLBACK_POSTS
 
   return (
     <>
@@ -260,6 +286,12 @@ export default async function BlogPage() {
         <section className="section">
           <div className="container blog-layout">
             <div className="post-list">
+              {/* USCIS News banner if any uscis_news posts are in the active list */}
+              {posts.some((p: any) => p.post_type === 'uscis_news') && (
+                <div style={{ background: '#e6f6ef', border: '1px solid #047857', borderRadius: '12px', padding: '12px 18px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#047857' }}>
+                  🏛️ <strong>USCIS Updates</strong> — Official news imported from USCIS.gov
+                </div>
+              )}
               {posts.map((post: any) => {
                 const date = post.published_at ? new Date(post.published_at) : null
                 const day  = date ? date.getDate().toString().padStart(2,'0') : ''
@@ -293,6 +325,26 @@ export default async function BlogPage() {
                   </article>
                 )
               })}
+              {/* Archive section — posts 90–365 days old */}
+              {archived.length > 0 && (
+                <details style={{ marginTop: '24px' }}>
+                  <summary style={{ cursor: 'pointer', padding: '12px 18px', background: '#f5f6fa', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: '#586176', listStyle: 'none', display: 'flex', alignItems: 'center', gap: '8px', userSelect: 'none' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Archive ({archived.length} older {archived.length === 1 ? 'post' : 'posts'})
+                  </summary>
+                  <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {archived.map((post: any) => (
+                      <a key={post.id} href={`/blog/${post.slug}`}
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f9fafb', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', color: '#1a2744', gap: '12px' }}>
+                        <span style={{ fontWeight: 500 }}>{post.title}</span>
+                        <span style={{ fontSize: '12px', color: '#98a0b0', flexShrink: 0 }}>
+                          {post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
 
             <aside className="sidebar">
