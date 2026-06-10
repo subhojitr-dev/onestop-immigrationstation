@@ -1,6 +1,25 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-09 (Web Session 6 — Contact role, L-1 PDF, bell notification fix)
+**Last updated:** 2026-06-09 (Web Session 6b — self-registration, company seeding, Sponsor invite)
+
+---
+
+## ✅ RESOLVED THIS SESSION (Web Session 6b)
+
+### R19. Sponsor and Contact had no company_id after self-registration
+- **Symptom:** A Sponsor or Contact who signed up independently had no `company_id` — their Team page showed the "No team yet" warning and they couldn't invite anyone without a company being seeded
+- **Root cause:** Original model only seeded `company_id` on first *invite*; self-registration didn't set it
+- **Fix:** `/signup` now captures Company Name for Contact/Sponsor roles and sets `company_id = user.id` + `company_name` immediately on account creation
+
+### R20. Sponsors could not invite Beneficiaries
+- **Symptom:** Sponsor visiting `/dashboard/team/invite` got a 403 "Only contacts and admins can invite members"
+- **Root cause:** Invite API guard was `['contact', 'admin']` only
+- **Fix:** Guard updated to `['contact', 'sponsor', 'admin']`; Sponsors restricted to inviting `beneficiary` role only
+
+### R21. Invite form showed wrong role options for Sponsor
+- **Symptom:** Invite form always showed both Sponsor and Beneficiary options regardless of caller's role
+- **Root cause:** Form was a pure client component with no server context
+- **Fix:** Split into server page (reads caller role + company from Supabase) + `InviteMemberForm` client component; Sponsor sees fixed "Beneficiary" display; Contact sees full dropdown
 
 ---
 
@@ -107,6 +126,8 @@
 | 10 | Ticket reply bell notification | ✅ Fixed Session 6 — clientUserId now passed to /api/email |
 | 11 | Contact role not fully implemented | ✅ Fixed Session 6 — Team pages, invite flow, member detail view |
 | 12 | company_id / invited_by not on profiles | ✅ Fixed Session 6 — migration 013 run in Supabase |
+| 13 | Contact/Sponsor had no company_id after self-signup | ✅ Fixed Session 6b — signup now seeds company_id + company_name |
+| 14 | Sponsor could not invite Beneficiaries | ✅ Fixed Session 6b — invite API and form updated |
 | 2 | Lawyer set-password in same browser as admin | Partial fix: Resend Setup Email button added. Root cause persists. |
 | 3 | middleware.ts deprecation | See Open Issue #3 |
 | 4 | Existing appointments show no lawyer name | Only NEW bookings capture lawyer_name — pre-fix appointments show blank |

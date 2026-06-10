@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-09 (Web Session 6 — Contact role, L-1 PDF, bell notification fix)
+**Last updated:** 2026-06-09 (Web Session 6b — self-registration for all roles, company seeding, Sponsor invite)
 
 ---
 
@@ -172,15 +172,17 @@
 - [x] Active filter indicator + Clear filter link
 - [x] Empty state when no posts in selected category
 
-### 8. Contact Role + Company Team ✅ DONE (Web Session 6)
-- [x] Migration 013: `company_id` + `invited_by` columns on profiles (run in Supabase)
-- [x] `POST /api/contact/invite-member` — creates auth user + profile + welcome email
-- [x] `/dashboard/team` — Contact sees all sponsors+beneficiaries; Sponsor sees beneficiaries
-- [x] `/dashboard/team/invite` — invite form (first/last/email/phone required)
+### 8. Contact Role + Company Team ✅ DONE (Sessions 6 + 6b)
+- [x] Migration 013: `company_id` + `invited_by` columns on profiles ✅ run in Supabase
+- [x] Migration 014: `company_name` column on profiles ⚠️ run in Supabase SQL editor
+- [x] `/signup` — Contact (HR) added as 3rd role; Contact + Sponsor capture Company Name; company_id seeded on signup
+- [x] `POST /api/contact/invite-member` — Contact invites Sponsor/Beneficiary; Sponsor invites Beneficiary; welcome email sent
+- [x] `/dashboard/team` — Contact sees sponsors+beneficiaries; Sponsor sees beneficiaries; company badge shown
+- [x] `/dashboard/team/invite` — server reads caller role → Contact gets both role options; Sponsor gets Beneficiary only
 - [x] `/dashboard/team/[memberId]` — read-only view: cases, appointments, documents, tickets
 - [x] Sidebar: Contact → "My Team", Sponsor → "Beneficiaries" (both route to /dashboard/team)
-- [x] Data model: Contact's company_id = their user_id (seeded on first invite); invitees share it
-- **⚠️ Requires running migration 013 in Supabase SQL editor**
+- [x] company_id seeded = user.id at signup for Contact/Sponsor; invitees inherit company_id + company_name
+- **⚠️ Run migration 014 in Supabase SQL editor: `alter table public.profiles add column if not exists company_name text;`**
 
 ### 9. Ticket Reply Bell Notification ✅ DONE (Web Session 6)
 - [x] `AdminTicketReply` now passes `clientUserId` + `replyPreview` to `/api/email`
