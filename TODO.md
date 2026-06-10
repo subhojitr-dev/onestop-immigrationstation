@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master TODO
 
-**Last updated:** 2026-06-09 (Web Sessions 1–5 complete)
+**Last updated:** 2026-06-09 (Web Session 6 — Contact role, L-1 PDF, bell notification fix)
 
 ---
 
@@ -139,7 +139,7 @@
 - [x] Server-side PDF generator — organized by Part & Item number, attorney fields highlighted
 - [x] GET /api/admin/uscis-form/[appId] — streams PDF download
 - [x] "I-129 Pre-Fill" button added to application detail page sidebar
-- ⬜ L-1 → I-129 (L classification) mapping not yet added
+- [x] L-1 → I-129 L Classification Supplement mapping added (Session 6)
 
 ### 4. Create Case directly from Admin Cases page ✅ DONE (Session 4)
 - [x] "+ New Case" button on `/admin/cases` — inline form expands inline
@@ -172,7 +172,21 @@
 - [x] Active filter indicator + Clear filter link
 - [x] Empty state when no posts in selected category
 
-### 8. Real-Time In-Portal Notifications ✅ DONE (Web Session 5)
+### 8. Contact Role + Company Team ✅ DONE (Web Session 6)
+- [x] Migration 013: `company_id` + `invited_by` columns on profiles (run in Supabase)
+- [x] `POST /api/contact/invite-member` — creates auth user + profile + welcome email
+- [x] `/dashboard/team` — Contact sees all sponsors+beneficiaries; Sponsor sees beneficiaries
+- [x] `/dashboard/team/invite` — invite form (first/last/email/phone required)
+- [x] `/dashboard/team/[memberId]` — read-only view: cases, appointments, documents, tickets
+- [x] Sidebar: Contact → "My Team", Sponsor → "Beneficiaries" (both route to /dashboard/team)
+- [x] Data model: Contact's company_id = their user_id (seeded on first invite); invitees share it
+- **⚠️ Requires running migration 013 in Supabase SQL editor**
+
+### 9. Ticket Reply Bell Notification ✅ DONE (Web Session 6)
+- [x] `AdminTicketReply` now passes `clientUserId` + `replyPreview` to `/api/email`
+- [x] Bell notification fires when lawyer replies to a support ticket
+
+### 10. Real-Time In-Portal Notifications ✅ DONE (Web Session 5)
 - [x] NotificationBell component: bell icon + unread badge in both portal topbars
 - [x] Supabase Realtime subscription for instant updates
 - [x] Dropdown: last 15 notifications, type icons, timestamps, unread indicator

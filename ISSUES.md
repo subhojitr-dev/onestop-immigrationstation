@@ -1,10 +1,24 @@
 # One Stop Immigration Station — Running Issues Log
 
-**Last updated:** 2026-06-09 (Web Sessions 1–5 complete + production deployed)
+**Last updated:** 2026-06-09 (Web Session 6 — Contact role, L-1 PDF, bell notification fix)
 
 ---
 
-## ✅ RESOLVED THIS SESSION
+## ✅ RESOLVED THIS SESSION (Web Session 6)
+
+### R17. Ticket reply did not trigger in-portal bell notification
+- **Symptom:** Lawyer replies to ticket — client gets email but bell badge never lights up
+- **Root cause:** `AdminTicketReply.tsx` did not pass `clientUserId` or `replyPreview` to `/api/email`, so `sendPushToUser` was never called (payload.clientUserId was undefined)
+- **Fix:** Added `clientUserId` prop to `AdminTicketReply`, pass `ticket.user_id` from page, include both fields in the email API body
+
+### R18. L-1 applications had no USCIS Pre-Fill PDF button
+- **Symptom:** Opening an L-1 application in `/admin/applications/[id]` — no pre-fill button shown
+- **Root cause:** `formsByVisaType` in `formMaps.ts` had no entry for `l1`; `DownloadUscisForm` returned null
+- **Fix:** Added full `i129l` FormDefinition (6 parts, ~40 fields mapping to L-1 questionnaire) and registered `l1: i129l` in `formsByVisaType`
+
+---
+
+## ✅ RESOLVED PREVIOUS SESSIONS
 
 ### R15. DownloadPdf.tsx TypeScript error blocking Vercel build
 - **Symptom:** `Property 'jsPDF' does not exist on type '{ default: typeof jsPDF; ... }'` — production build failed
@@ -88,9 +102,11 @@
 | # | Item | Notes |
 |---|------|-------|
 | 1 | All lawyers see all appointments | Fixed in Session 4 — migration 008 run ✅ |
-| 8 | L-1 visa has no USCIS pre-fill PDF | L-1 uses same I-129 form as H-1B but needs separate supplement mapping — not yet built |
-| 9 | USCIS RSS cron unprotected without CRON_SECRET | Add CRON_SECRET to Vercel env vars to prevent unauthorized calls |
-| 10 | Ticket reply does not create in-portal notification | ticket reply route does not call sendPushToUser — client gets email but no bell notification |
+| 8 | L-1 USCIS pre-fill PDF | ✅ Fixed Session 6 — i129l mapping added |
+| 9 | USCIS RSS cron unprotected without CRON_SECRET | ✅ CRON_SECRET set in Vercel env vars |
+| 10 | Ticket reply bell notification | ✅ Fixed Session 6 — clientUserId now passed to /api/email |
+| 11 | Contact role not fully implemented | ✅ Fixed Session 6 — Team pages, invite flow, member detail view |
+| 12 | company_id / invited_by not on profiles | ✅ Fixed Session 6 — migration 013 run in Supabase |
 | 2 | Lawyer set-password in same browser as admin | Partial fix: Resend Setup Email button added. Root cause persists. |
 | 3 | middleware.ts deprecation | See Open Issue #3 |
 | 4 | Existing appointments show no lawyer name | Only NEW bookings capture lawyer_name — pre-fix appointments show blank |

@@ -1,6 +1,6 @@
 # One Stop Immigration Station — Master Test Plan
 
-**Last updated:** 2026-06-09 (updated for Web Sessions 3–5)  
+**Last updated:** 2026-06-09 (updated for Web Session 6 — Contact role, L-1 PDF, bell fix)  
 **Purpose:** Complete test checklist for every feature — both implemented and planned.  
 **Update this file** as new features are built and test results are recorded.
 
@@ -28,6 +28,7 @@ Before running any tests, confirm:
 - [ ] Migration 008 run (lawyer_id on appointments + RLS policy)
 - [ ] Migration 010 run (push_tokens + notifications table — mobile session)
 - [ ] Migration 012 run (blog post_type, youtube_url, source_url columns)
+- [x] Migration 013 run (company_id + invited_by on profiles) ✅
 - [x] CRON_SECRET set in Vercel env vars ✅
 - [ ] Before pushing to main: run `cd apps/web && npx tsc --noEmit` with NO filters to catch all TypeScript errors
 - [ ] After merging mobile → main: confirm Vercel deployment shows "Ready" before testing live site
@@ -375,7 +376,7 @@ Before running any tests, confirm:
 | 9.8 | Family Petition application | "I-130 Family Petition Pre-Fill" button appears | ⬜ |
 | 9.9 | K-1 application | "I-129F K-1 Fiancé(e) Pre-Fill" button appears | ⬜ |
 | 9.10 | Green Card application | "I-140 Green Card Pre-Fill" button appears | ⬜ |
-| 9.11 | L-1 application | NO pre-fill button (not yet mapped) | ⬜ |
+| 9.11 | L-1 application | "I-129 L-1 Transfer Pre-Fill" button appears ✅ now mapped | ⬜ |
 
 ---
 
@@ -431,28 +432,89 @@ Before running any tests, confirm:
 
 ---
 
-## Section 12 — 🔜 Features Not Yet Built
+---
 
-### 12.1 Pre-Filled USCIS PDF Forms — L-1 (not yet mapped)
+## Section 12 — Contact Role + Company Team (Web Session 6)
+
+### 12.1 Sign Up as Contact
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 12.1.1 | L-1 application detail page | No pre-fill button shown | 🔜 |
-| 12.1.2 | After L-1 mapping added | "I-129 L-1 Pre-Fill" button appears | 🔜 |
+| 12.1.1 | Visit /signup → select Contact role | "Contact" option visible in role selection | ⬜ |
+| 12.1.2 | Complete signup as contact | Account created, redirected to /dashboard | ⬜ |
+| 12.1.3 | Supabase profiles | role = 'contact', company_id = null (not yet set) | ⬜ |
+| 12.1.4 | Sidebar for contact | Shows "My Team" nav item (not Beneficiaries/HR Contacts) | ⬜ |
 
-### 12.2 Ticket Reply Notification (not yet wired)
+### 12.2 Invite a New Member (Contact flow)
 | # | Test | Expected | Result |
 |---|------|----------|--------|
-| 12.2.1 | Lawyer replies to ticket | Client bell does NOT show notification (known gap) | 🔜 |
-| 12.2.2 | After fix | Ticket reply creates in-portal notification | 🔜 |
+| 12.2.1 | Login as Contact → visit /dashboard/team | Team roster page loads, "Invite Member" button visible | ⬜ |
+| 12.2.2 | Click "Invite Member" | Navigates to /dashboard/team/invite | ⬜ |
+| 12.2.3 | Submit with only First Name | Validation error: all 4 required fields shown | ⬜ |
+| 12.2.4 | Fill First Name, Last Name, Email, Phone → role = Beneficiary → Send | Success message shown, form clears | ⬜ |
+| 12.2.5 | Check invited person's email inbox | Welcome email received from noreply@onestopimmigrationstation.com | ⬜ |
+| 12.2.6 | Welcome email content | Shows Contact's name as inviter, "Beneficiary" role, "Set My Password" button | ⬜ |
+| 12.2.7 | Click "Set My Password" in email | Opens /reset-password, can set password | ⬜ |
+| 12.2.8 | Beneficiary logs in | Redirected to /dashboard with beneficiary sidebar | ⬜ |
+| 12.2.9 | Supabase profiles — beneficiary row | company_id = Contact's user_id, invited_by = Contact's user_id | ⬜ |
+| 12.2.10 | Contact's profiles row | company_id seeded = their own user_id after first invite | ⬜ |
+| 12.2.11 | Invite a Sponsor (role = sponsor) | Same flow, sponsor role set, same company_id | ⬜ |
+| 12.2.12 | Invite duplicate email | Error "A user with this email already exists" shown | ⬜ |
 
-### 12.3 Custom Domain
+### 12.3 Team Roster View
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.3.1 | Contact visits /dashboard/team after inviting | Shows "Sponsors" and "Beneficiaries" sections with counts | ⬜ |
+| 12.3.2 | Invited members appear in correct section | Sponsors in Sponsors, Beneficiaries in Beneficiaries | ⬜ |
+| 12.3.3 | Contact with no invites yet | Yellow warning banner: "No team yet" with invite link | ⬜ |
+| 12.3.4 | Login as Sponsor → /dashboard/team | Sees only "Beneficiaries" section (no Sponsors section) | ⬜ |
+| 12.3.5 | Sponsor sidebar | Shows "Beneficiaries" link (routing to /dashboard/team) | ⬜ |
+| 12.3.6 | Login as Beneficiary → /dashboard/team | Redirected to /dashboard (no access) | ⬜ |
+
+### 12.4 Member Detail View
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.4.1 | Contact clicks a member card | Opens /dashboard/team/[memberId] | ⬜ |
+| 12.4.2 | Member profile card | Shows name, role badge, email, phone, address | ⬜ |
+| 12.4.3 | Cases section | Shows all cases belonging to that member (or "No cases yet") | ⬜ |
+| 12.4.4 | Appointments section | Shows all appointments for that member | ⬜ |
+| 12.4.5 | Documents section | Shows all uploaded files from member's Storage folder | ⬜ |
+| 12.4.6 | Tickets section | Shows all support tickets for that member | ⬜ |
+| 12.4.7 | Breadcrumb | "Team › Member Name" with working back link | ⬜ |
+| 12.4.8 | Access control — wrong company | Contact from different company cannot view member (404) | ⬜ |
+| 12.4.9 | Beneficiary tries /dashboard/team/[anyId] | Redirected to /dashboard | ⬜ |
+
+### 12.5 L-1 USCIS Pre-Fill PDF (now built)
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.5.1 | Open L-1 application in /admin/applications/[id] | "I-129 L-1 Transfer Pre-Fill" button visible | ⬜ |
+| 12.5.2 | Click pre-fill button | PDF downloads as i129-prefill-[clientname].pdf | ⬜ |
+| 12.5.3 | PDF — Part 1 (US Employer) | us_company_name, us_company_street pre-filled | ⬜ |
+| 12.5.4 | PDF — Part 2 (L Supplement) | L-1A vs L-1B classification, foreign company details | ⬜ |
+| 12.5.5 | PDF — Part 3 (Beneficiary) | ben_last_name, ben_dob, passport details shown | ⬜ |
+| 12.5.6 | PDF — amber fields | EIN, NAICS, period of employment shown as "ATTORNEY COMPLETES" | ⬜ |
+| 12.5.7 | PDF disclaimer | L-1A vs L-1B note shown at top | ⬜ |
+
+### 12.6 Ticket Reply Bell Notification (now fixed)
+| # | Test | Expected | Result |
+|---|------|----------|--------|
+| 12.6.1 | Client opens ticket in /dashboard/tickets/[id] | Keep this tab open | ⬜ |
+| 12.6.2 | Lawyer replies via /admin/tickets/[id] | Bell badge appears on client's open tab (Realtime) | ⬜ |
+| 12.6.3 | Client opens bell dropdown | "New Reply on Your Ticket" notification shown | ⬜ |
+| 12.6.4 | Client also receives email | Ticket reply email with "View Ticket" button | ⬜ |
+| 12.6.5 | Mobile app (if push tokens registered) | Push notification delivered to phone | ⬜ |
+
+---
+
+## Section 13 — 🔜 Features Not Yet Built
+
+### 13.1 Custom Domain
 | # | Test | Expected | Result |
 |---|------|----------|--------|
 | 12.3.1 | Visit https://onestopimmigrationstation.com | Site loads (not Vercel preview URL) | 🔜 |
 | 12.3.2 | www redirect | https://www.onestopimmigrationstation.com → redirects to apex | 🔜 |
 | 12.3.3 | SSL certificate | Padlock shown, no browser warnings | 🔜 |
 
-### 12.4 React Native Mobile App
+### 13.2 React Native Mobile App
 | # | Test | Expected | Result |
 |---|------|----------|--------|
 | 12.4.1 | App launches on iOS | Splash screen + login screen shown | ✅ Built (see TESTING_MOBILE.md) |
