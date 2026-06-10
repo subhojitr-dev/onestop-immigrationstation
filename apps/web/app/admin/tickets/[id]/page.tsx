@@ -157,6 +157,7 @@ export default async function AdminTicketDetailPage({ params }: { params: Promis
         lawyerId={user.id}
         lawyerName={lawyerProfile?.full_name || 'Attorney'}
         clientEmail={clientProfile?.email || ''}
+        clientUserId={ticket.user_id}
         ticketSubject={ticket.subject}
       />
     </div>

@@ -14,10 +14,11 @@ interface Props {
   lawyerId: string
   lawyerName: string
   clientEmail: string
+  clientUserId: string
   ticketSubject: string
 }
 
-export default function AdminTicketReply({ ticketId, lawyerId, lawyerName, clientEmail, ticketSubject }: Props) {
+export default function AdminTicketReply({ ticketId, lawyerId, lawyerName, clientEmail, clientUserId, ticketSubject }: Props) {
   const router = useRouter()
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
@@ -40,7 +41,7 @@ export default function AdminTicketReply({ ticketId, lawyerId, lawyerName, clien
 
     if (err) { setError(err.message); setSending(false); return }
 
-    // Email the client
+    // Email the client + trigger bell notification
     fetch('/api/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,6 +54,8 @@ export default function AdminTicketReply({ ticketId, lawyerId, lawyerName, clien
         replyBody: message.trim(),
         replierName: lawyerName,
         isStaffReply: true,
+        clientUserId,
+        replyPreview: message.trim().slice(0, 80),
       }),
     }).catch(() => {})
 

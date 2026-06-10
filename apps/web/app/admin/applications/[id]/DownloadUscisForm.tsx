@@ -6,6 +6,7 @@ const FORM_LABELS: Record<string, string> = {
   family_petition:  'I-130 Family Petition Pre-Fill',
   k1:               'I-129F K-1 Fiancé(e) Pre-Fill',
   green_card:       'I-140 Green Card Pre-Fill',
+  l1:               'I-129 L-1 Transfer Pre-Fill',
 }
 
 interface Props {
@@ -18,7 +19,7 @@ export default function DownloadUscisForm({ appId, visaType }: Props) {
   const [error, setError] = useState('')
 
   const label = FORM_LABELS[visaType]
-  if (!label) return null  // L-1 not yet mapped — don't show button
+  if (!label) return null
 
   async function handleDownload() {
     setDownloading(true)

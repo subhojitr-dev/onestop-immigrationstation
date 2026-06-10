@@ -439,6 +439,115 @@ export const i140: FormDefinition = {
   ],
 }
 
+// ─── I-129 (L-1 Intracompany Transferee) ──────────────────────────────────
+
+export const i129l: FormDefinition = {
+  formNumber: 'I-129',
+  supplement: 'L Classification Supplement',
+  title: 'Petition for a Nonimmigrant Worker — L-1 Intracompany Transferee',
+  visaType: 'l1',
+  disclaimer: 'This pre-fill data sheet is prepared from client intake data. Attorney must determine L-1A vs L-1B classification, complete attorney-only fields, and sign the official USCIS I-129 with L Supplement before filing.',
+  parts: [
+    {
+      number: 1,
+      title: 'Petitioner Information (US Employer)',
+      fields: [
+        { item: '1a', label: 'Legal Name of US Organization (Petitioner)', sourceField: 'us_company_name' },
+        { item: '2',  label: 'Federal Employer Identification Number (EIN)', attorneyCompletes: true, note: 'Obtain from HR before filing' },
+        { item: '3',  label: 'Type of Petitioner', attorneyCompletes: true, note: 'Corporation / LLC / Partnership / Sole Proprietorship' },
+        { item: '4',  label: 'Year Established', attorneyCompletes: true },
+        { item: '5',  label: 'Current Number of US Employees', attorneyCompletes: true, note: 'Obtain from HR' },
+        { item: '6',  label: 'Gross Annual Income', attorneyCompletes: true, note: 'Obtain from HR' },
+        { item: '7',  label: 'Net Annual Income', attorneyCompletes: true, note: 'Obtain from HR' },
+        { item: '8',  label: 'NAICS Code', attorneyCompletes: true },
+        { item: '9a', label: 'Street Address', sourceField: 'us_company_street' },
+        { item: '9b', label: 'City', sourceField: 'us_company_city' },
+        { item: '9c', label: 'State', sourceField: 'us_company_state' },
+        { item: '9d', label: 'ZIP Code', sourceField: 'us_company_zip' },
+      ],
+    },
+    {
+      number: 2,
+      title: 'Basis for Classification (L Supplement)',
+      fields: [
+        { item: '1',  label: 'Classification Sought', compute: a => a['l1_classification'] === 'executive_manager' ? 'L-1A — Manager or Executive' : a['l1_classification'] === 'specialized_knowledge' ? 'L-1B — Specialized Knowledge' : 'Verify with attorney' },
+        { item: '2',  label: 'Relationship Between Foreign and US Entities', sourceField: 'company_relationship' },
+        { item: '3',  label: 'New Office Petition?', compute: a => a['is_new_office'] === 'yes' ? 'Yes — new US office (≤ 1 year)' : 'No' },
+        { item: '4',  label: 'Qualifying Organization Details (Foreign Employer)', sourceField: 'foreign_company_name' },
+        { item: '5',  label: 'Foreign Company Country', sourceField: 'foreign_company_country' },
+        { item: '6',  label: 'Foreign Company City', sourceField: 'foreign_company_city' },
+        { item: '7',  label: 'Time Employed Abroad (must be ≥ 1 year in past 3 years)', compute: a => a['years_employed_abroad'] ? `${a['years_employed_abroad']} year(s)` : '' },
+        { item: '8',  label: 'Extension of Prior L-1?', compute: yesNo('prior_l1') },
+        { item: '9',  label: 'Prior L-1 Details (receipt number, dates)', sourceField: 'prior_l1_details' },
+      ],
+    },
+    {
+      number: 3,
+      title: 'Alien Information (Beneficiary / Employee)',
+      fields: [
+        { item: '1a', label: 'Family Name (Last Name)', sourceField: 'ben_last_name' },
+        { item: '1b', label: 'Given Name (First Name)', sourceField: 'ben_first_name' },
+        { item: '1c', label: 'Middle Name', sourceField: 'ben_middle_name' },
+        { item: '2',  label: 'Other Names Used', sourceField: 'ben_other_names' },
+        { item: '3',  label: 'Date of Birth (MM/DD/YYYY)', sourceField: 'ben_dob' },
+        { item: '4',  label: 'City / Town of Birth', sourceField: 'ben_city_of_birth' },
+        { item: '5',  label: 'Country of Birth', sourceField: 'ben_country_of_birth' },
+        { item: '6',  label: 'Country of Citizenship / Nationality', sourceField: 'ben_nationality' },
+        { item: '7',  label: 'Gender', sourceField: 'ben_gender' },
+        { item: '8',  label: 'US Social Security Number', sourceField: 'ben_ssn', note: 'Leave blank if none' },
+        { item: '9',  label: 'Alien Registration Number (A-Number)', attorneyCompletes: true },
+        { item: '10a',label: 'Passport / Travel Document Number', sourceField: 'ben_passport_number' },
+        { item: '10b',label: 'Country of Issuance', sourceField: 'ben_passport_country' },
+        { item: '10c',label: 'Passport Expiry Date', sourceField: 'ben_passport_expiry' },
+        { item: '11', label: 'I-94 Arrival / Departure Record Number', sourceField: 'ben_i94' },
+        { item: '12', label: 'Current Nonimmigrant Status', sourceField: 'ben_current_status' },
+        { item: '13', label: 'Status Valid Until', sourceField: 'ben_status_expiry' },
+        { item: '14', label: 'Currently in the US?', compute: yesNo('ben_in_us') },
+        { item: '15a',label: 'Current Address — Street', sourceField: 'ben_current_address' },
+        { item: '15b',label: 'City', sourceField: 'ben_current_city' },
+        { item: '15c',label: 'State', sourceField: 'ben_current_state' },
+        { item: '15d',label: 'ZIP Code', sourceField: 'ben_current_zip' },
+        { item: '15e',label: 'Country', sourceField: 'ben_current_country' },
+      ],
+    },
+    {
+      number: 4,
+      title: 'Position Information (US Role)',
+      fields: [
+        { item: '1',  label: 'Job Title (US Position)', sourceField: 'us_job_title' },
+        { item: '2',  label: 'L-1 Classification', compute: a => a['l1_classification'] === 'executive_manager' ? 'L-1A — Managerial or Executive Capacity' : a['l1_classification'] === 'specialized_knowledge' ? 'L-1B — Specialized Knowledge' : '' },
+        { item: '3',  label: 'Description of Duties', sourceField: 'job_duties' },
+        { item: '4',  label: 'Annual Wage Offered', sourceField: 'salary_offered', note: 'Confirm prevailing wage compliance' },
+        { item: '5',  label: 'Work Site Address (if different from petitioner address)', sourceField: 'us_company_street' },
+        { item: '6',  label: 'Period of Employment Requested', attorneyCompletes: true, note: 'Up to 3 years initial; 2-year extensions; max 7 years L-1A, 5 years L-1B' },
+      ],
+    },
+    {
+      number: 5,
+      title: 'Processing Information',
+      fields: [
+        { item: '1', label: 'Where should the notice be sent?', compute: () => 'Petitioner (employer)' },
+        { item: '2', label: 'Is beneficiary in removal proceedings?', compute: yesNo('ben_in_removal') },
+        { item: '3', label: 'Is beneficiary applying for change of status?', compute: yesNo('ben_in_us') },
+        { item: '4', label: 'Requested Action', attorneyCompletes: true, note: 'New petition / Extension / Change of employer / Concurrent employment' },
+        { item: '5', label: 'Premium Processing Requested?', compute: a => a['premium_processing'] === 'yes' ? 'Yes — I-907 required' : 'No' },
+      ],
+    },
+    {
+      number: 6,
+      title: 'Immigration History',
+      fields: [
+        { item: '1', label: 'Prior US Visa / Status', sourceField: 'ben_current_status' },
+        { item: '2', label: 'Prior L-1 Petition Filed?', compute: yesNo('prior_l1') },
+        { item: '3', label: 'Prior Petition Denied?', compute: yesNo('hist_denial') },
+        { item: '4', label: 'Denial Details', sourceField: 'hist_denial_details' },
+        { item: '5', label: 'Criminal History?', compute: yesNo('hist_criminal') },
+        { item: '6', label: 'Criminal History Details', sourceField: 'hist_criminal_details' },
+      ],
+    },
+  ],
+}
+
 // ─── Form index ────────────────────────────────────────────────────────────
 
 export const formsByVisaType: Record<string, FormDefinition> = {
@@ -446,4 +555,5 @@ export const formsByVisaType: Record<string, FormDefinition> = {
   family_petition:  i130,
   k1:               i129f,
   green_card:       i140,
+  l1:               i129l,
 }
