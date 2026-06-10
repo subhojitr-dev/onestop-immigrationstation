@@ -1,16 +1,16 @@
 /**
  * POST /api/contact/invite-member
  *
- * Called by a Contact (or admin) to invite a new Sponsor or Beneficiary into
- * their company. Creates a Supabase auth user + profile, then sends a
- * "Set Your Password" welcome email via Resend.
+ * Called by a Contact, Sponsor, or admin to invite a new team member.
+ * - Contact can invite: Sponsor or Beneficiary
+ * - Sponsor can invite: Beneficiary only
+ * - Admin can invite: any role
  *
- * Required fields: firstName, lastName, email, phone, role (sponsor|beneficiary)
- * Optional: address, jobTitle, notes
+ * Required fields: firstName, lastName, email, phone, role
+ * Optional: address
  *
- * The new user's company_id is set to the caller's company_id.
- * If the caller (Contact) has no company_id yet, their own user_id is used
- * as the company_id — that seeds the company for all future invites.
+ * The new user's company_id and company_name are copied from the caller's profile.
+ * If the caller has no company_id yet, their own user_id is seeded as the company_id.
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -23,21 +23,26 @@ export async function POST(req: NextRequest) {
 
   const { data: callerProfile } = await supabase
     .from('profiles')
-    .select('role, company_id, full_name')
+    .select('role, company_id, company_name, full_name')
     .eq('id', user.id)
     .single()
 
-  if (!callerProfile || !['contact', 'admin'].includes(callerProfile.role)) {
-    return NextResponse.json({ error: 'Only contacts and admins can invite members' }, { status: 403 })
+  if (!callerProfile || !['contact', 'sponsor', 'admin'].includes(callerProfile.role)) {
+    return NextResponse.json({ error: 'Only contacts, sponsors, and admins can invite members' }, { status: 403 })
   }
 
-  const { firstName, lastName, email, phone, role, address, jobTitle } = await req.json()
+  const { firstName, lastName, email, phone, role, address } = await req.json()
 
   if (!firstName || !lastName || !email || !phone) {
     return NextResponse.json({ error: 'First name, last name, email, and phone are required' }, { status: 400 })
   }
-  if (!['sponsor', 'beneficiary'].includes(role)) {
-    return NextResponse.json({ error: 'Role must be sponsor or beneficiary' }, { status: 400 })
+
+  // Sponsors can only invite beneficiaries; contacts/admins can invite sponsors or beneficiaries
+  const allowedRoles = callerProfile.role === 'sponsor'
+    ? ['beneficiary']
+    : ['sponsor', 'beneficiary']
+  if (!allowedRoles.includes(role)) {
+    return NextResponse.json({ error: `You can only invite: ${allowedRoles.join(', ')}` }, { status: 400 })
   }
 
   const admin = createAdminClient()
@@ -70,7 +75,7 @@ export async function POST(req: NextRequest) {
 
   const newUserId = authData.user.id
 
-  // Upsert profile with role, company_id, and invited_by
+  // Upsert profile with role, company_id, company_name, and invited_by
   const { error: profileError } = await admin.from('profiles').upsert({
     id: newUserId,
     email: email.trim().toLowerCase(),
@@ -79,6 +84,7 @@ export async function POST(req: NextRequest) {
     address: address?.trim() || null,
     role,
     company_id: companyId,
+    company_name: callerProfile.company_name || null,
     invited_by: user.id,
   }, { onConflict: 'id' })
 

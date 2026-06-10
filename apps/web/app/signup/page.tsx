@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-type Role = 'sponsor' | 'beneficiary'
+type Role = 'sponsor' | 'beneficiary' | 'contact'
 
 function SignupForm() {
   const router = useRouter()
@@ -12,17 +12,17 @@ function SignupForm() {
   const [step, setStep] = useState<1 | 2>(1)
   const [role, setRole] = useState<Role>('beneficiary')
 
-  // Pre-select role and capture service from URL params
   useEffect(() => {
     const roleParam = searchParams.get('role') as Role
-    if (roleParam === 'sponsor' || roleParam === 'beneficiary') {
+    if (roleParam === 'sponsor' || roleParam === 'beneficiary' || roleParam === 'contact') {
       setRole(roleParam)
-      setStep(2) // skip role selection, go straight to details
+      setStep(2)
     }
   }, [searchParams])
+
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [businessName, setBusinessName] = useState('')
+  const [companyName, setCompanyName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -30,6 +30,8 @@ function SignupForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+
+  const needsCompany = role === 'sponsor' || role === 'contact'
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
@@ -49,7 +51,7 @@ function SignupForm() {
           last_name: lastName,
           phone,
           role,
-          business_name: role === 'sponsor' ? businessName : '',
+          business_name: needsCompany ? companyName : '',
         },
       },
     })
@@ -60,25 +62,28 @@ function SignupForm() {
       return
     }
 
-    // Insert profile row
     if (data.user) {
-      await supabase.from('profiles').upsert({
+      // For Contact and Sponsor: seed company_id = their own user_id so they can
+      // invite members immediately. company_name stored for display.
+      const profileData: Record<string, any> = {
         id: data.user.id,
         email,
         full_name: `${firstName} ${lastName}`,
         phone,
         role,
-      })
+      }
+      if (needsCompany && companyName.trim()) {
+        profileData.company_id = data.user.id
+        profileData.company_name = companyName.trim()
+      }
+      await supabase.from('profiles').upsert(profileData)
     }
 
     setSuccess(true)
     setLoading(false)
 
-    // Store service param so we can redirect after email confirmation + login
     const service = searchParams.get('service')
-    if (service) {
-      sessionStorage.setItem('pendingService', service)
-    }
+    if (service) sessionStorage.setItem('pendingService', service)
   }
 
   if (success) {
@@ -125,7 +130,7 @@ function SignupForm() {
         {step === 1 && (
           <div>
             <p className="auth-role-label">I am registering as a:</p>
-            <div className="role-grid">
+            <div className="role-grid" style={{gridTemplateColumns:'1fr 1fr 1fr'}}>
               <button
                 type="button"
                 className={`role-card${role === 'sponsor' ? ' active' : ''}`}
@@ -143,6 +148,15 @@ function SignupForm() {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                 <strong>Individual / Beneficiary</strong>
                 <span>Applying for a visa for myself or family</span>
+              </button>
+              <button
+                type="button"
+                className={`role-card${role === 'contact' ? ' active' : ''}`}
+                onClick={() => setRole('contact')}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 11c0 4-2 6-6 8"/></svg>
+                <strong>HR / Contact</strong>
+                <span>Managing immigration for your team</span>
               </button>
             </div>
             <button className="btn btn--navy auth-submit" onClick={() => setStep(2)}>
@@ -167,12 +181,19 @@ function SignupForm() {
                 <input id="lastName" type="text" value={lastName} onChange={e => setLastName(e.target.value)} required placeholder="Smith" autoComplete="family-name" />
               </div>
             </div>
-            {role === 'sponsor' && (
+
+            {needsCompany && (
               <div className="auth-field">
-                <label htmlFor="businessName">Company Name *</label>
-                <input id="businessName" type="text" value={businessName} onChange={e => setBusinessName(e.target.value)} required placeholder="Acme Corp" />
+                <label htmlFor="companyName">
+                  Company Name *
+                  <span style={{fontSize:'12px', color:'#98a0b0', fontWeight:400, marginLeft:'6px'}}>
+                    {role === 'contact' ? '(your employer)' : '(your business)'}
+                  </span>
+                </label>
+                <input id="companyName" type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} required placeholder="Acme Corporation" />
               </div>
             )}
+
             <div className="auth-field">
               <label htmlFor="phone">Phone</label>
               <input id="phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="(555) 000-0000" autoComplete="tel" />

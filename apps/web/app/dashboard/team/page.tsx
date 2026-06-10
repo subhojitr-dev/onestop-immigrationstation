@@ -22,7 +22,7 @@ export default async function TeamPage() {
 
   const { data: myProfile } = await admin
     .from('profiles')
-    .select('role, company_id, full_name')
+    .select('role, company_id, company_name, full_name')
     .eq('id', user.id)
     .single()
 
@@ -30,6 +30,8 @@ export default async function TeamPage() {
     redirect('/dashboard')
   }
 
+  // Both contact and sponsor can invite; contact sees sponsors+beneficiaries, sponsor sees beneficiaries
+  const canInvite = ['contact', 'sponsor', 'admin'].includes(myProfile.role)
   const isContact = myProfile.role === 'contact' || myProfile.role === 'admin'
 
   // Fetch all company members (same company_id, excluding self)
@@ -57,10 +59,18 @@ export default async function TeamPage() {
           <p style={{ fontSize: '14px', color: '#98a0b0', margin: 0 }}>
             {isContact
               ? 'Manage your sponsors and beneficiaries. Click any member to view their cases, appointments, and documents.'
-              : 'View all beneficiaries associated with your company.'}
+              : 'View beneficiaries associated with your company.'}
           </p>
+          {myProfile.company_name && (
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#e8effe', color: '#1d4ed8', borderRadius: '20px', padding: '4px 12px', fontSize: '13px', fontWeight: 600, marginTop: '10px' }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+              </svg>
+              {myProfile.company_name}
+            </div>
+          )}
         </div>
-        {isContact && (
+        {canInvite && (
           <Link href="/dashboard/team/invite"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', padding: '10px 22px', borderRadius: '10px', background: 'linear-gradient(135deg,#1a2744,#243355)', color: '#fff', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -73,9 +83,9 @@ export default async function TeamPage() {
 
       {!myProfile.company_id && (
         <div style={{ background: '#fdf3e3', border: '1px solid #fde68a', borderRadius: '12px', padding: '18px 22px', marginBottom: '28px', fontSize: '14px', color: '#92400e' }}>
-          <strong>No team yet.</strong> Invite your first sponsor or beneficiary to get started.
-          Once you invite someone, your company portal will be set up automatically.
-          {isContact && (
+          <strong>No team yet.</strong>{' '}
+          {isContact ? 'Invite your first sponsor or beneficiary to get started.' : 'Invite your first beneficiary to get started.'}
+          {canInvite && (
             <span> <Link href="/dashboard/team/invite" style={{ color: '#b8952a', fontWeight: 700 }}>Invite now →</Link></span>
           )}
         </div>
@@ -108,7 +118,7 @@ export default async function TeamPage() {
         </div>
         {beneficiaries.length === 0 ? (
           <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', border: '1px solid #e7e9f0', textAlign: 'center', color: '#98a0b0', fontSize: '14px' }}>
-            No beneficiaries yet.{isContact && <> <Link href="/dashboard/team/invite" style={{ color: '#b8952a', fontWeight: 600 }}>Invite one →</Link></>}
+            No beneficiaries yet.{canInvite && <> <Link href="/dashboard/team/invite" style={{ color: '#b8952a', fontWeight: 600 }}>Invite one →</Link></>}
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
