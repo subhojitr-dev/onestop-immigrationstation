@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Press & Media — One Stop Immigration Station",
-  description: "News, announcements, and recognition from One Stop Immigration Station — and resources for journalists.",
+  title: "Press & Media Coverage",
+  description: "News coverage, press releases, and media resources from One Stop Immigration Station — a trusted U.S. immigration law firm serving businesses and families nationwide.",
+  openGraph: {
+    title: "Press & Media | One Stop Immigration Station",
+    description: "News coverage and press releases from One Stop Immigration Station, a trusted U.S. immigration law firm.",
+    url: "https://www.onestopimmigrationstation.com/press-media",
+  },
+  alternates: { canonical: "https://www.onestopimmigrationstation.com/press-media" },
 };
 
 const pressItems = [

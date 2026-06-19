@@ -3,8 +3,14 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Blog & News — One Stop Immigration Station",
-  description: "Immigration insights, USCIS updates, and practical guidance for families and employers.",
+  title: "Immigration Law Blog & USCIS News",
+  description: "Stay current on U.S. immigration law — USCIS policy updates, H-1B caps, green card news, visa tips, and guidance for employers and families. Updated regularly.",
+  openGraph: {
+    title: "Immigration Law Blog & USCIS News | One Stop Immigration Station",
+    description: "Stay current on U.S. immigration law — USCIS policy updates, H-1B caps, green card news, visa tips, and guidance for employers and families.",
+    url: "https://www.onestopimmigrationstation.com/blog",
+  },
+  alternates: { canonical: "https://www.onestopimmigrationstation.com/blog" },
 };
 
 const NavBar = ({ active }: { active: string }) => (

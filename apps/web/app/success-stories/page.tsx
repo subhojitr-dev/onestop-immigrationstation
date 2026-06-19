@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Success Stories — One Stop Immigration Station",
-  description: "Real people, real outcomes. Behind every case is a family reunited, a career secured, or a business protected.",
+  title: "Immigration Success Stories & Client Results",
+  description: "Real immigration cases, real outcomes. See how our attorneys helped families reunite, professionals secure H-1B and green card approvals, and businesses stay compliant.",
+  openGraph: {
+    title: "Immigration Success Stories | One Stop Immigration Station",
+    description: "Real immigration cases, real outcomes. Families reunited, H-1B approvals, green cards, and more.",
+    url: "https://www.onestopimmigrationstation.com/success-stories",
+  },
+  alternates: { canonical: "https://www.onestopimmigrationstation.com/success-stories" },
 };
 
 const StarRow = () => (

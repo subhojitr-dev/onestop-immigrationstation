@@ -3,8 +3,14 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Watch Videos — One Stop Immigration Station",
-  description: "Clear, plain-language immigration explainers and USCIS updates — watch at your own pace.",
+  title: "Immigration Law Videos & Explainers",
+  description: "Watch plain-language immigration explainers — H-1B, green card, K-1 fiancé visa, DACA, and USCIS policy updates explained clearly by our attorneys. New videos added regularly.",
+  openGraph: {
+    title: "Immigration Law Videos & Explainers | One Stop Immigration Station",
+    description: "H-1B, green card, K-1, DACA, and USCIS updates explained clearly by immigration attorneys.",
+    url: "https://www.onestopimmigrationstation.com/videos",
+  },
+  alternates: { canonical: "https://www.onestopimmigrationstation.com/videos" },
 };
 
 /** Convert YouTube watch URL to embed URL */
