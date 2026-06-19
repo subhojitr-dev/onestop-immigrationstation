@@ -22,6 +22,63 @@ Your domain name (`onestopimmigrationstation.com`) was registered and managed th
 
 ---
 
+### How the pointing works — step by step
+
+Here is exactly what happens the moment someone types your domain into a browser:
+
+```
+Your Browser
+     |
+     | 1. "Where is onestopimmigrationstation.com?"
+     v
+GoDaddy DNS (the phone book)
+     |
+     | 2. Looks up the A record for @
+     |    Answer: 76.76.21.21  ← Vercel's IP address
+     v
+Vercel's Server at 76.76.21.21
+     |
+     | 3. "Which project owns onestopimmigrationstation.com?"
+     |    Answer: onestop-immigrationstation-web
+     v
+Your Next.js App
+     |
+     | 4. Sends back the webpage
+     v
+Browser displays the site
+```
+
+**The key insight — two separate lookups:**
+
+- **GoDaddy's job** is only Step 1 and 2 — it answers "what IP address is this domain?" with `76.76.21.21` and then its job is completely done. It doesn't know or care what Vercel does next.
+- **Vercel's job** starts at Step 3 — once the browser arrives at Vercel's server, Vercel looks at the domain name in the request and says "I know this domain, it belongs to project onestop-immigrationstation-web" and serves the right app.
+
+This is exactly why you had to make changes in **both places** — GoDaddy needed to know to send traffic to Vercel, and Vercel needed to know to accept traffic for that domain. Neither one alone is enough.
+
+**GoDaddy never talks to Vercel directly.** It only answers the browser's question. After that, the browser talks directly to Vercel and GoDaddy is completely out of the picture.
+
+---
+
+### The `www` redirect — what happens inside Vercel
+
+```
+Browser types: onestopimmigrationstation.com (no www)
+     |
+     v
+Vercel receives it → "This is the apex domain, redirect to www"
+     |
+     |  308 Permanent Redirect
+     v
+Browser now goes to: www.onestopimmigrationstation.com
+     |
+     v
+Vercel serves the actual website
+```
+
+The `www` version is the "real" address. Vercel handles this redirect internally — GoDaddy is not involved at all in this step. The visitor never notices; their browser follows the redirect in a fraction of a second.
+
+---
+
 ### What we changed in GoDaddy DNS
 
 We made two changes in the GoDaddy DNS Management panel:
